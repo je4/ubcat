@@ -48,16 +48,52 @@ type OriginInfo struct {
 	Date      string   `json:"date,omitempty"`
 }
 
+type AccessCondition struct {
+	Add     []string `json:"add,omitempty"`
+	Licence []string `json:"licence,omitempty"`
+	Main    []string `json:"main,omitempty"`
+	Url     []string `json:"url,omitempty"`
+}
+
+type Cartographics struct {
+	Coded   []Coded   `json:"coded,omitempty"`
+	Display []Display `json:"display,omitempty"`
+}
+
+type Coded struct {
+	Coordinates []string `json:"coordinates,omitempty"`
+	Scale       []string `json:"scale,omitempty"`
+}
+
+type Display struct {
+	Coordinates []string `json:"coordinates,omitempty"`
+	Other       []string `json:"other,omitempty"`
+	Projection  []string `json:"projection,omitempty"`
+	Scale       []string `json:"scale,omitempty"`
+}
+
 type Mapping001 struct {
-	Abstract       []string                  `json:"abstract,omitempty"`
-	Classification map[string]Classification `json:"classification,omitempty"`
-	Date           []DateRange               `json:"date,omitempty"`
+	Abstract        []string                  `json:"abstract,omitempty"`
+	AccessCondition []AccessCondition         `json:"accessCondition,omitempty"`
+	Cartographics   Cartographics             `json:"cartographics,omitempty"`
+	Classification  map[string]Classification `json:"classification,omitempty"`
+	Date            []DateRange               `json:"date,omitempty"`
 	//	DateRange           []DateRange                `json:"daterange,omitempty"`
+	Extension           map[string]json.RawMessage `json:"extension,omitempty"`
+	Files               map[string]json.RawMessage `json:"files,omitempty"`
+	Fulltext            []string                   `json:"fulltext,omitempty"`
+	Identifier          map[string]json.RawMessage `json:"identifier,omitempty"`
+	Language            []string                   `json:"language,omitempty"`
 	Location            Location                   `json:"location,omitempty"`
+	Name                map[string]json.RawMessage `json:"name,omitempty"`
+	Note                map[string]json.RawMessage `json:"note,omitempty"`
 	OriginInfo          OriginInfo                 `json:"originInfo,omitempty"`
 	PhysicalDescription map[string]json.RawMessage `json:"physicalDescription,omitempty"`
 	RecordIdentifier    []string                   `json:"recordIdentifier,omitempty"`
+	RelatedItem         map[string]json.RawMessage `json:"relatedItem,omitempty"`
 	Subject             Subject                    `json:"subject,omitempty"`
+	TableOfContents     map[string]json.RawMessage `json:"tableOfContents,omitempty"`
+	TargetAudience      map[string]json.RawMessage `json:"targetAudience,omitempty"`
 	TitleInfo           map[string]json.RawMessage `json:"titleInfo,omitempty"`
 }
 
