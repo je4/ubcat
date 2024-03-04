@@ -34,18 +34,33 @@ type Location struct {
 	Item    []ItemLocation    `json:"item,omitempty"`
 }
 
-type SubjectName struct {
-	Personal []json.RawMessage `json:"personal,omitempty"`
-}
-
 type Subject struct {
-	Name SubjectName `json:"name,omitempty"`
+	Genre      map[string][]string     `json:"genre,omitempty"`
+	Geographic []map[string]Geographic `json:"geographic,omitempty"`
+	Local      map[string][]string     `json:"local,omitempty"`
+	Music      []string                `json:"music,omitempty"`
+	Name       Name                    `json:"name,omitempty"`
+	Temporal   map[string][]string     `json:"temporal,omitempty"`
+	Topic      []map[string]Topic      `json:"topic,omitempty"`
+	Undefined  []string                `json:"undefined,omitempty"`
 }
 
 type OriginInfo struct {
-	Place     []string `json:"place,omitempty"`
-	Publisher []string `json:"publisher,omitempty"`
-	Date      string   `json:"date,omitempty"`
+	CopyrightDate []string                `json:"copyrightDate,omitempty"`
+	Distribution  []PublicationNote       `json:"distribution,omitempty"`
+	Edition       []string                `json:"edition,omitempty"`
+	EditionAltRep []string                `json:"editionAltRep,omitempty"`
+	Geographic    []map[string]Geographic `json:"geographic,omitempty"`
+	Manufacture   []PublicationNote       `json:"manufacture,omitempty"`
+	Production    []PublicationNote       `json:"production,omitempty"`
+	Publication   []PublicationNote       `json:"publication,omitempty"`
+}
+
+type PublicationNote struct {
+	Date        string   `json:"date,omitempty"`
+	LinkedField string   `json:"linkedField,omitempty"`
+	Place       []string `json:"place,omitempty"`
+	Publisher   []string `json:"publisher,omitempty"`
 }
 
 type NoteWithURL struct {
@@ -96,7 +111,7 @@ type Identifier struct {
 }
 
 type IsbnIsmn struct {
-	Id        string   `json:"identifier,omitempty"`
+	Id        []string `json:"identifier,omitempty"`
 	Qualifier []string `json:"qualifier,omitempty"`
 }
 
@@ -129,20 +144,115 @@ type Note struct {
 	Venue                           []string      `json:"venue,omitempty"`
 	VersionIdentification           []string      `json:"versionIdentification,omitempty"`
 }
+
+type Name struct {
+	Conference []map[string]Conference `json:"conference,omitempty"`
+	Corporate  []map[string]Corporate  `json:"corporate,omitempty"`
+	Family     []map[string]Family     `json:"family,omitempty"`
+	Personal   []map[string]Personal   `json:"personal,omitempty"`
+}
+
+type Conference struct {
+	Date            string   `json:"date,omitempty"`
+	Description     []string `json:"description,omitempty"`
+	EntityType      []string `json:"entityType,omitempty"`
+	Identifier      string   `json:"identifier,omitempty"`
+	Level           string   `json:"level,omitempty"`
+	NamePart        string   `json:"namePart,omitempty"`
+	OtherIdentifier []string `json:"otherIdentifier,omitempty"`
+	Role            []string `json:"role,omitempty"`
+	UseFor          []string `json:"json,omitempty"`
+	Variant         []string `json:"variant,omitempty"`
+}
+
+type Corporate struct {
+	Description     []string `json:"description,omitempty"`
+	EntityType      []string `json:"entityType,omitempty"`
+	Identifier      string   `json:"identifier,omitempty"`
+	Level           string   `json:"level,omitempty"`
+	NamePart        string   `json:"namePart,omitempty"`
+	OtherIdentifier []string `json:"otherIdentifier,omitempty"`
+	PlaceOfBusiness []string `json:"placeOfBusiness,omitempty"`
+	Related         []string `json:"related,omitempty"`
+	Role            []string `json:"role,omitempty"`
+	UseFor          []string `json:"json,omitempty"`
+	Variant         []string `json:"variant,omitempty"`
+}
+
+type Family struct {
+	Date            string   `json:"date,omitempty"`
+	EntityType      []string `json:"entityType,omitempty"`
+	Identifier      string   `json:"identifier,omitempty"`
+	Level           string   `json:"level,omitempty"`
+	NamePart        string   `json:"namePart,omitempty"`
+	OtherIdentifier []string `json:"otherIdentifier,omitempty"`
+	Role            []string `json:"role,omitempty"`
+	UseFor          []string `json:"json,omitempty"`
+	Variant         []string `json:"variant,omitempty"`
+}
+
+type Personal struct {
+	Date            string   `json:"date,omitempty"`
+	EntityType      []string `json:"entityType,omitempty"`
+	Gender          string   `json:"gender,omitempty"`
+	Identifier      string   `json:"identifier,omitempty"`
+	Level           string   `json:"level,omitempty"`
+	NamePart        string   `json:"namePart,omitempty"`
+	OtherIdentifier []string `json:"otherIdentifier,omitempty"`
+	PlaceOfActivity []string `json:"placeOfActivity,omitempty"`
+	PlaceOfBirth    []string `json:"placeOfBirth,omitempty"`
+	Profession      []string `json:"profession,omitempty"`
+	Related         []string `json:"related,omitempty"`
+	Role            []string `json:"role,omitempty"`
+	UseFor          []string `json:"json,omitempty"`
+	Variant         []string `json:"variant,omitempty"`
+}
+
+type Geographic struct {
+	Coordinates     []Coordinates `json:"coordinates,omitempty"`
+	Description     []string      `json:"description,omitempty"`
+	EntityType      []string      `json:"entityType,omitempty"`
+	GeoNamesId      []string      `json:"geoNamesId,omitempty"`
+	Identifier      string        `json:"identifier,omitempty"`
+	Level           string        `json:"level,omitempty"`
+	NamePart        string        `json:"namePart,omitempty"`
+	OtherIdentifier []string      `json:"otherIdentifier,omitempty"`
+	Related         []string      `json:"related,omitempty"`
+	Role            []string      `json:"role,omitempty"`
+	UseFor          []string      `json:"json,omitempty"`
+	Variant         []string      `json:"variant,omitempty"`
+}
+
+type Coordinates struct {
+	Lat string `json:"lat,omitempty"`
+	Lon string `json:"lon,omitempty"`
+}
+
+type Topic struct {
+	EntityType      []string `json:"entityType,omitempty"`
+	Identifier      string   `json:"identifier,omitempty"`
+	Label           string   `json:"label,omitempty"`
+	Level           string   `json:"level,omitempty"`
+	Mapped          []string `json:"mapped,omitempty"`
+	OtherIdentifier []string `json:"otherIdentifier,omitempty"`
+	UseFor          []string `json:"json,omitempty"`
+	Variant         []string `json:"variant,omitempty"`
+}
+
 type Mapping001 struct {
-	Abstract        []string                  `json:"abstract,omitempty"`
-	AccessCondition []NoteWithURL             `json:"accessCondition,omitempty"`
-	Cartographics   Cartographics             `json:"cartographics,omitempty"`
-	Classification  map[string]Classification `json:"classification,omitempty"`
-	Date            []DateRange               `json:"date,omitempty"`
+	Abstract        []string      `json:"abstract,omitempty"`
+	AccessCondition []NoteWithURL `json:"accessCondition,omitempty"`
+	Cartographics   Cartographics `json:"cartographics,omitempty"`
+	//Classification  map[string]Classification `json:"classification,omitempty"`
+	Date []DateRange `json:"date,omitempty"`
 	//	DateRange           []DateRange                `json:"daterange,omitempty"`
-	Extension           map[string]json.RawMessage `json:"extension,omitempty"`
+	Extension           Extension                  `json:"extension,omitempty"`
 	Files               map[string]json.RawMessage `json:"files,omitempty"`
 	Fulltext            []string                   `json:"fulltext,omitempty"`
-	Identifier          map[string]json.RawMessage `json:"identifier,omitempty"`
+	Identifier          Identifier                 `json:"identifier,omitempty"`
 	Language            []string                   `json:"language,omitempty"`
 	Location            Location                   `json:"location,omitempty"`
-	Name                map[string]json.RawMessage `json:"name,omitempty"`
+	Name                Name                       `json:"name,omitempty"`
 	Note                Note                       `json:"note,omitempty"`
 	OriginInfo          OriginInfo                 `json:"originInfo,omitempty"`
 	PhysicalDescription map[string]json.RawMessage `json:"physicalDescription,omitempty"`
