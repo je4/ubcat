@@ -13,8 +13,22 @@ type DataField struct {
 }
 
 type Classification struct {
-	All     []string `json:"all"`
-	General []string `json:"general"`
+	Ddc   Ddc      `json:"ddc,omitempty"`
+	Local Local    `json:"local,omitempty"`
+	Rvk   []string `json:"rvk,omitempty"`
+	Sdnb  []string `json:"sdnb,omitempty"`
+	Udc   []string `json:"udc,omitempty"`
+}
+
+type Ddc struct {
+	All  []string `json:"all,omitempty"`
+	Ed23 []string `json:"ed23,omitempty"`
+	//General []string
+	Sdnb []string `json:"sdnb,omitempty"`
+}
+
+type Local struct {
+	All []string `json:"all,omitempty"`
 }
 
 type HoldingLocation struct {
@@ -30,8 +44,37 @@ type ItemLocation struct {
 }
 
 type Location struct {
-	Holding []HoldingLocation `json:"holding,omitempty"`
-	Item    []ItemLocation    `json:"item,omitempty"`
+	//Holding    []HoldingLocation `json:"holding,omitempty"`
+	//Item       []ItemLocation    `json:"item,omitempty"`
+	Digital    []Url        `json:"digital,omitempty"`
+	Electronic []Electronic `json:"electronic,omitempty"`
+	//Holding    []Holding    `json:"holding,omitempty"`
+}
+
+type Holding struct {
+	CallNumber  string `json:"callNumber,omitempty"`
+	Item        []Item `json:"item,omitempty"`
+	Library     string `json:"library,omitempty"`
+	Location    string `json:"location,omitempty"`
+	Note        string `json:"note,omitempty"`
+	Summary     string `json:"summary,omitempty"`
+	SummaryNote string `json:"summaryNote,omitempty"`
+}
+
+type Item struct {
+	ItemCallNumber string `json:"itemCallNumber,omitempty"`
+	Note           string `json:"notel,omitempty"`
+	//NoteInternal string `json:"noteInternal,omitempty"`
+}
+
+type Electronic struct {
+	Library       string `json:"library,omitempty"`
+	Collection    string `json:"collection,omitempty"`
+	Url           string `json:"url,omitempty"`
+	AlmaAccessUrl string `json:"almaAccessUrl,omitempty"`
+	Interface     string `json:"interface,omitempty"`
+	Coverage      string `json:"coverage,omitempty"`
+	Note          string `json:"note,omitempty"`
 }
 
 type Subject struct {
@@ -41,6 +84,7 @@ type Subject struct {
 	Music      []string                `json:"music,omitempty"`
 	Name       Name                    `json:"name,omitempty"`
 	Temporal   map[string][]string     `json:"temporal,omitempty"`
+	TitleInfo  []map[string]Work       `json:"titleInfo,omitempty"`
 	Topic      []map[string]Topic      `json:"topic,omitempty"`
 	Undefined  []string                `json:"undefined,omitempty"`
 }
@@ -223,6 +267,17 @@ type Geographic struct {
 	Variant         []string      `json:"variant,omitempty"`
 }
 
+type Work struct {
+	EntityType      []string `json:"entityType,omitempty"`
+	Identifier      string   `json:"identifier,omitempty"`
+	Level           string   `json:"level,omitempty"`
+	Name            string   `json:"namePart,omitempty"`
+	Title           string   `json:"title,omitempty"`
+	OtherIdentifier []string `json:"otherIdentifier,omitempty"`
+	UseFor          []string `json:"json,omitempty"`
+	Variant         []string `json:"variant,omitempty"`
+}
+
 type Coordinates struct {
 	Lat string `json:"lat,omitempty"`
 	Lon string `json:"lon,omitempty"`
@@ -239,12 +294,97 @@ type Topic struct {
 	Variant         []string `json:"variant,omitempty"`
 }
 
+type PhysicalDescription struct {
+	Arrangement               []string `json:"arrangement,omitempty"`
+	DateSequentialDesignation []string `json:"dateSequentialDesignation,omitempty"`
+	Extent                    []Extent `json:"extent,omitempty"`
+	Frequency                 []string `json:"frequency,omitempty"`
+	Medium                    []string `json:"medium,omitempty"`
+	NotatedMusic              []string `json:"notatedMusic,omitempty"`
+}
+
+type Extent struct {
+	Extent string `json:"extent,omitempty"`
+}
+
+type RelatedItem struct {
+	Constituent  []Related         `json:"constituent,omitempty"`
+	Host         []Host            `json:"host,omitempty"`
+	IssuedWith   []Related         `json:"issuedWith,omitempty"`
+	Location     []Url             `json:"location,omitempty"`
+	Original     []string          `json:"original,omitempty"`
+	OriginalNote []string          `json:"originalNote,omitempty"`
+	Other        []Related         `json:"other,omitempty"`
+	OtherFormat  []Related         `json:"otherFormat,omitempty"`
+	OtherVersion []Related         `json:"otherVersion,omitempty"`
+	Preceding    []Related         `json:"preceding,omitempty"`
+	Series       []Series          `json:"series,omitempty"`
+	Succeeding   []Related         `json:"succeeding,omitempty"`
+	Work         []map[string]Work `json:"work,omitempty"`
+}
+
+type Series struct {
+	Conference         Conference `json:"conference,omitempty"`
+	Corporate          Corporate  `json:"corporate,omitempty"`
+	InternalIdentifier string     `json:"internalIdentifier,omitempty"`
+	LinkedField        string     `json:"linkedField,omitempty"`
+	PartName           []string   `json:"partName,omitempty"`
+	PartNumber         []string   `json:"partNumber,omitempty"`
+	Personal           Personal   `json:"personal,omitempty"`
+	Title              string     `json:"title,omitempty"`
+	VolumeDesignation  string     `json:"volumeDesignation,omitempty"`
+}
+
+type Host struct {
+	Title              string   `json:"title,omitempty"`
+	Publisher          string   `json:"publisher,omitempty"`
+	PartYear           string   `json:"partYear,omitempty"`
+	PartNumber         string   `json:"partNumber,omitempty"`
+	Part               string   `json:"part,omitempty"`
+	PartSort           string   `json:"partSort,omitempty"`
+	Identifier         []string `json:"identifier,omitempty"`
+	InternalIdentifier string   `json:"internalIdentifer,omitempty"`
+}
+
+type Url struct {
+	Content string `json:"content,omitempty"`
+	Format  string `json:"format,omitempty"`
+	Url     string `json:"url,omitempty"`
+	Note    string `json:"note,omitempty"`
+}
+
+type Related struct {
+	DisplayConstant           string   `json:"displayConstant,omitempty"`
+	Identifier                []string `json:"identifier,omitempty"`
+	InternalIdentifier        string   `json:"internalIdentifier,omitempty"`
+	VolumeDesignation         string   `json:"volumeDesignation,omitempty"`
+	StatementOfResponsibility string   `json:"statementOfResponsibility,omitempty"`
+	LinkedField               string   `json:"linkedField,omitempty"`
+	Title                     string   `json:"title,omitempty"`
+}
+
+type TitleInfo struct {
+	Abbreviated []string `json:"abbreviated,omitempty"`
+	Alternative []Title  `json:"alternative,omitempty"`
+	Main        []Title  `json:"main,omitempty"`
+	Translated  []Title  `json:"translated,omitempty"`
+	Uniform     []Title  `json:"uniform,omitempty"`
+}
+
+type Title struct {
+	Title       string   `json:"title,omitempty"`
+	SubTitle    string   `json:"subTitle,omitempty"`
+	PartName    []string `json:"partName,omitempty"`
+	PartNumber  []string `json:"partNumber,omitempty"`
+	LinkedField string   `json:"linkedField,omitempty"`
+}
+
 type Mapping001 struct {
-	Abstract        []string      `json:"abstract,omitempty"`
-	AccessCondition []NoteWithURL `json:"accessCondition,omitempty"`
-	Cartographics   Cartographics `json:"cartographics,omitempty"`
-	//Classification  map[string]Classification `json:"classification,omitempty"`
-	Date []DateRange `json:"date,omitempty"`
+	Abstract        []string       `json:"abstract,omitempty"`
+	AccessCondition []NoteWithURL  `json:"accessCondition,omitempty"`
+	Cartographics   Cartographics  `json:"cartographics,omitempty"`
+	Classification  Classification `json:"classification,omitempty"`
+	Date            []DateRange    `json:"date,omitempty"`
 	//	DateRange           []DateRange                `json:"daterange,omitempty"`
 	Extension           Extension                  `json:"extension,omitempty"`
 	Files               map[string]json.RawMessage `json:"files,omitempty"`
@@ -255,13 +395,13 @@ type Mapping001 struct {
 	Name                Name                       `json:"name,omitempty"`
 	Note                Note                       `json:"note,omitempty"`
 	OriginInfo          OriginInfo                 `json:"originInfo,omitempty"`
-	PhysicalDescription map[string]json.RawMessage `json:"physicalDescription,omitempty"`
+	PhysicalDescription PhysicalDescription        `json:"physicalDescription,omitempty"`
 	RecordIdentifier    []string                   `json:"recordIdentifier,omitempty"`
-	RelatedItem         map[string]json.RawMessage `json:"relatedItem,omitempty"`
+	RelatedItem         RelatedItem                `json:"relatedItem,omitempty"`
 	Subject             Subject                    `json:"subject,omitempty"`
 	TableOfContents     []string                   `json:"tableOfContents,omitempty"`
 	TargetAudience      []string                   `json:"targetAudience,omitempty"`
-	TitleInfo           map[string]json.RawMessage `json:"titleInfo,omitempty"`
+	TitleInfo           TitleInfo                  `json:"titleInfo,omitempty"`
 }
 
 type Facets struct {
