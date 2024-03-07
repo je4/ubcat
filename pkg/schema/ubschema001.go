@@ -1,7 +1,9 @@
 package schema
 
 import (
+	"emperror.dev/errors"
 	"encoding/json"
+	"regexp"
 	"time"
 )
 
@@ -196,8 +198,30 @@ type Name struct {
 	Personal   []map[string]Personal   `json:"personal,omitempty"`
 }
 
+type Date string
+
+var dateFormats = []string{
+	"2006",
+	"2006-01",
+	"2006-01-02",
+	"2006-01-02T15:04:05Z07:00",
+	"2006-01-02T15:04:05Z",
+	"2006-01-02T15:04:05",
+	"2006-01-02 15:04:05",
+}
+
+func (d Date) GetTime() (time.Time, error) {
+	for _, format := range dateFormats {
+		t, err := time.Parse(format, string(d))
+		if err == nil {
+			return t, nil
+		}
+	}
+	return time.Time{}, errors.New("cannot parse date " + string(d))
+}
+
 type Conference struct {
-	Date            string   `json:"date,omitempty"`
+	Date            Date     `json:"date,omitempty"`
 	Description     []string `json:"description,omitempty"`
 	EntityType      []string `json:"entityType,omitempty"`
 	Identifier      string   `json:"identifier,omitempty"`
@@ -235,21 +259,47 @@ type Family struct {
 	Variant         []string `json:"variant,omitempty"`
 }
 
+type PersonalDate struct {
+	Original string `json:"original,omitempty"`
+	Birth    Date   `json:"birth,omitempty"`
+	Death    Date   `json:"death,omitempty"`
+}
+
+func (p *PersonalDate) MarshalJSON() ([]byte, error) {
+	return json.Marshal(p.Original)
+}
+
+var personalDateRegexp = regexp.MustCompile(`^(.[^-]+)?-([^-]+)?$`)
+
+func (p *PersonalDate) UnmarshalJSON(b []byte) error {
+	var str string
+	if err := json.Unmarshal(b, &str); err != nil {
+		return errors.Wrap(err, "cannot unmarshal personal date")
+	}
+	p.Original = str
+	matches := personalDateRegexp.FindStringSubmatch(str)
+	if len(matches) == 3 {
+		p.Birth = Date(matches[1])
+		p.Death = Date(matches[2])
+	}
+	return nil
+}
+
 type Personal struct {
-	Date            string   `json:"date,omitempty"`
-	EntityType      []string `json:"entityType,omitempty"`
-	Gender          string   `json:"gender,omitempty"`
-	Identifier      string   `json:"identifier,omitempty"`
-	Level           string   `json:"level,omitempty"`
-	NamePart        string   `json:"namePart,omitempty"`
-	OtherIdentifier []string `json:"otherIdentifier,omitempty"`
-	PlaceOfActivity []string `json:"placeOfActivity,omitempty"`
-	PlaceOfBirth    []string `json:"placeOfBirth,omitempty"`
-	Profession      []string `json:"profession,omitempty"`
-	Related         []string `json:"related,omitempty"`
-	Role            []string `json:"role,omitempty"`
-	UseFor          []string `json:"json,omitempty"`
-	Variant         []string `json:"variant,omitempty"`
+	Date            *PersonalDate `json:"date,omitempty"`
+	EntityType      []string      `json:"entityType,omitempty"`
+	Gender          string        `json:"gender,omitempty"`
+	Identifier      string        `json:"identifier,omitempty"`
+	Level           string        `json:"level,omitempty"`
+	NamePart        string        `json:"namePart,omitempty"`
+	OtherIdentifier []string      `json:"otherIdentifier,omitempty"`
+	PlaceOfActivity []string      `json:"placeOfActivity,omitempty"`
+	PlaceOfBirth    []string      `json:"placeOfBirth,omitempty"`
+	Profession      []string      `json:"profession,omitempty"`
+	Related         []string      `json:"related,omitempty"`
+	Role            []string      `json:"role,omitempty"`
+	UseFor          []string      `json:"json,omitempty"`
+	Variant         []string      `json:"variant,omitempty"`
 }
 
 type Geographic struct {
