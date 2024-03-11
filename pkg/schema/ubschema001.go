@@ -205,42 +205,42 @@ func (d Date) GetTime() (time.Time, error) {
 }
 
 type Conference struct {
-	Date            *Date    `json:"date,omitempty"`
-	Description     []string `json:"description,omitempty"`
-	EntityType      []string `json:"entityType,omitempty"`
-	Identifier      string   `json:"identifier,omitempty"`
-	Level           string   `json:"level,omitempty"`
+	Date        *Date    `json:"date,omitempty"`
+	Description []string `json:"description,omitempty"`
+	// EntityType      []string `json:"entityType,omitempty"`
+	Identifier string `json:"identifier,omitempty"`
+	// Level           string   `json:"level,omitempty"`
 	NamePart        string   `json:"namePart,omitempty"`
 	OtherIdentifier []string `json:"otherIdentifier,omitempty"`
 	Role            []string `json:"role,omitempty"`
-	UseFor          []string `json:"json,omitempty"`
-	Variant         []string `json:"variant,omitempty"`
+	// UseFor          []string `json:"json,omitempty"`
+	Variant []string `json:"variant,omitempty"`
 }
 
 type Corporate struct {
-	Description     []string `json:"description,omitempty"`
-	EntityType      []string `json:"entityType,omitempty"`
-	Identifier      string   `json:"identifier,omitempty"`
-	Level           string   `json:"level,omitempty"`
+	Description []string `json:"description,omitempty"`
+	// EntityType      []string `json:"entityType,omitempty"`
+	Identifier string `json:"identifier,omitempty"`
+	// Level           string   `json:"level,omitempty"`
 	NamePart        string   `json:"namePart,omitempty"`
 	OtherIdentifier []string `json:"otherIdentifier,omitempty"`
 	PlaceOfBusiness []string `json:"placeOfBusiness,omitempty"`
 	Related         []string `json:"related,omitempty"`
 	Role            []string `json:"role,omitempty"`
-	UseFor          []string `json:"json,omitempty"`
-	Variant         []string `json:"variant,omitempty"`
+	// UseFor          []string `json:"json,omitempty"`
+	Variant []string `json:"variant,omitempty"`
 }
 
 type Family struct {
-	Date            string   `json:"date,omitempty"`
-	EntityType      []string `json:"entityType,omitempty"`
-	Identifier      string   `json:"identifier,omitempty"`
-	Level           string   `json:"level,omitempty"`
+	Date string `json:"date,omitempty"`
+	// EntityType      []string `json:"entityType,omitempty"`
+	Identifier string `json:"identifier,omitempty"`
+	// Level           string   `json:"level,omitempty"`
 	NamePart        string   `json:"namePart,omitempty"`
 	OtherIdentifier []string `json:"otherIdentifier,omitempty"`
 	Role            []string `json:"role,omitempty"`
-	UseFor          []string `json:"json,omitempty"`
-	Variant         []string `json:"variant,omitempty"`
+	// UseFor          []string `json:"json,omitempty"`
+	Variant []string `json:"variant,omitempty"`
 }
 
 type PersonalDate struct {
@@ -270,46 +270,46 @@ func (p *PersonalDate) UnmarshalJSON(b []byte) error {
 }
 
 type Personal struct {
-	Date            *PersonalDate `json:"date,omitempty"`
-	EntityType      []string      `json:"entityType,omitempty"`
-	Gender          string        `json:"gender,omitempty"`
-	Identifier      string        `json:"identifier,omitempty"`
-	Level           string        `json:"level,omitempty"`
-	NamePart        string        `json:"namePart,omitempty"`
-	OtherIdentifier []string      `json:"otherIdentifier,omitempty"`
-	PlaceOfActivity []string      `json:"placeOfActivity,omitempty"`
-	PlaceOfBirth    []string      `json:"placeOfBirth,omitempty"`
-	Profession      []string      `json:"profession,omitempty"`
-	Related         []string      `json:"related,omitempty"`
-	Role            []string      `json:"role,omitempty"`
-	UseFor          []string      `json:"json,omitempty"`
-	Variant         []string      `json:"variant,omitempty"`
+	Date *PersonalDate `json:"date,omitempty"`
+	// EntityType      []string      `json:"entityType,omitempty"`
+	Gender     string `json:"gender,omitempty"`
+	Identifier string `json:"identifier,omitempty"`
+	// Level           string        `json:"level,omitempty"`
+	NamePart        string   `json:"namePart,omitempty"`
+	OtherIdentifier []string `json:"otherIdentifier,omitempty"`
+	PlaceOfActivity []string `json:"placeOfActivity,omitempty"`
+	PlaceOfBirth    []string `json:"placeOfBirth,omitempty"`
+	Profession      []string `json:"profession,omitempty"`
+	Related         []string `json:"related,omitempty"`
+	Role            []string `json:"role,omitempty"`
+	// UseFor          []string      `json:"json,omitempty"`
+	Variant []string `json:"variant,omitempty"`
 }
 
 type Geographic struct {
-	Coordinates     []*Coordinates `json:"coordinates,omitempty"`
-	Description     []string       `json:"description,omitempty"`
-	EntityType      []string       `json:"entityType,omitempty"`
-	GeoNamesId      []string       `json:"geoNamesId,omitempty"`
-	Identifier      string         `json:"identifier,omitempty"`
-	Level           string         `json:"level,omitempty"`
-	NamePart        string         `json:"namePart,omitempty"`
-	OtherIdentifier []string       `json:"otherIdentifier,omitempty"`
-	Related         []string       `json:"related,omitempty"`
-	Role            []string       `json:"role,omitempty"`
-	UseFor          []string       `json:"json,omitempty"`
-	Variant         []string       `json:"variant,omitempty"`
+	Coordinates []*Coordinates `json:"coordinates,omitempty"`
+	Description []string       `json:"description,omitempty"`
+	// EntityType      []string       `json:"entityType,omitempty"`
+	GeoNamesId []string `json:"geoNamesId,omitempty"`
+	Identifier string   `json:"identifier,omitempty"`
+	// Level           string         `json:"level,omitempty"`
+	NamePart        string   `json:"namePart,omitempty"`
+	OtherIdentifier []string `json:"otherIdentifier,omitempty"`
+	Related         []string `json:"related,omitempty"`
+	Role            []string `json:"role,omitempty"`
+	// UseFor          []string       `json:"json,omitempty"`
+	Variant []string `json:"variant,omitempty"`
 }
 
 type Work struct {
-	EntityType      []string `json:"entityType,omitempty"`
-	Identifier      string   `json:"identifier,omitempty"`
-	Level           string   `json:"level,omitempty"`
+	// EntityType      []string `json:"entityType,omitempty"`
+	Identifier string `json:"identifier,omitempty"`
+	// Level           string   `json:"level,omitempty"`
 	Name            string   `json:"namePart,omitempty"`
 	Title           string   `json:"title,omitempty"`
 	OtherIdentifier []string `json:"otherIdentifier,omitempty"`
-	UseFor          []string `json:"json,omitempty"`
-	Variant         []string `json:"variant,omitempty"`
+	// UseFor          []string `json:"json,omitempty"`
+	Variant []string `json:"variant,omitempty"`
 }
 
 type Coordinates struct {
@@ -318,14 +318,14 @@ type Coordinates struct {
 }
 
 type Topic struct {
-	EntityType      []string `json:"entityType,omitempty"`
-	Identifier      string   `json:"identifier,omitempty"`
-	Label           string   `json:"label,omitempty"`
-	Level           string   `json:"level,omitempty"`
+	// EntityType      []string `json:"entityType,omitempty"`
+	Identifier string `json:"identifier,omitempty"`
+	Label      string `json:"label,omitempty"`
+	// Level           string   `json:"level,omitempty"`
 	Mapped          []string `json:"mapped,omitempty"`
 	OtherIdentifier []string `json:"otherIdentifier,omitempty"`
-	UseFor          []string `json:"json,omitempty"`
-	Variant         []string `json:"variant,omitempty"`
+	// UseFor          []string `json:"json,omitempty"`
+	Variant []string `json:"variant,omitempty"`
 }
 
 type PhysicalDescription struct {
