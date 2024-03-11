@@ -33,24 +33,10 @@ type Local struct {
 	All []string `json:"all,omitempty"`
 }
 
-type HoldingLocation struct {
-	Library    string `json:"library,omitempty"`
-	Location   string `json:"location,omitempty"`
-	CallNumber string `json:"callNumber,omitempty"`
-}
-
-type ItemLocation struct {
-	Library           string `json:"library,omitempty"`
-	Location          string `json:"location,omitempty"`
-	HoldingCallNumber string `json:"holdingCallNumber,omitempty"`
-}
-
 type Location struct {
-	//Holding    []HoldingLocation `json:"holding,omitempty"`
-	//Item       []ItemLocation    `json:"item,omitempty"`
 	Digital    []*Url        `json:"digital,omitempty"`
 	Electronic []*Electronic `json:"electronic,omitempty"`
-	//Holding    []Holding    `json:"holding,omitempty"`
+	Holding    []Holding     `json:"holding,omitempty"`
 }
 
 type Holding struct {
@@ -66,7 +52,6 @@ type Holding struct {
 type Item struct {
 	ItemCallNumber string `json:"itemCallNumber,omitempty"`
 	Note           string `json:"notel,omitempty"`
-	//NoteInternal string `json:"noteInternal,omitempty"`
 }
 
 type Electronic struct {
@@ -110,11 +95,10 @@ type PublicationNote struct {
 }
 
 type NoteWithURL struct {
-	Add     string `json:"add,omitempty"`
-	Licence string `json:"licence,omitempty"`
-	Main    string `json:"main,omitempty"`
-	Url     string `json:"url,omitempty"`
-	//Url     []string `json:"url,omitempty"`
+	Add     string   `json:"add,omitempty"`
+	Licence string   `json:"licence,omitempty"`
+	Main    string   `json:"main,omitempty"`
+	Url     []string `json:"url,omitempty"`
 }
 
 type Cartographics struct {
@@ -157,7 +141,7 @@ type Identifier struct {
 }
 
 type IsbnIsmn struct {
-	Id        []string `json:"identifier,omitempty"`
+	Id        string   `json:"identifier,omitempty"`
 	Qualifier []string `json:"qualifier,omitempty"`
 }
 
@@ -429,6 +413,27 @@ type Title struct {
 	LinkedField string   `json:"linkedField,omitempty"`
 }
 
+type Files struct {
+	Media     *Media                     `json:"media,omitempty"`
+	Structure map[string]json.RawMessage `json:"structure,omitempty"`
+}
+
+type Media struct {
+	Medias []*Medias `json:"medias,omitempty"`
+	Poster *Medias   `json:"poster,omitempty"`
+}
+
+type Medias struct {
+	Height   int64  `json:"height,omitempty"`
+	Licence  string `json:"licence,omitempty"`
+	Mimetype string `json:"mimetype,omitempty"`
+	Path     string `json:"path,omitempty"`
+	Pronom   string `json:"pronom,omitempty"`
+	Type     string `json:"type,omitempty"`
+	Uri      string `json:"uri,omitempty"`
+	Width    int64  `json:"width,omitempty"`
+}
+
 type Mapping001 struct {
 	Abstract        []string        `json:"abstract,omitempty"`
 	AccessCondition []*NoteWithURL  `json:"accessCondition,omitempty"`
@@ -436,22 +441,22 @@ type Mapping001 struct {
 	Classification  *Classification `json:"classification,omitempty"`
 	Date            []*DateRange    `json:"date,omitempty"`
 	//	DateRange           []DateRange                `json:"daterange,omitempty"`
-	Extension           *Extension                 `json:"extension,omitempty"`
-	Files               map[string]json.RawMessage `json:"files,omitempty"`
-	Fulltext            []string                   `json:"fulltext,omitempty"`
-	Identifier          *Identifier                `json:"identifier,omitempty"`
-	Language            []string                   `json:"language,omitempty"`
-	Location            *Location                  `json:"location,omitempty"`
-	Name                *Name                      `json:"name,omitempty"`
-	Note                *Note                      `json:"note,omitempty"`
-	OriginInfo          *OriginInfo                `json:"originInfo,omitempty"`
-	PhysicalDescription *PhysicalDescription       `json:"physicalDescription,omitempty"`
-	RecordIdentifier    []string                   `json:"recordIdentifier,omitempty"`
-	RelatedItem         *RelatedItem               `json:"relatedItem,omitempty"`
-	Subject             *Subject                   `json:"subject,omitempty"`
-	TableOfContents     []string                   `json:"tableOfContents,omitempty"`
-	TargetAudience      []string                   `json:"targetAudience,omitempty"`
-	TitleInfo           *TitleInfo                 `json:"titleInfo,omitempty"`
+	Extension           *Extension           `json:"extension,omitempty"`
+	Files               []*Files             `json:"files,omitempty"`
+	Fulltext            []string             `json:"fulltext,omitempty"`
+	Identifier          *Identifier          `json:"identifier,omitempty"`
+	Language            []string             `json:"language,omitempty"`
+	Location            *Location            `json:"location,omitempty"`
+	Name                *Name                `json:"name,omitempty"`
+	Note                *Note                `json:"note,omitempty"`
+	OriginInfo          *OriginInfo          `json:"originInfo,omitempty"`
+	PhysicalDescription *PhysicalDescription `json:"physicalDescription,omitempty"`
+	RecordIdentifier    []string             `json:"recordIdentifier,omitempty"`
+	RelatedItem         *RelatedItem         `json:"relatedItem,omitempty"`
+	Subject             *Subject             `json:"subject,omitempty"`
+	TableOfContents     []string             `json:"tableOfContents,omitempty"`
+	TargetAudience      []string             `json:"targetAudience,omitempty"`
+	TitleInfo           *TitleInfo           `json:"titleInfo,omitempty"`
 }
 
 type Facets struct {
