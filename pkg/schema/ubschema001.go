@@ -477,7 +477,7 @@ type UBSchema001 struct {
 	Controlfield map[string]string `json:"controlfield,omitempty"`
 	// Datafield    []DataField         `json:"datafield,omitempty"`
 	// FieldLists map[string][]string `json:"fieldlists,omitempty"`
-	Mapping        Mapping001    `json:"mapping,omitempty"`
+	Mapping        *Mapping001   `json:"mapping,omitempty"`
 	Facets         []Facets      `json:"facets,omitempty"`
 	Sets           []string      `json:"sets,omitempty"`
 	Flags          []string      `json:"flags,omitempty"`
