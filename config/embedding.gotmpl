@@ -2,6 +2,11 @@
 {{- $mapping := $data.Mapping }}
 
 Title: {{ $data.GetTitle }}
+
+{{if $data.GetPublicationPlace}}Place of publication: {{$data.GetPublicationPlace}}{{ end }}
+{{if $data.GetPublisher}}Publisher: {{$data.GetPublisher}}{{ end }}
+{{if $data.GetPublicationDate}}Publication date: {{$data.GetPublicationDate}}{{ end }}
+
 ---
 {{- range $type, $persons := $data.GetPersons }}
         {{- range $person := $persons }}

@@ -189,6 +189,54 @@ func (u *UBSchema001) GetTitle() string {
 	return result
 }
 
+func (u *UBSchema001) GetPublicationPlace() string {
+	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Publication == nil {
+		return ""
+	}
+	result := ""
+	for _, f := range u.Mapping.OriginInfo.Publication {
+		if len(result) > 0 {
+			result += " / "
+		}
+		if f.Place != nil {
+			result = strings.Join(f.Place, ", ")
+		}
+	}
+	return result
+}
+
+func (u *UBSchema001) GetPublisher() string {
+	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Publication == nil {
+		return ""
+	}
+	result := ""
+	for _, f := range u.Mapping.OriginInfo.Publication {
+		if len(result) > 0 {
+			result += " / "
+		}
+		if f.Publisher != nil {
+			result = strings.Join(f.Publisher, ", ")
+		}
+	}
+	return result
+}
+
+func (u *UBSchema001) GetPublicationDate() string {
+	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Publication == nil {
+		return ""
+	}
+	result := ""
+	for _, f := range u.Mapping.OriginInfo.Publication {
+		if len(result) > 0 {
+			result += " / "
+		}
+		if f.Date != "" {
+			result = f.Date
+		}
+	}
+	return result
+}
+
 func (u *UBSchema001) GetAIJSON() string {
 	// todo: create AI friendly JSON
 	// todo: remove files, location.holding.item
