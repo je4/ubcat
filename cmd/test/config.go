@@ -32,5 +32,6 @@ type TestConfig struct {
 	LogFile       string                     `toml:"logfile"`
 	LogLevel      string                     `toml:"loglevel"`
 	Template      string                     `toml:"template"`
+	Index         string                     `toml:"index"`
 	ElasticSearch config.ElasticSearchConfig `toml:"elasticsearch"`
 }

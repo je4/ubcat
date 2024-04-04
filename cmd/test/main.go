@@ -112,7 +112,7 @@ func main() {
 		logger.Fatal().Err(err)
 	}
 
-	indexClient := index.NewClient("alma-full", elastic)
+	indexClient := index.NewClient(conf.Index, elastic)
 
 	tpl, err := template.New(filepath.Base(conf.Template)).ParseFiles(conf.Template)
 	if err != nil {
