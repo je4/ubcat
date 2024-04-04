@@ -5,7 +5,24 @@ Title: {{ $data.GetTitle }}
 ---
 {{- range $type, $persons := $data.GetPersons }}
         {{- range $person := $persons }}
-            {{ $type }}: {{ $person.Name }}{{if $person.Date }} ({{ $person.Date }}){{ end }}
+            {{ $type }}: {{ $person.Name }}{{if $person.Date }} ({{ $person.Date }}){{ end }}{{if $person.AlternateNames }} ; Alternate names: {{ $person.AlternateNames }}{{ end }}
         {{- end }}
 {{- end }}
 
+{{- range $type, $families := $data.GetFamilies }}
+    {{- range $family := $families }}
+        {{ $type }}: {{ $family.Name }}{{if $family.Date }} ({{ $family.Date }}){{ end }}{{if $family.AlternateNames }} ; Alternate names: {{ $family.AlternateNames }}{{ end }}
+    {{- end }}
+{{- end }}
+
+{{- range $type, $corporates := $data.GetCorporates }}
+    {{- range $corporate := $corporates }}
+        {{ $type }}: {{ $corporate.Name }}{{if $corporate.Description }} ({{ $corporate.Description }}){{ end }}{{if $corporate.AlternateNames }} ; Alternate names: {{ $corporate.AlternateNames }}{{ end }}
+    {{- end }}
+{{- end }}
+
+{{- range $type, $conferences := $data.GetConferences }}
+    {{- range $conference := $conferences }}
+        {{ $type }}: {{ $conference.Name }}{{if $conference.Date }}, {{ $conference.Date }}{{ end }}{{if $conference.Description }} ({{ $conference.Description }}){{ end }}{{if $conference.AlternateNames }} ; Alternate names: {{ $conference.AlternateNames }}{{ end }}
+    {{- end }}
+{{- end }}

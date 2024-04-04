@@ -205,7 +205,7 @@ func (d Date) GetTime() (time.Time, error) {
 }
 
 type Conference struct {
-	Date        *Date    `json:"date,omitempty"`
+	Date        string   `json:"date,omitempty"`
 	Description []string `json:"description,omitempty"`
 	// EntityType      []string `json:"entityType,omitempty"`
 	Identifier string `json:"identifier,omitempty"`
