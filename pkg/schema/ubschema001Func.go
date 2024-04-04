@@ -28,10 +28,13 @@ func (u *UBSchema001) GetPersons() map[string][]ResultPerson {
 			if !slices.ContainsFunc(result[role], func(person ResultPerson) bool {
 				return person.Name == p.NamePart
 			}) {
-				result[role] = append(result[role], ResultPerson{
+				newPerson := ResultPerson{
 					Name: p.NamePart,
-					Date: p.Date.Original,
-				})
+				}
+				if p.Date != nil {
+					newPerson.Date = p.Date.Original
+				}
+				result[role] = append(result[role], newPerson)
 			}
 		}
 	}

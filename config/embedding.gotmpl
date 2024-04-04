@@ -3,11 +3,9 @@
 
 Title: {{ $data.GetTitle }}
 ---
-{{- range $persons := $data.GetPersons }}
-    {{- range $type, $persons := $persons }}
+{{- range $type, $persons := $data.GetPersons }}
         {{- range $person := $persons }}
             {{ $type }}: {{ $person.Name }}{{if $person.Date }} ({{ $person.Date }}){{ end }}
         {{- end }}
-    {{- end }}
 {{- end }}
 
