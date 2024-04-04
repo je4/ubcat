@@ -55,8 +55,9 @@ func (u *UBSchema001) GetTitle() string {
 	return result
 }
 
-func (u *UBSchema001) GetJSON() string {
+func (u *UBSchema001) GetAIJSON() string {
 	// todo: create AI friendly JSON
+	// todo: remove files, location.holding.item
 	jsonBytes, err := json.MarshalIndent(u.Mapping, "", "  ")
 	if err != nil {
 		return ""
