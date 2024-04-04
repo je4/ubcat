@@ -1,0 +1,13 @@
+{{- $data := . }}
+{{- $mapping := $data.Mapping }}
+
+Title: {{ $data.GetTitle }}
+---
+{{- range $persons := $data.GetPersons }}
+    {{- range $type, $persons := $persons }}
+        {{- range $person := $persons }}
+            {{ $type }}: {{ $person.Name }}{{if $person.Date }} ({{ $person.Date }}){{ end }}
+        {{- end }}
+    {{- end }}
+{{- end }}
+

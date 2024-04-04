@@ -18,10 +18,12 @@ import (
 	"net/http/httputil"
 	"os"
 	"path/filepath"
+	"text/template"
 	"time"
 )
 
 var configfile = flag.String("config", "", "location of toml configuration file")
+var identifier = flag.String("id", "", "identifier of the document")
 
 type LoggingHttpElasticClient struct {
 	c      http.Client
@@ -111,10 +113,23 @@ func main() {
 	}
 
 	indexClient := index.NewClient("alma-full", elastic)
-	var identifiers = []string{"oai:alma.41SLSP_UBS:9954051500105504"}
+
+	tpl, err := template.New(filepath.Base(conf.Template)).ParseFiles(conf.Template)
+	if err != nil {
+		logger.Fatal().Err(err).Msgf("cannot parse template %s", conf.Template)
+	}
+
+	var identifiers = []string{*identifier}
 	docs, err := indexClient.GetDocuments(context.Background(), identifiers...)
 	if err != nil {
 		logger.Fatal().Err(err).Msgf("cannot get documents %v", identifiers)
 	}
-	logger.Info().Msgf("docs: %v", docs)
+
+	for id, doc := range docs {
+		logger.Info().Msgf("doc[%s]", id)
+		var buf = io.Writer(os.Stdout)
+		if err := tpl.Execute(buf, doc); err != nil {
+			logger.Fatal().Err(err).Msg("cannot execute template")
+		}
+	}
 }

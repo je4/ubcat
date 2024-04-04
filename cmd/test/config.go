@@ -31,5 +31,6 @@ func LoadTestConfig(fSys fs.FS, fp string, conf *TestConfig) error {
 type TestConfig struct {
 	LogFile       string                     `toml:"logfile"`
 	LogLevel      string                     `toml:"loglevel"`
+	Template      string                     `toml:"template"`
 	ElasticSearch config.ElasticSearchConfig `toml:"elasticsearch"`
 }
