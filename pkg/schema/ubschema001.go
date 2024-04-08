@@ -26,7 +26,7 @@ type Ddc struct {
 	All  []string `json:"all,omitempty"`
 	Ed23 []string `json:"ed23,omitempty"`
 	//General []string
-	Sdnb []string `json:"sdnb,omitempty"`
+	Sdnb []string `json:"sdnb,omitempty"` // wieso doppelt???
 }
 
 type Local struct {
