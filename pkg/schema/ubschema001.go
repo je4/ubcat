@@ -477,11 +477,12 @@ type UBSchema001 struct {
 	Controlfield map[string]string `json:"controlfield,omitempty"`
 	// Datafield    []DataField         `json:"datafield,omitempty"`
 	// FieldLists map[string][]string `json:"fieldlists,omitempty"`
-	Mapping        *Mapping001   `json:"mapping,omitempty"`
-	Facets         []Facets      `json:"facets,omitempty"`
-	Sets           []string      `json:"sets,omitempty"`
-	Flags          []string      `json:"flags,omitempty"`
-	ACL            ACL           `json:"acl,omitempty"`
-	EmbeddingProse [1536]float32 `json:"embedding_prose,omitempty"`
-	EmbeddingMarc  [1536]float32 `json:"embedding_marc,omitempty"`
+	Mapping        *Mapping001 `json:"mapping,omitempty"`
+	Facets         []Facets    `json:"facets,omitempty"`
+	Sets           []string    `json:"sets,omitempty"`
+	Flags          []string    `json:"flags,omitempty"`
+	ACL            ACL         `json:"acl,omitempty"`
+	EmbeddingProse []float32   `json:"embedding_prose,omitempty"`
+	EmbeddingMarc  []float32   `json:"embedding_marc,omitempty"`
+	EmbeddingJson  []float32   `json:"embedding_json,omitempty"`
 }
