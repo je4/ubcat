@@ -30,6 +30,8 @@ Identifier: {{ $data.GetVideoRecordingIdentifier }}
 
 {{/* Available at: Bib, CallNo und URL */}}
 
+Resource type: {{$data.GetResourceType}}
+
 
 ---
 {{- range $type, $persons := $data.GetPersons }}

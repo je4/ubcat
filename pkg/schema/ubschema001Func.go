@@ -556,6 +556,74 @@ func (u *UBSchema001) GetSubjectTitles() []ResultTitle {
 	return result
 }
 
+func (u *UBSchema001) GetResourceType() string {
+	if u.Ldr == nil {
+		return ""
+	}
+	recordType, ok := u.Ldr["leader_06_typeOfRecord"]
+	if !ok {
+		return ""
+	}
+	switch recordType {
+	case "a":
+		bibStatus, ok := u.Ldr["leader_07_bibliographicStatus"]
+		if !ok {
+			return "Language material"
+		}
+		switch bibStatus {
+		case "m":
+			return "Book, Monograph"
+		case "s":
+			return "Journal, Serial"
+		case "c":
+			return "Collection of documents"
+		case "a":
+			return "Article"
+		default:
+			return "Book, Monograph"
+		}
+	case "c":
+		return "Sheet music"
+	case "d":
+		return "Manuscript sheet music"
+	case "e":
+		return "Map"
+	case "f":
+		return "Manuscript map"
+	case "g":
+		return "Film"
+	case "i":
+		return "Text recording"
+	case "j":
+		return "Music recording"
+	case "k":
+		return "Image"
+	case "m":
+		return "Computer file"
+	case "o":
+		return "Kit"
+	case "p":
+		return "Archive material"
+	case "r":
+		return "Object"
+	case "t":
+		bibStatus, ok := u.Ldr["leader_07_bibliographicStatus"]
+		if !ok {
+			return "Language material"
+		}
+		switch bibStatus {
+		case "m":
+			return "Manuscript Book, Monograph"
+		case "s":
+			return "Manuscript Journal, Serial"
+		default:
+			return "Manuscript"
+		}
+	default:
+		return "Unknown"
+	}
+}
+
 func (u *UBSchema001) GetAIJSON() string {
 	// todo: create AI friendly JSON
 	// todo: remove files, location.holding.item
