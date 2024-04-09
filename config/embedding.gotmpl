@@ -5,15 +5,22 @@ Title: {{ $data.GetMainTitle }}
 {{if $data.GetAlternateTitle}}Title: {{$data.GetAlternateTitle}}{{ end }}
 {{if $data.GetTranslatedTitle}}Title: {{$data.GetTranslatedTitle}}{{ end }}
 {{if $data.GetUniformTitle}}Title: {{$data.GetUniformTitle}}{{ end }}
-{{/*
-Title: {{ $data.GetAbbrevTitle }}
-*/}}
+{{if $data.GetAbbreviatedTitle}}Title: {{ $data.GetAbbreviatedTitle }}{{ end }}
 
 {{if $data.GetAbstract}}Abstract: {{$data.GetAbstract}}{{ end }}
 
 {{if $data.GetPublicationPlace}}Place of publication: {{$data.GetPublicationPlace}}{{ end }}
-{{if $data.GetPublisher}}Publisher: {{$data.GetPublisher}}{{ end }}
+{{if $data.GetPublicationPublisher}}Publisher: {{$data.GetPublicationPublisher}}{{ end }}
 {{if $data.GetPublicationDate}}Publication date: {{$data.GetPublicationDate}}{{ end }}
+{{if $data.GetManufacturePlace}}Place of manufacture: {{$data.GetManufacturePlace}}{{ end }}
+{{if $data.GetManufacturePublisher}}Manufacturer: {{$data.GetManufacturePublisher}}{{ end }}
+{{if $data.GetManufactureDate}}Manufacture date: {{$data.GetManufactureDate}}{{ end }}
+{{if $data.GetDistributionPlace}}Place of distribution: {{$data.GetDistributionPlace}}{{ end }}
+{{if $data.GetDistributionPublisher}}Distributor: {{$data.GetDistributionPublisher}}{{ end }}
+{{if $data.GetDistributionDate}}Distribution date: {{$data.GetDistributionDate}}{{ end }}
+{{if $data.GetProductionPlace}}Place of production: {{$data.GetProductionPlace}}{{ end }}
+{{if $data.GetProductionPublisher}}Producer: {{$data.GetProductionPublisher}}{{ end }}
+{{if $data.GetProductionDate}}Production date: {{$data.GetProductionDate}}{{ end }}
 
 {{/*
 Identifier: {{ $data.GetDoi }}

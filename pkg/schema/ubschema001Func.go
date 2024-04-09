@@ -193,7 +193,7 @@ func (u *UBSchema001) getTitle(titles []*Title) string {
 		if len(result) > 0 {
 			result += " / "
 		}
-		result += strings.ReplaceAll(strings.ReplaceAll(ti.Title, "<", ""), ">", "")
+		result += strings.TrimSuffix(strings.ReplaceAll(strings.ReplaceAll(ti.Title, "<", ""), ">", ""), " :")
 		if ti.SubTitle != "" {
 			result += " : " + ti.SubTitle
 		}
@@ -235,34 +235,116 @@ func (u *UBSchema001) GetUniformTitle() string {
 	return u.getTitle(u.Mapping.TitleInfo.Uniform)
 }
 
-func (u *UBSchema001) GetPublicationPlace() string {
-	// todo: make usable for all OriginInfo
-	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Publication == nil {
+func (u *UBSchema001) GetAbbreviatedTitle() string {
+	if u.Mapping == nil || u.Mapping.TitleInfo == nil || u.Mapping.TitleInfo.Abbreviated == nil {
 		return ""
 	}
 	result := ""
-	for _, f := range u.Mapping.OriginInfo.Publication {
+	if u.Mapping.TitleInfo.Abbreviated != nil {
+		result += strings.Join(u.Mapping.TitleInfo.Abbreviated, " / ")
+	}
+	return result
+}
+
+func (u *UBSchema001) getOriginPlace(publicationNotes []*PublicationNote) string {
+	if publicationNotes == nil {
+		return ""
+	}
+	result := ""
+	for _, pn := range publicationNotes {
 		if len(result) > 0 {
 			result += " / "
 		}
-		if f.Place != nil {
-			result = strings.Join(f.Place, ", ")
+		if pn.Place != nil {
+			result = strings.Join(pn.Place, ", ")
 		}
 	}
 	return result
 }
 
-func (u *UBSchema001) GetPublisher() string {
+func (u *UBSchema001) GetPublicationPlace() string {
 	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Publication == nil {
 		return ""
 	}
+	return u.getOriginPlace(u.Mapping.OriginInfo.Publication)
+}
+
+func (u *UBSchema001) GetDistributionPlace() string {
+	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Distribution == nil {
+		return ""
+	}
+	return u.getOriginPlace(u.Mapping.OriginInfo.Distribution)
+}
+
+func (u *UBSchema001) GetManufacturePlace() string {
+	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Manufacture == nil {
+		return ""
+	}
+	return u.getOriginPlace(u.Mapping.OriginInfo.Manufacture)
+}
+
+func (u *UBSchema001) GetProductionPlace() string {
+	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Production == nil {
+		return ""
+	}
+	return u.getOriginPlace(u.Mapping.OriginInfo.Production)
+}
+
+func (u *UBSchema001) getOriginPublisher(publicationNotes []*PublicationNote) string {
+	if publicationNotes == nil {
+		return ""
+	}
 	result := ""
-	for _, f := range u.Mapping.OriginInfo.Publication {
+	for _, pn := range publicationNotes {
 		if len(result) > 0 {
 			result += " / "
 		}
-		if f.Publisher != nil {
-			result = strings.Join(f.Publisher, ", ")
+		if pn.Publisher != nil {
+			result = strings.Join(pn.Publisher, ", ")
+		}
+	}
+	return result
+}
+
+func (u *UBSchema001) GetPublicationPublisher() string {
+	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Publication == nil {
+		return ""
+	}
+	return u.getOriginPublisher(u.Mapping.OriginInfo.Publication)
+}
+
+func (u *UBSchema001) GetDistributionPublisher() string {
+	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Distribution == nil {
+		return ""
+	}
+	return u.getOriginPublisher(u.Mapping.OriginInfo.Distribution)
+}
+
+func (u *UBSchema001) GetManufacturePublisher() string {
+	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Manufacture == nil {
+		return ""
+	}
+	return u.getOriginPublisher(u.Mapping.OriginInfo.Manufacture)
+}
+
+func (u *UBSchema001) GetProductionPublisher() string {
+	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Production == nil {
+		return ""
+	}
+	return u.getOriginPublisher(u.Mapping.OriginInfo.Production)
+}
+
+func (u *UBSchema001) getOriginDate(publicationNotes []*PublicationNote) string {
+	if publicationNotes == nil {
+		return ""
+	}
+	result := ""
+	for _, pn := range publicationNotes {
+		if len(result) > 0 {
+			result += " / "
+		}
+		if pn.Date != "" {
+			result = pn.Date
 		}
 	}
 	return result
@@ -272,16 +354,28 @@ func (u *UBSchema001) GetPublicationDate() string {
 	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Publication == nil {
 		return ""
 	}
-	result := ""
-	for _, f := range u.Mapping.OriginInfo.Publication {
-		if len(result) > 0 {
-			result += " / "
-		}
-		if f.Date != "" {
-			result = f.Date
-		}
+	return u.getOriginDate(u.Mapping.OriginInfo.Publication)
+}
+
+func (u *UBSchema001) GetDistributionDate() string {
+	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Distribution == nil {
+		return ""
 	}
-	return result
+	return u.getOriginDate(u.Mapping.OriginInfo.Distribution)
+}
+
+func (u *UBSchema001) GetManufactureDate() string {
+	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Manufacture == nil {
+		return ""
+	}
+	return u.getOriginDate(u.Mapping.OriginInfo.Manufacture)
+}
+
+func (u *UBSchema001) GetProductionDate() string {
+	if u.Mapping == nil || u.Mapping.OriginInfo == nil || u.Mapping.OriginInfo.Production == nil {
+		return ""
+	}
+	return u.getOriginDate(u.Mapping.OriginInfo.Production)
 }
 
 func (u *UBSchema001) GetAbstract() string {
@@ -310,7 +404,7 @@ func (u *UBSchema001) GetDdc() string {
 }
 
 func (u *UBSchema001) GetRvk() string {
-	if u.Mapping == nil || u.Mapping.Classification.Rvk == nil {
+	if u.Mapping == nil || u.Mapping.Classification == nil || u.Mapping.Classification.Rvk == nil {
 		return ""
 	}
 	result := strings.Join(u.Mapping.Classification.Rvk, " ; ")
@@ -318,7 +412,7 @@ func (u *UBSchema001) GetRvk() string {
 }
 
 func (u *UBSchema001) GetUdc() string {
-	if u.Mapping == nil || u.Mapping.Classification.Udc == nil {
+	if u.Mapping == nil || u.Mapping.Classification == nil || u.Mapping.Classification.Udc == nil {
 		return ""
 	}
 	result := strings.Join(u.Mapping.Classification.Udc, " ; ")
