@@ -7,8 +7,8 @@ func (u *UBSchema) GetPersons() map[string][]ResultPerson {
 	return (*UBSchema001)(u).GetPersons()
 }
 
-func (u *UBSchema) GetTitle() string {
-	return (*UBSchema001)(u).GetTitle()
+func (u *UBSchema) getTitle() string {
+	return (*UBSchema001)(u).getTitle()
 }
 
 */

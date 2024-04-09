@@ -183,7 +183,7 @@ func (u *UBSchema001) GetConferences() map[string][]ResultConference {
 	return result
 }
 
-func (u *UBSchema001) GetTitle(titles []*Title) string {
+func (u *UBSchema001) getTitle(titles []*Title) string {
 	if titles == nil {
 		return ""
 	}
@@ -211,28 +211,28 @@ func (u *UBSchema001) GetMainTitle() string {
 	if u.Mapping == nil || u.Mapping.TitleInfo == nil || u.Mapping.TitleInfo.Main == nil {
 		return ""
 	}
-	return u.GetTitle(u.Mapping.TitleInfo.Main)
+	return u.getTitle(u.Mapping.TitleInfo.Main)
 }
 
 func (u *UBSchema001) GetAlternateTitle() string {
 	if u.Mapping == nil || u.Mapping.TitleInfo == nil || u.Mapping.TitleInfo.Alternative == nil {
 		return ""
 	}
-	return u.GetTitle(u.Mapping.TitleInfo.Alternative)
+	return u.getTitle(u.Mapping.TitleInfo.Alternative)
 }
 
 func (u *UBSchema001) GetTranslatedTitle() string {
 	if u.Mapping == nil || u.Mapping.TitleInfo == nil || u.Mapping.TitleInfo.Translated == nil {
 		return ""
 	}
-	return u.GetTitle(u.Mapping.TitleInfo.Translated)
+	return u.getTitle(u.Mapping.TitleInfo.Translated)
 }
 
 func (u *UBSchema001) GetUniformTitle() string {
 	if u.Mapping == nil || u.Mapping.TitleInfo == nil || u.Mapping.TitleInfo.Uniform == nil {
 		return ""
 	}
-	return u.GetTitle(u.Mapping.TitleInfo.Uniform)
+	return u.getTitle(u.Mapping.TitleInfo.Uniform)
 }
 
 func (u *UBSchema001) GetPublicationPlace() string {
@@ -310,7 +310,6 @@ func (u *UBSchema001) GetDdc() string {
 }
 
 func (u *UBSchema001) GetRvk() string {
-	// todo: geht das auch einfacher? eine Funktion für simple string concat...
 	if u.Mapping == nil || u.Mapping.Classification.Rvk == nil {
 		return ""
 	}
