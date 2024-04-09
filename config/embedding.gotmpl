@@ -83,7 +83,7 @@ Resource type: {{$data.GetResourceType}}
 {{- end }}
 
 {{- range $topic := $data.GetSubjectTopics }}
-    About topic: {{ $topic.Name }}{{if ne $topic.AlternateNames "" }} ; Alternate names: {{ $topic.AlternateNames "" }}{{ end }}
+    About topic: {{ $topic.Name }}{{if ne $topic.AlternateNames "" }} ; Alternate names: {{ $topic.AlternateNames }}{{ end }}
 {{- end }}
 
 {{- range $place := $data.GetSubjectGeographics }}
