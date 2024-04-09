@@ -126,6 +126,7 @@ func (c *Client) Search(ctx context.Context, querystring string, vectorMarc, vec
 		if err := json.Unmarshal(hit.Source_, s); err != nil {
 			return nil, errors.Wrapf(err, "cannot unmarshal document %v", hit.Source_)
 		}
+		s.Score_ = float64(hit.Score_)
 		result[hit.Id_] = s
 	}
 	return result, nil

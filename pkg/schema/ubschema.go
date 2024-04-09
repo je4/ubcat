@@ -1,6 +1,9 @@
 package schema
 
-type UBSchema struct{ UBSchema001 }
+type UBSchema struct {
+	UBSchema001
+	Score_ float64 `json:"score"`
+}
 
 /*
 func (u *UBSchema) GetPersons() map[string][]ResultPerson {
