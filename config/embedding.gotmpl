@@ -22,17 +22,19 @@ Title: {{ $data.GetMainTitle }}
 {{- if ne $data.GetProductionPublisher ""}}Producer: {{$data.GetProductionPublisher}}{{ end }}
 {{- if ne $data.GetProductionDate ""}}Production date: {{$data.GetProductionDate}}{{ end }}
 
-{{/*
-Identifier: {{ $data.GetDoi }}
-Identifier: {{ $data.GetIsbn }}, {{ $data.GetIsbnInvalid}}
-Identifier: {{ $data.GetIssn }}, {{ $data.GetIssnInvalid }}, {{ $data.GetIssnl }}
-Identifier: {{ $data.GetIssueNumber }}
-Identifier: {{ $data.GetMatrixNumber }}
-Identifier: {{ $data.GetMusicPlate }}
-Identifier: {{ $data.GetMusicPublisher }}
-Identifier: {{ $data.GetUrn }}
-Identifier: {{ $data.GetVideoRecordingIdentifier }}
-*/}}
+{{- if ne $data.GetDoi ""}}Identifier DOI: {{ $data.GetDoi }}{{ end }}
+{{- if ne $data.GetIsbn ""}}Identifier ISBN: {{ $data.GetIsbn }}{{ end }}
+{{- if ne $data.GetIsbnInvalid ""}}Identifier ISBN: {{ $data.GetIsbnInvalid }}{{ end }}
+{{- if ne $data.GetIssn ""}}Identifier ISSN: {{ $data.GetIssn }}{{ end }}
+{{- if ne $data.GetIssnInvalid ""}}Identifier ISSN: {{ $data.GetIssnInvalid }}{{ end }}
+{{- if ne $data.GetIssnl ""}}Identifier ISSN-L: {{ $data.GetIssnl }}{{ end }}
+{{- if ne $data.GetIsmn ""}}Identifier ISMN: {{ $data.GetIsmn }}{{ end }}
+{{- if ne $data.GetIssueNumber ""}}Identifier Issue Number: {{ $data.GetIssueNumber }}{{ end }}
+{{- if ne $data.GetMatrixNumber ""}}Identifier Matrix Number: {{ $data.GetMatrixNumber }}{{ end }}
+{{- if ne $data.GetMusicPlate ""}}Identifier Plate Number: {{ $data.GetMusicPlate }}{{ end }}
+{{- if ne $data.GetMusicPublisher ""}}Identifier Music Publisher Number: {{ $data.GetMusicPublisher }}{{ end }}
+{{- if ne $data.GetUrn ""}}Identifier URN: {{ $data.GetUrn }}{{ end }}
+{{- if ne $data.GetVideoRecordingIdentifier ""}}Identifier Video Recording Publisher Number: {{ $data.GetVideoRecordingIdentifier }}{{ end }}
 
 
 {{/* Available at: Bib, CallNo und URL */}}

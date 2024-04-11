@@ -650,6 +650,159 @@ func (u *UBSchema001) GetSubjectTitles() []ResultTitle {
 	return result
 }
 
+func (u *UBSchema001) GetDoi() string {
+	if u.Mapping == nil || u.Mapping.Identifier == nil || u.Mapping.Identifier.Doi == nil {
+		return ""
+	}
+	result := ""
+	if u.Mapping.Identifier.Doi != nil {
+		result += strings.Join(u.Mapping.Identifier.Doi, " / ")
+	}
+	return result
+}
+
+func (u *UBSchema001) GetIsbnInvalid() string {
+	if u.Mapping == nil || u.Mapping.Identifier == nil || u.Mapping.Identifier.IsbnInvalid == nil {
+		return ""
+	}
+	result := ""
+	if u.Mapping.Identifier.IsbnInvalid != nil {
+		result += strings.Join(u.Mapping.Identifier.IsbnInvalid, " / ")
+	}
+	return result
+}
+
+func (u *UBSchema001) GetIssn() string {
+	if u.Mapping == nil || u.Mapping.Identifier == nil || u.Mapping.Identifier.Issn == nil {
+		return ""
+	}
+	result := ""
+	if u.Mapping.Identifier.Issn != nil {
+		result += strings.Join(u.Mapping.Identifier.Issn, " / ")
+	}
+	return result
+}
+
+func (u *UBSchema001) GetIssnInvalid() string {
+	if u.Mapping == nil || u.Mapping.Identifier == nil || u.Mapping.Identifier.IssnInvalid == nil {
+		return ""
+	}
+	result := ""
+	if u.Mapping.Identifier.IssnInvalid != nil {
+		result += strings.Join(u.Mapping.Identifier.IssnInvalid, " / ")
+	}
+	return result
+}
+
+func (u *UBSchema001) GetIssnl() string {
+	if u.Mapping == nil || u.Mapping.Identifier == nil || u.Mapping.Identifier.Issnl == nil {
+		return ""
+	}
+	result := ""
+	if u.Mapping.Identifier.Issnl != nil {
+		result += strings.Join(u.Mapping.Identifier.Issnl, " / ")
+	}
+	return result
+}
+
+func (u *UBSchema001) GetIssueNumber() string {
+	if u.Mapping == nil || u.Mapping.Identifier == nil || u.Mapping.Identifier.IssueNumber == nil {
+		return ""
+	}
+	result := ""
+	if u.Mapping.Identifier.IssueNumber != nil {
+		result += strings.Join(u.Mapping.Identifier.IssueNumber, " / ")
+	}
+	return result
+}
+
+func (u *UBSchema001) GetMatrixNumber() string {
+	if u.Mapping == nil || u.Mapping.Identifier == nil || u.Mapping.Identifier.MatrixNumber == nil {
+		return ""
+	}
+	result := ""
+	if u.Mapping.Identifier.MatrixNumber != nil {
+		result += strings.Join(u.Mapping.Identifier.MatrixNumber, " / ")
+	}
+	return result
+}
+
+func (u *UBSchema001) GetMusicPlate() string {
+	if u.Mapping == nil || u.Mapping.Identifier == nil || u.Mapping.Identifier.MusicPlate == nil {
+		return ""
+	}
+	result := ""
+	if u.Mapping.Identifier.MusicPlate != nil {
+		result += strings.Join(u.Mapping.Identifier.MusicPlate, " / ")
+	}
+	return result
+}
+
+func (u *UBSchema001) GetMusicPublisher() string {
+	if u.Mapping == nil || u.Mapping.Identifier == nil || u.Mapping.Identifier.MusicPublisher == nil {
+		return ""
+	}
+	result := ""
+	if u.Mapping.Identifier.MusicPublisher != nil {
+		result += strings.Join(u.Mapping.Identifier.MusicPublisher, " / ")
+	}
+	return result
+}
+
+func (u *UBSchema001) GetUrn() string {
+	if u.Mapping == nil || u.Mapping.Identifier == nil || u.Mapping.Identifier.Urn == nil {
+		return ""
+	}
+	result := ""
+	if u.Mapping.Identifier.Urn != nil {
+		result += strings.Join(u.Mapping.Identifier.Urn, " / ")
+	}
+	return result
+}
+
+func (u *UBSchema001) GetVideoRecordingIdentifier() string {
+	if u.Mapping == nil || u.Mapping.Identifier == nil || u.Mapping.Identifier.VideoRecordingIdentifier == nil {
+		return ""
+	}
+	result := ""
+	if u.Mapping.Identifier.VideoRecordingIdentifier != nil {
+		result += strings.Join(u.Mapping.Identifier.VideoRecordingIdentifier, " / ")
+	}
+	return result
+}
+
+func (u *UBSchema001) GetIsbn() string {
+	if u.Mapping == nil || u.Mapping.Identifier == nil || u.Mapping.Identifier.Isbn == nil {
+		return ""
+	}
+	result := ""
+	for _, id := range u.Mapping.Identifier.Isbn {
+		if len(result) > 0 {
+			result += " / "
+		}
+		if id.Id != "" {
+			result = id.Id
+		}
+	}
+	return result
+}
+
+func (u *UBSchema001) GetIsmn() string {
+	if u.Mapping == nil || u.Mapping.Identifier == nil || u.Mapping.Identifier.Ismn == nil {
+		return ""
+	}
+	result := ""
+	for _, id := range u.Mapping.Identifier.Ismn {
+		if len(result) > 0 {
+			result += " / "
+		}
+		if id.Id != "" {
+			result = id.Id
+		}
+	}
+	return result
+}
+
 func (u *UBSchema001) GetResourceType() string {
 	if u.Ldr == nil {
 		return ""
