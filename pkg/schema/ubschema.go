@@ -3,6 +3,7 @@ package schema
 type UBSchema struct {
 	UBSchema001
 	Score_ float64 `json:"score"`
+	Id_    string  `json:"id"`
 }
 
 /*

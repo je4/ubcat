@@ -134,6 +134,7 @@ func (c *Client) Search(ctx context.Context, querystring string, vectorMarc, vec
 			return nil, errors.Wrapf(err, "cannot unmarshal document %v", hit.Source_)
 		}
 		s.Score_ = float64(hit.Score_)
+		s.Id_ = hit.Id_
 		docs[hit.Id_] = s
 	}
 	result := &Result{
