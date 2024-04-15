@@ -48,6 +48,23 @@ type ResultTitle struct {
 	Title          string
 }
 
+/* temporary solution for hackathon */
+var roleTranslations = map[string]string{
+	"aut": "author",
+	"edt": "editor",
+	"trl": "translator",
+	"cre": "creator",
+	"cmp": "composer",
+	"ctb": "contributor",
+	"ill": "illustrator",
+	"fmo": "former owner",
+	"prt": "printer",
+	"dgs": "degree supervisor",
+	"art": "artist",
+	"hnr": "honoree",
+	"com": "compiler",
+}
+
 func (u *UBSchema001) GetPersons() map[string][]ResultPerson {
 	result := make(map[string][]ResultPerson)
 	if u.Mapping == nil || u.Mapping.Name == nil || u.Mapping.Name.Personal == nil {
@@ -57,7 +74,16 @@ func (u *UBSchema001) GetPersons() map[string][]ResultPerson {
 		for _, p := range ps {
 			role := "author"
 			if len(p.Role) > 0 {
-				role = strings.Join(p.Role, ", ")
+				translatedRoles := make([]string, len(p.Role))
+				for i, r := range p.Role {
+					translatedRole, ok := roleTranslations[r]
+					if ok {
+						translatedRoles[i] = translatedRole
+					} else {
+						translatedRoles[i] = r
+					}
+				}
+				role = strings.Join(translatedRoles, ", ")
 			}
 			if _, ok := result[role]; !ok {
 				result[role] = make([]ResultPerson, 0)
@@ -90,7 +116,16 @@ func (u *UBSchema001) GetFamilies() map[string][]ResultFamily {
 		for _, p := range ps {
 			role := "author"
 			if len(p.Role) > 0 {
-				role = strings.Join(p.Role, ", ")
+				translatedRoles := make([]string, len(p.Role))
+				for i, r := range p.Role {
+					translatedRole, ok := roleTranslations[r]
+					if ok {
+						translatedRoles[i] = translatedRole
+					} else {
+						translatedRoles[i] = r
+					}
+				}
+				role = strings.Join(translatedRoles, ", ")
 			}
 			if _, ok := result[role]; !ok {
 				result[role] = make([]ResultFamily, 0)
@@ -123,7 +158,16 @@ func (u *UBSchema001) GetCorporates() map[string][]ResultCorporate {
 		for _, p := range ps {
 			role := "author"
 			if len(p.Role) > 0 {
-				role = strings.Join(p.Role, ", ")
+				translatedRoles := make([]string, len(p.Role))
+				for i, r := range p.Role {
+					translatedRole, ok := roleTranslations[r]
+					if ok {
+						translatedRoles[i] = translatedRole
+					} else {
+						translatedRoles[i] = r
+					}
+				}
+				role = strings.Join(translatedRoles, ", ")
 			}
 			if _, ok := result[role]; !ok {
 				result[role] = make([]ResultCorporate, 0)
@@ -156,7 +200,16 @@ func (u *UBSchema001) GetConferences() map[string][]ResultConference {
 		for _, p := range ps {
 			role := "author"
 			if len(p.Role) > 0 {
-				role = strings.Join(p.Role, ", ")
+				translatedRoles := make([]string, len(p.Role))
+				for i, r := range p.Role {
+					translatedRole, ok := roleTranslations[r]
+					if ok {
+						translatedRoles[i] = translatedRole
+					} else {
+						translatedRoles[i] = r
+					}
+				}
+				role = strings.Join(translatedRoles, ", ")
 			}
 			if _, ok := result[role]; !ok {
 				result[role] = make([]ResultConference, 0)
