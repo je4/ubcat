@@ -386,6 +386,91 @@ func (u *UBSchema001) GetAbstract() string {
 	return result
 }
 
+func (u *UBSchema001) GetTableOfContents() string {
+	if u.Mapping == nil || u.Mapping.TableOfContents == nil {
+		return ""
+	}
+	result := strings.Join(u.Mapping.TableOfContents, " ; ")
+	return result
+}
+
+func (u *UBSchema001) GetSeriesTitle() string {
+	if u.Mapping == nil || u.Mapping.RelatedItem == nil || u.Mapping.RelatedItem.Series == nil {
+		return ""
+	}
+	result := ""
+	for _, se := range u.Mapping.RelatedItem.Series {
+		if len(result) > 0 {
+			result += " / "
+		}
+		if se.Title != "" {
+			result = se.Title
+		}
+	}
+	return result
+}
+
+func (u *UBSchema001) GetHostTitle() string {
+	if u.Mapping == nil || u.Mapping.RelatedItem == nil || u.Mapping.RelatedItem.Host == nil {
+		return ""
+	}
+	result := ""
+	for _, se := range u.Mapping.RelatedItem.Host {
+		if len(result) > 0 {
+			result += " / "
+		}
+		if se.Title != "" {
+			result = se.Title
+		}
+	}
+	return result
+}
+
+func (u *UBSchema001) GetGeneralNote() string {
+	if u.Mapping == nil || u.Mapping.Note == nil || u.Mapping.Note.General == nil {
+		return ""
+	}
+	result := ""
+	result += strings.Join(u.Mapping.Note.General, " ; ")
+	return result
+}
+
+func (u *UBSchema001) GetPerformersNote() string {
+	if u.Mapping == nil || u.Mapping.Note == nil || u.Mapping.Note.Performers == nil {
+		return ""
+	}
+	result := ""
+	result += strings.Join(u.Mapping.Note.Performers, " ; ")
+	return result
+}
+
+func (u *UBSchema001) GetCreditsNote() string {
+	if u.Mapping == nil || u.Mapping.Note == nil || u.Mapping.Note.Credits == nil {
+		return ""
+	}
+	result := ""
+	result += strings.Join(u.Mapping.Note.Credits, " ; ")
+	return result
+}
+
+func (u *UBSchema001) GetStatementOfResponsibility() string {
+	if u.Mapping == nil || u.Mapping.Note == nil || u.Mapping.Note.StatementOfResponsibility == nil {
+		return ""
+	}
+	result := ""
+	result += strings.Join(u.Mapping.Note.StatementOfResponsibility, " ; ")
+	return result
+}
+
+func (u *UBSchema001) GetMediumOfPerformance() string {
+	if u.Mapping == nil || u.Mapping.Note == nil || u.Mapping.Note.MediumOfPerformance == nil {
+		return ""
+	}
+	result := ""
+	result += strings.Join(u.Mapping.Note.MediumOfPerformance, " ; ")
+	return result
+}
+
 func (u *UBSchema001) GetDdc() string {
 	if u.Mapping == nil || u.Mapping.Classification == nil || u.Mapping.Classification.Ddc == nil {
 		return ""
