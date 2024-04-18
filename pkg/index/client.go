@@ -147,15 +147,28 @@ func (c *Client) Search(ctx context.Context, querystring string, vectorMarc, vec
 	}
 	return result, nil
 }
-func (c *Client) SearchKNN(ctx context.Context, vector []float32, vectorField string, k int64, numCandidates int64) (*Result, error) {
+func (c *Client) SearchKNN(ctx context.Context, filter map[string]string, vector []float32, vectorField string, k int64, numCandidates int64) (*Result, error) {
+	esMust := []types.Query{}
+	termQuery := map[string]types.TermQuery{}
+	for k, v := range filter {
+		termQuery[k] = types.TermQuery{Value: v}
+	}
+	esMust = append(esMust, types.Query{
+		Term: termQuery,
+	})
+	knnQuery := types.KnnQuery{
+		Field:         vectorField,
+		QueryVector:   vector,
+		K:             k,
+		NumCandidates: numCandidates,
+	}
+	if len(esMust) > 0 {
+		knnQuery.Filter = esMust
+	}
+
 	searchRequest := &search.Request{}
 	searchRequest.Knn = []types.KnnQuery{
-		types.KnnQuery{
-			Field:         vectorField,
-			QueryVector:   vector,
-			K:             k,
-			NumCandidates: numCandidates,
-		},
+		knnQuery,
 	}
 	elasticQuery := c.client.Search().
 		Index(c.index).
