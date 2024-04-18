@@ -147,3 +147,43 @@ func (c *Client) Search(ctx context.Context, querystring string, vectorMarc, vec
 	}
 	return result, nil
 }
+func (c *Client) SearchKNN(ctx context.Context, vector []float32, vectorField string, k int64, numCandidates int64) (*Result, error) {
+	searchRequest := &search.Request{}
+	searchRequest.Knn = []types.KnnQuery{
+		types.KnnQuery{
+			Field:         vectorField,
+			QueryVector:   vector,
+			K:             k,
+			NumCandidates: numCandidates,
+		},
+	}
+	elasticQuery := c.client.Search().
+		Index(c.index).
+		// SourceExcludes_("embedding_marc", "embedding_json", "embedding_prose").
+		Request(searchRequest)
+
+	elasticResponse, err := elasticQuery.Do(ctx)
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot search")
+	}
+
+	var docs = map[string]*schema.UBSchema{}
+	for _, hit := range elasticResponse.Hits.Hits {
+		var s = &schema.UBSchema{}
+		if err := json.Unmarshal(hit.Source_, s); err != nil {
+			return nil, errors.Wrapf(err, "cannot unmarshal document %v", hit.Source_)
+		}
+		s.Score_ = float64(hit.Score_)
+		s.Id_ = hit.Id_
+		docs[hit.Id_] = s
+	}
+	result := &Result{
+		Docs: docs,
+		From: 0,
+		Num:  k,
+	}
+	if elasticResponse.Hits.Total != nil {
+		result.Total = elasticResponse.Hits.Total.Value
+	}
+	return result, nil
+}
