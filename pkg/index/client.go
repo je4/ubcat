@@ -77,7 +77,7 @@ func vectorQuery(vector []float32, field string) (*types.Query, error) {
 	}, nil
 }
 
-func (c *Client) Search(ctx context.Context, querystring string, vectorMarc, vectorJson, vectorProse []float32, from, num int64) (*Result, error) {
+func (c *Client) Search(ctx context.Context, querystring string, filter map[string]string, vectorMarc, vectorJson, vectorProse []float32, from, num int64) (*Result, error) {
 	esMust := []types.Query{}
 	if len(vectorMarc) > 0 {
 		vQuery, err := vectorQuery(vectorMarc, "embedding_marc")
@@ -100,6 +100,18 @@ func (c *Client) Search(ctx context.Context, querystring string, vectorMarc, vec
 		}
 		esMust = append(esMust, *vQuery)
 	}
+
+	wildcardQuery := map[string]types.WildcardQuery{}
+	for k, v := range filter {
+		val := v + "*"
+		wildcardQuery[k] = types.WildcardQuery{Value: &val}
+	}
+	if len(wildcardQuery) > 0 {
+		esMust = append(esMust, types.Query{
+			Wildcard: wildcardQuery,
+		})
+	}
+
 	if querystring != "" && len(esMust) == 0 {
 		esMust = append(esMust, types.Query{
 			SimpleQueryString: &types.SimpleQueryStringQuery{
@@ -149,13 +161,16 @@ func (c *Client) Search(ctx context.Context, querystring string, vectorMarc, vec
 }
 func (c *Client) SearchKNN(ctx context.Context, filter map[string]string, vector []float32, vectorField string, k int64, numCandidates int64) (*Result, error) {
 	esMust := []types.Query{}
-	termQuery := map[string]types.TermQuery{}
+	wildcardQuery := map[string]types.WildcardQuery{}
 	for k, v := range filter {
-		termQuery[k] = types.TermQuery{Value: v}
+		val := v + "*"
+		wildcardQuery[k] = types.WildcardQuery{Value: &val}
 	}
-	esMust = append(esMust, types.Query{
-		Term: termQuery,
-	})
+	if len(wildcardQuery) > 0 {
+		esMust = append(esMust, types.Query{
+			Wildcard: wildcardQuery,
+		})
+	}
 	knnQuery := types.KnnQuery{
 		Field:         vectorField,
 		QueryVector:   vector,
