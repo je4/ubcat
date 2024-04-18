@@ -103,7 +103,7 @@ func (c *Client) Search(ctx context.Context, querystring string, filter map[stri
 
 	wildcardQuery := map[string]types.WildcardQuery{}
 	for k, v := range filter {
-		val := v + "*"
+		val := v
 		wildcardQuery[k] = types.WildcardQuery{Value: &val}
 	}
 	if len(wildcardQuery) > 0 {
@@ -163,7 +163,7 @@ func (c *Client) SearchKNN(ctx context.Context, filter map[string]string, vector
 	esMust := []types.Query{}
 	wildcardQuery := map[string]types.WildcardQuery{}
 	for k, v := range filter {
-		val := v + "*"
+		val := v
 		wildcardQuery[k] = types.WildcardQuery{Value: &val}
 	}
 	if len(wildcardQuery) > 0 {
