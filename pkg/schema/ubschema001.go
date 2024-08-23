@@ -338,7 +338,9 @@ type PhysicalDescription struct {
 }
 
 type Extent struct {
-	Extent string `json:"extent,omitempty"`
+	Extent     string `json:"extent,omitempty"`
+	Dimensions string `json:"dimensions,omitempty"`
+	// PageNumbers []int64 `json:"pageNumbers,omitempty"`
 }
 
 type RelatedItem struct {
@@ -459,9 +461,42 @@ type Mapping001 struct {
 	TitleInfo           *TitleInfo           `json:"titleInfo,omitempty"`
 }
 
-type Facets struct {
+type StringFacets struct {
 	Name   string   `json:"name"`
 	String []string `json:"string"`
+}
+
+type AgentFacets struct {
+	Name  string  `json:"name"`
+	Agent []Agent `json:"agent"`
+}
+
+type Agent struct {
+	Identifer []string `json:"identifer,omitempty"`
+	Label     string   `json:"label"`
+	Role      []string `json:"role,omitempty"`
+}
+
+type ConceptFacets struct {
+	Name    string    `json:"name"`
+	Concept []Concept `json:"concept"`
+}
+
+type Concept struct {
+	Identifer []string `json:"identifer,omitempty"`
+	Label     string   `json:"label"`
+}
+
+type DateRangeFacets struct {
+	Name      string      `json:"name"`
+	Daterange []DateRange `json:"daterange"`
+}
+
+type Facets struct {
+	Agents    []AgentFacets     `json:"agents,omitempty"`
+	Concepts  []ConceptFacets   `json:"concepts,omitempty"`
+	Daterange []DateRangeFacets `json:"daterange,omitempty"`
+	Strings   []StringFacets    `json:"strings,omitempty"`
 }
 
 type ACL struct {
