@@ -9,8 +9,8 @@ import (
 type MappingRDV schema.UBSchema001
 
 type Element struct {
-	Text string `json:"text"`
-	Link string `json:"link"`
+	Text string `json:"text,omitempty"`
+	Link string `json:"link,omitempty"`
 }
 
 func (e Element) String() string {

@@ -1,6 +1,7 @@
 package mappingRDV
 
 import (
+	"encoding/json"
 	"github.com/je4/ubcat/v2/pkg/schema"
 	"testing"
 	"time"
@@ -100,7 +101,8 @@ func TestMappingRDV(t *testing.T) {
 	}
 
 	result := (*MappingRDV)(content).Map()
-	t.Logf("result: %v", result)
+
+	//	t.Logf("result: %v", result)
 	/*
 		if fmt.Sprintf("%v", result) != "map[mainTitle:[{Title 1  } {Title 2  }] originInfo:[{Place 1, Place 2  }]]" {
 			t.Errorf("unexpected result: %v", result)
@@ -128,4 +130,9 @@ func TestMappingRDV(t *testing.T) {
 		}
 	}
 
+	data, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		t.Errorf("cannot marshal result: %v", err)
+	}
+	t.Logf("result: \n%s", data)
 }
