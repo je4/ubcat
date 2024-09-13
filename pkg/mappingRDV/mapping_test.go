@@ -24,9 +24,20 @@ func TestMappingRDV(t *testing.T) {
 			Fulltext:        nil,
 			Identifier:      nil,
 			Language:        nil,
-			Location:        nil,
-			Name:            nil,
-			Note:            nil,
+			Location: &schema.Location{
+				Digital: []*schema.Url{
+					{
+						Content: "",
+						Format:  "",
+						Url:     "https://www.e-manuscripta.ch/bau/content/titleinfo/3802578",
+						Note:    "Link auf e-manuscripta",
+					},
+				},
+				Electronic: nil,
+				Holding:    nil,
+			},
+			Name: nil,
+			Note: nil,
 			OriginInfo: &schema.OriginInfo{
 				CopyrightDate: nil,
 				Distribution:  nil,
@@ -36,34 +47,32 @@ func TestMappingRDV(t *testing.T) {
 				Manufacture:   nil,
 				Production: []*schema.PublicationNote{
 					{
-						Date:        "",
+						Date:        "13. März 1958",
 						LinkedField: "",
-						Place:       []string{"Place 1", "Place 2"},
-						Publisher:   []string{"Publisher 1", "Publisher 2"},
+						Place:       []string{"[S.l.]", "Basel"},
+						Publisher:   nil, //[]string{"Verlag 1", "Verlag 2"},
 					},
 				},
 				Publication: nil,
 			},
 			PhysicalDescription: nil,
-			RecordIdentifier:    nil,
-			RelatedItem:         nil,
-			Subject:             nil,
-			TableOfContents:     nil,
-			TargetAudience:      nil,
+			RecordIdentifier: []string{"(swissbib)219446946-41slsp_network",
+				"(NEBIS)002014884EBI01",
+				"(IDSBB)001950248DSV01",
+				"991085081549705501",
+				"(EXLNZ-41SLSP_NETWORK)991085081549705501",
+				"9919502480105504"},
+			RelatedItem:     nil,
+			Subject:         nil,
+			TableOfContents: nil,
+			TargetAudience:  nil,
 			TitleInfo: &schema.TitleInfo{
 				Abbreviated: nil,
 				Alternative: nil,
 				Main: []*schema.Title{
 					{
-						Title:       "Title 1",
-						SubTitle:    "",
-						PartName:    nil,
-						PartNumber:  nil,
-						LinkedField: "",
-					},
-					{
-						Title:       "Title 2",
-						SubTitle:    "",
+						Title:       "<<Der>> Brief an Ernsten Grarteri zu Solmbs Herrn zu Mintzenberg",
+						SubTitle:    "Untertitel",
 						PartName:    nil,
 						PartNumber:  nil,
 						LinkedField: "",
@@ -80,9 +89,19 @@ func TestMappingRDV(t *testing.T) {
 						Name: "scribe",
 						Agent: []schema.Agent{
 							{
-								Identifer: []string{"4711"},
-								Label:     "AgentLabel 1",
-								Role:      nil,
+								Identifer: []string{"(DE-588)118560093"},
+								Label:     "Karl V., Heiliges Römisches Reich, Kaiser (1500-1558)",
+								Role:      []string{"scr"},
+							},
+							{
+								Identifer: []string{"(DE-588)118718444"},
+								Label:     "Granvelle, Antoine Perrenot de (1517-1586)",
+								Role:      []string{"scr", "aut"},
+							},
+							{
+								Identifer: []string{"(noid)Seld, V."},
+								Label:     "Seld, V.",
+								Role:      []string{"scr", "aut"},
 							},
 						},
 					},
@@ -108,14 +127,14 @@ func TestMappingRDV(t *testing.T) {
 			t.Errorf("unexpected result: %v", result)
 		}
 	*/
-	if titles, ok := result["mainTitle"]; !ok {
+	if titles, ok := result["titleInfoMainTitle"]; !ok {
 		t.Errorf("mainTitle not found")
 	} else {
-		if len(titles) != 2 {
-			t.Errorf("expected 2 titles, got %d", len(titles))
+		if len(titles) != 1 {
+			t.Errorf("expected 1 titles, got %d", len(titles))
 		}
 	}
-	if originInfos, ok := result["originInfo"]; !ok {
+	if originInfos, ok := result["originInfoProduction"]; !ok {
 		t.Errorf("originInfo not found")
 	} else {
 		if len(originInfos) != 1 {
@@ -125,8 +144,8 @@ func TestMappingRDV(t *testing.T) {
 	if facetAutographScribe, ok := result["facetAutographScribe"]; !ok {
 		t.Errorf("facetAutographScribe not found")
 	} else {
-		if len(facetAutographScribe) != 1 {
-			t.Errorf("expected 1 facetAutographScribe, got %d", len(facetAutographScribe))
+		if len(facetAutographScribe) != 3 {
+			t.Errorf("expected 3 facetAutographScribe, got %d", len(facetAutographScribe))
 		}
 	}
 

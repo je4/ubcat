@@ -3,6 +3,7 @@ package mappingRDV
 import (
 	"fmt"
 	"github.com/je4/ubcat/v2/pkg/schema"
+	"regexp"
 	"strings"
 )
 
@@ -20,6 +21,15 @@ func (e Element) String() string {
 	return fmt.Sprintf("'%s'", e.Text)
 }
 
+func appendText(e *Element, text, separator string) {
+	if text != "" {
+		if e.Text != "" {
+			e.Text += separator
+		}
+		e.Text += text
+	}
+}
+
 func (m *MappingRDV) GetOriginInfoProduction() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return
@@ -31,23 +41,25 @@ func (m *MappingRDV) GetOriginInfoProduction() (key string, result []Element, ok
 		return
 	}
 	result = []Element{}
-	key = "originInfo"
+	key = "originInfoProduction"
 	ok = true
 	for _, v := range m.Mapping.OriginInfo.Production {
 		if v == nil {
 			continue
 		}
+
 		e := Element{}
-		e.Text = strings.TrimRight(strings.Join([]string{
-			strings.Join(v.Place, ", "),
-			strings.Join(v.Publisher, ", "),
-			v.Date}, "; "), " ;")
+
+		appendText(&e, strings.Join(v.Place, ", "), "")
+		appendText(&e, strings.Join(v.Publisher, ", "), " : ")
+		appendText(&e, v.Date, ", ")
+
 		result = append(result, e)
 	}
 	return
 }
 
-func (m *MappingRDV) GetMainTitle() (key string, result []Element, ok bool) {
+func (m *MappingRDV) GetTitleInfoMainTitle() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return
 	}
@@ -58,16 +70,93 @@ func (m *MappingRDV) GetMainTitle() (key string, result []Element, ok bool) {
 		return
 	}
 	result = []Element{}
-	key = "mainTitle"
+	key = "titleInfoMainTitle"
 	ok = true
 	for _, v := range m.Mapping.TitleInfo.Main {
 		if v == nil {
 			continue
 		}
 		e := Element{
-			Text: v.Title,
+			Text: strings.ReplaceAll(strings.ReplaceAll(v.Title, "<<", ""), ">>", ""),
 		}
 		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetTitleInfoMain() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.TitleInfo == nil {
+		return
+	}
+	if len(m.Mapping.TitleInfo.Main) == 0 {
+		return
+	}
+	result = []Element{}
+	key = "titleInfoMain"
+	ok = true
+	for _, v := range m.Mapping.TitleInfo.Main {
+		if v == nil {
+			continue
+		}
+
+		e := Element{}
+
+		appendText(&e, strings.ReplaceAll(strings.ReplaceAll(v.Title, "<<", ""), ">>", ""), "")
+		appendText(&e, strings.Join(v.PartNumber, ", "), ". ")
+		appendText(&e, strings.Join(v.PartName, ", "), ". ")
+		appendText(&e, v.SubTitle, " : ")
+
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetLocationDigital() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.Location == nil {
+		return
+	}
+	if len(m.Mapping.Location.Digital) == 0 {
+		return
+	}
+	key = "locationDigital"
+	ok = true
+	result = []Element{}
+	for _, v := range m.Mapping.Location.Digital {
+		if v == nil {
+			continue
+		}
+		e := Element{
+			Text: v.Note,
+			Link: v.Url,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetSwisscollectionsUrl() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if len(m.Mapping.RecordIdentifier) == 0 {
+		return
+	}
+	key = "swisscollectionsUrl"
+	ok = true
+	result = []Element{}
+	for _, v := range m.Mapping.RecordIdentifier {
+		if v == "" {
+			continue
+		}
+		if ok, _ := regexp.MatchString("^99.*5501$", v); ok {
+			result = append(result, Element{Text: "https://swisscollections.ch/Record/" + v})
+		}
 	}
 	return
 }
@@ -103,7 +192,11 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if m.Mapping == nil {
 		return
 	}
-	key, value, ok := m.GetMainTitle()
+	key, value, ok := m.GetTitleInfoMainTitle()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetTitleInfoMain()
 	if ok {
 		result[key] = value
 	}
@@ -111,8 +204,15 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
-
 	key, value, ok = m.GetFacetAutographScribe()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetLocationDigital()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetSwisscollectionsUrl()
 	if ok {
 		result[key] = value
 	}
