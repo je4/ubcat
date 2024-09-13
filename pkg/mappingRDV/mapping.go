@@ -132,9 +132,10 @@ func (m *MappingRDV) GetLocationDigital() (key string, result []Element, ok bool
 			continue
 		}
 		e := Element{
-			Text: v.Note,
 			Link: v.Url,
 		}
+		appendText(&e, v.Content, "")
+		appendText(&e, v.Note, " ; ")
 		result = append(result, e)
 	}
 	return
@@ -155,7 +156,7 @@ func (m *MappingRDV) GetSwisscollectionsUrl() (key string, result []Element, ok 
 			continue
 		}
 		if ok, _ := regexp.MatchString("^99.*5501$", v); ok {
-			result = append(result, Element{Text: "https://swisscollections.ch/Record/" + v})
+			result = append(result, Element{Link: "https://swisscollections.ch/Record/" + v})
 		}
 	}
 	return
