@@ -96,7 +96,7 @@ type PublicationNote struct {
 
 type NoteWithURL struct {
 	Add     string   `json:"add,omitempty"`
-	Licence string   `json:"licence,omitempty"`
+	License string   `json:"license,omitempty"`
 	Main    string   `json:"main,omitempty"`
 	Url     []string `json:"url,omitempty"`
 }
@@ -427,7 +427,7 @@ type Media struct {
 
 type Medias struct {
 	Height   int64  `json:"height,omitempty"`
-	Licence  string `json:"licence,omitempty"`
+	License  string `json:"license,omitempty"`
 	Mimetype string `json:"mimetype,omitempty"`
 	Path     string `json:"path,omitempty"`
 	Pronom   string `json:"pronom,omitempty"`
