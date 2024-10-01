@@ -55,7 +55,19 @@ func TestMappingRDV(t *testing.T) {
 				},
 				Publication: nil,
 			},
-			PhysicalDescription: nil,
+			PhysicalDescription: &schema.PhysicalDescription{
+				Arrangement:               nil,
+				DateSequentialDesignation: nil,
+				Extent: []*schema.Extent{
+					{
+						Extent:     "VIII, 230 S. : Ill.",
+						Dimensions: "",
+					},
+				},
+				Frequency:    nil,
+				Medium:       nil,
+				NotatedMusic: nil,
+			},
 			RecordIdentifier: []string{"(swissbib)219446946-41slsp_network",
 				"(NEBIS)002014884EBI01",
 				"(IDSBB)001950248DSV01",
@@ -82,12 +94,12 @@ func TestMappingRDV(t *testing.T) {
 				Uniform:    nil,
 			},
 		},
-		Facets: []schema.Facets{
+		Facets: []*schema.Facets{
 			{
-				Agents: []schema.AgentFacets{
+				Agents: []*schema.AgentFacets{
 					{
 						Name: "scribe",
-						Agent: []schema.Agent{
+						Agent: []*schema.Agent{
 							{
 								Identifer: []string{"(DE-588)118560093"},
 								Label:     "Karl V., Heiliges Römisches Reich, Kaiser (1500-1558)",

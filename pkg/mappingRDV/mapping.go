@@ -30,6 +30,64 @@ func appendText(e *Element, text, separator string) {
 	}
 }
 
+func (m *MappingRDV) GetOriginInfoDistribution() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.OriginInfo == nil {
+		return
+	}
+	if len(m.Mapping.OriginInfo.Distribution) == 0 {
+		return
+	}
+	result = []Element{}
+	key = "originInfoDistribution"
+	ok = true
+	for _, v := range m.Mapping.OriginInfo.Distribution {
+		if v == nil {
+			continue
+		}
+
+		e := Element{}
+
+		appendText(&e, strings.Join(v.Place, ", "), "")
+		appendText(&e, strings.Join(v.Publisher, ", "), " : ")
+		appendText(&e, v.Date, ", ")
+
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetOriginInfoManufacture() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.OriginInfo == nil {
+		return
+	}
+	if len(m.Mapping.OriginInfo.Manufacture) == 0 {
+		return
+	}
+	result = []Element{}
+	key = "originInfoManufacture"
+	ok = true
+	for _, v := range m.Mapping.OriginInfo.Manufacture {
+		if v == nil {
+			continue
+		}
+
+		e := Element{}
+
+		appendText(&e, strings.Join(v.Place, ", "), "")
+		appendText(&e, strings.Join(v.Publisher, ", "), " : ")
+		appendText(&e, v.Date, ", ")
+
+		result = append(result, e)
+	}
+	return
+}
+
 func (m *MappingRDV) GetOriginInfoProduction() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return
@@ -54,6 +112,88 @@ func (m *MappingRDV) GetOriginInfoProduction() (key string, result []Element, ok
 		appendText(&e, strings.Join(v.Publisher, ", "), " : ")
 		appendText(&e, v.Date, ", ")
 
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetOriginInfoPublication() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.OriginInfo == nil {
+		return
+	}
+	if len(m.Mapping.OriginInfo.Publication) == 0 {
+		return
+	}
+	result = []Element{}
+	key = "originInfoPublication"
+	ok = true
+	for _, v := range m.Mapping.OriginInfo.Publication {
+		if v == nil {
+			continue
+		}
+
+		e := Element{}
+
+		appendText(&e, strings.Join(v.Place, ", "), "")
+		appendText(&e, strings.Join(v.Publisher, ", "), " : ")
+		appendText(&e, v.Date, ", ")
+
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetPhysicalDescriptionExtent() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.PhysicalDescription == nil {
+		return
+	}
+	if len(m.Mapping.PhysicalDescription.Extent) == 0 {
+		return
+	}
+	result = []Element{}
+	key = "physicalDescriptionExtent"
+	ok = true
+	for _, v := range m.Mapping.PhysicalDescription.Extent {
+		if v == nil {
+			continue
+		}
+		e := Element{
+			Text: v.Extent,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetPhysicalDescriptionExtentDimensions() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.PhysicalDescription == nil {
+		return
+	}
+	if len(m.Mapping.PhysicalDescription.Extent) == 0 {
+		return
+	}
+	result = []Element{}
+	for _, v := range m.Mapping.PhysicalDescription.Extent {
+		if v == nil {
+			continue
+		}
+		if len(v.Dimensions) == 0 {
+			continue
+		}
+		key = "physicalDescriptionExtentDimensions"
+		ok = true
+		e := Element{
+			Text: v.Dimensions,
+		}
 		result = append(result, e)
 	}
 	return
@@ -201,7 +341,27 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
+	key, value, ok = m.GetPhysicalDescriptionExtent()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetPhysicalDescriptionExtentDimensions()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetOriginInfoDistribution()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetOriginInfoManufacture()
+	if ok {
+		result[key] = value
+	}
 	key, value, ok = m.GetOriginInfoProduction()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetOriginInfoPublication()
 	if ok {
 		result[key] = value
 	}

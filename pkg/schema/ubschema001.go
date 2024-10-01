@@ -329,12 +329,12 @@ type Topic struct {
 }
 
 type PhysicalDescription struct {
-	Arrangement               []string `json:"arrangement,omitempty"`
-	DateSequentialDesignation []string `json:"dateSequentialDesignation,omitempty"`
-	Extent                    []Extent `json:"extent,omitempty"`
-	Frequency                 []string `json:"frequency,omitempty"`
-	Medium                    []string `json:"medium,omitempty"`
-	NotatedMusic              []string `json:"notatedMusic,omitempty"`
+	Arrangement               []string  `json:"arrangement,omitempty"`
+	DateSequentialDesignation []string  `json:"dateSequentialDesignation,omitempty"`
+	Extent                    []*Extent `json:"extent,omitempty"`
+	Frequency                 []string  `json:"frequency,omitempty"`
+	Medium                    []string  `json:"medium,omitempty"`
+	NotatedMusic              []string  `json:"notatedMusic,omitempty"`
 }
 
 type Extent struct {
@@ -467,8 +467,8 @@ type StringFacets struct {
 }
 
 type AgentFacets struct {
-	Name  string  `json:"name"`
-	Agent []Agent `json:"agent"`
+	Name  string   `json:"name"`
+	Agent []*Agent `json:"agent"`
 }
 
 type Agent struct {
@@ -478,8 +478,8 @@ type Agent struct {
 }
 
 type ConceptFacets struct {
-	Name    string    `json:"name"`
-	Concept []Concept `json:"concept"`
+	Name    string     `json:"name"`
+	Concept []*Concept `json:"concept"`
 }
 
 type Concept struct {
@@ -488,15 +488,15 @@ type Concept struct {
 }
 
 type DateRangeFacets struct {
-	Name      string      `json:"name"`
-	Daterange []DateRange `json:"daterange"`
+	Name      string       `json:"name"`
+	Daterange []*DateRange `json:"daterange"`
 }
 
 type Facets struct {
-	Agents    []AgentFacets     `json:"agents,omitempty"`
-	Concepts  []ConceptFacets   `json:"concepts,omitempty"`
-	Daterange []DateRangeFacets `json:"daterange,omitempty"`
-	Strings   []StringFacets    `json:"strings,omitempty"`
+	Agents    []*AgentFacets     `json:"agents,omitempty"`
+	Concepts  []*ConceptFacets   `json:"concepts,omitempty"`
+	Daterange []*DateRangeFacets `json:"daterange,omitempty"`
+	Strings   []*StringFacets    `json:"strings,omitempty"`
 }
 
 type ACL struct {
@@ -513,7 +513,7 @@ type UBSchema001 struct {
 	// Datafield    []DataField         `json:"datafield,omitempty"`
 	// FieldLists map[string][]string `json:"fieldlists,omitempty"`
 	Mapping        *Mapping001 `json:"mapping,omitempty"`
-	Facets         []Facets    `json:"facets,omitempty"`
+	Facets         []*Facets   `json:"facets,omitempty"`
 	Sets           []string    `json:"sets,omitempty"`
 	Flags          []string    `json:"flags,omitempty"`
 	ACL            ACL         `json:"acl,omitempty"`
