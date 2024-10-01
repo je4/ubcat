@@ -302,6 +302,32 @@ func (m *MappingRDV) GetSwisscollectionsUrl() (key string, result []Element, ok 
 	return
 }
 
+func (m *MappingRDV) GetFacetGeneralAuthor() (key string, result []Element, ok bool) {
+	key = "facetGeneralAuthor"
+	ok = true
+	result = []Element{}
+	for _, f := range m.Facets {
+		for _, af := range f.Agents {
+			if af.Name != "author" {
+				continue
+			}
+			for _, a := range af.Agent {
+				e := Element{
+					Text: a.Label,
+				}
+				if len(a.Identifer) > 0 {
+					e.Link = fmt.Sprintf("facet:author:%s", a.Identifer[0])
+				}
+				result = append(result, e)
+			}
+		}
+	}
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
 func (m *MappingRDV) GetFacetAutographScribe() (key string, result []Element, ok bool) {
 	key = "facetAutographScribe"
 	ok = true
@@ -362,6 +388,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetOriginInfoPublication()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetFacetGeneralAuthor()
 	if ok {
 		result[key] = value
 	}

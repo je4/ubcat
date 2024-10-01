@@ -117,6 +117,21 @@ func TestMappingRDV(t *testing.T) {
 							},
 						},
 					},
+					{
+						Name: "author",
+						Agent: []*schema.Agent{
+							{
+								Identifer: []string{"(DE-588)118718444"},
+								Label:     "Granvelle, Antoine Perrenot de (1517-1586)",
+								Role:      []string{"scr", "aut"},
+							},
+							{
+								Identifer: []string{"(noid)Seld, V."},
+								Label:     "Seld, V.",
+								Role:      []string{"scr", "aut"},
+							},
+						},
+					},
 				},
 				Concepts:  nil,
 				Daterange: nil,
