@@ -1,6 +1,7 @@
 package mappingRDV
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/je4/ubcat/v2/pkg/schema"
 	"regexp"
@@ -10,8 +11,9 @@ import (
 type MappingRDV schema.UBSchema001
 
 type Element struct {
-	Text string `json:"text,omitempty"`
-	Link string `json:"link,omitempty"`
+	Text     string                     `json:"text,omitempty"`
+	Link     string                     `json:"link,omitempty"`
+	Extended map[string]json.RawMessage `json:"extended,omitempty"`
 }
 
 func (e Element) String() string {
@@ -317,6 +319,11 @@ func (m *MappingRDV) GetFacetGeneralAuthor() (key string, result []Element, ok b
 				}
 				if len(a.Identifer) > 0 {
 					e.Link = fmt.Sprintf("facet:author:%s", a.Identifer[0])
+				}
+				if len(a.Role) > 0 {
+					e.Extended = map[string]json.RawMessage{}
+					roleBytes, _ := json.Marshal(a.Role)
+					e.Extended["roles"] = roleBytes
 				}
 				result = append(result, e)
 			}
