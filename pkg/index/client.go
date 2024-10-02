@@ -60,6 +60,7 @@ func vectorQuery(vector []float32, field string) (*types.Query, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "cannot marshal params")
 	}
+	script := fmt.Sprintf("cosineSimilarity(params.queryVector, '%s') + 1.0", field)
 	return &types.Query{
 		ScriptScore: &types.ScriptScoreQuery{
 			Query: &types.Query{
@@ -67,8 +68,8 @@ func vectorQuery(vector []float32, field string) (*types.Query, error) {
 					Field: field,
 				},
 			},
-			Script: &types.InlineScript{
-				Source: fmt.Sprintf("cosineSimilarity(params.queryVector, '%s') + 1.0", field),
+			Script: types.Script{
+				Source: &script,
 				Params: map[string]json.RawMessage{
 					"queryVector": vectorBytes,
 				},
@@ -145,9 +146,13 @@ func (c *Client) Search(ctx context.Context, querystring string, filter map[stri
 		if err := json.Unmarshal(hit.Source_, s); err != nil {
 			return nil, errors.Wrapf(err, "cannot unmarshal document %v", hit.Source_)
 		}
-		s.Score_ = float64(hit.Score_)
-		s.Id_ = hit.Id_
-		docs[hit.Id_] = s
+		if hit.Score_ != nil {
+			s.Score_ = float64(*hit.Score_)
+		}
+		if hit.Id_ != nil {
+			s.Id_ = *hit.Id_
+			docs[*hit.Id_] = s
+		}
 	}
 	result := &Result{
 		Docs: docs,
@@ -159,7 +164,7 @@ func (c *Client) Search(ctx context.Context, querystring string, filter map[stri
 	}
 	return result, nil
 }
-func (c *Client) SearchKNN(ctx context.Context, filter map[string]string, vector []float32, vectorField string, k int64, numCandidates int64) (*Result, error) {
+func (c *Client) SearchKNN(ctx context.Context, filter map[string]string, vector []float32, vectorField string, k int, numCandidates int) (*Result, error) {
 	esMust := []types.Query{}
 	wildcardQuery := map[string]types.WildcardQuery{}
 	for k, v := range filter {
@@ -171,18 +176,18 @@ func (c *Client) SearchKNN(ctx context.Context, filter map[string]string, vector
 			Wildcard: wildcardQuery,
 		})
 	}
-	knnQuery := types.KnnQuery{
+	knnQuery := types.KnnSearch{
 		Field:         vectorField,
 		QueryVector:   vector,
-		K:             k,
-		NumCandidates: numCandidates,
+		K:             &k,
+		NumCandidates: &numCandidates,
 	}
 	if len(esMust) > 0 {
 		knnQuery.Filter = esMust
 	}
 
 	searchRequest := &search.Request{}
-	searchRequest.Knn = []types.KnnQuery{
+	searchRequest.Knn = []types.KnnSearch{
 		knnQuery,
 	}
 	elasticQuery := c.client.Search().
@@ -201,14 +206,18 @@ func (c *Client) SearchKNN(ctx context.Context, filter map[string]string, vector
 		if err := json.Unmarshal(hit.Source_, s); err != nil {
 			return nil, errors.Wrapf(err, "cannot unmarshal document %v", hit.Source_)
 		}
-		s.Score_ = float64(hit.Score_)
-		s.Id_ = hit.Id_
-		docs[hit.Id_] = s
+		if hit.Score_ != nil {
+			s.Score_ = float64(*hit.Score_)
+		}
+		if hit.Id_ != nil {
+			s.Id_ = *hit.Id_
+			docs[*hit.Id_] = s
+		}
 	}
 	result := &Result{
 		Docs: docs,
 		From: 0,
-		Num:  k,
+		Num:  int64(k),
 	}
 	if elasticResponse.Hits.Total != nil {
 		result.Total = elasticResponse.Hits.Total.Value

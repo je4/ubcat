@@ -50,6 +50,7 @@ func (e *Elastic) SimpleSearch(query string, embedding []float32, embeddingName 
 			return nil, errors.Wrap(err, "cannot marshal params")
 		}
 		field := "embedding_" + embeddingName
+		script := fmt.Sprintf("cosineSimilarity(params.queryVector, '%s') + 1.0", field)
 		esMust = append(esMust, types.Query{
 			ScriptScore: &types.ScriptScoreQuery{
 				Query: &types.Query{
@@ -57,8 +58,8 @@ func (e *Elastic) SimpleSearch(query string, embedding []float32, embeddingName 
 						Field: field,
 					},
 				},
-				Script: &types.InlineScript{
-					Source: fmt.Sprintf("cosineSimilarity(params.queryVector, '%s') + 1.0", field),
+				Script: types.Script{
+					Source: &script,
 					Params: map[string]json.RawMessage{
 						"queryVector": vectorBytes,
 					},
