@@ -2,9 +2,10 @@ package mappingRDV
 
 import (
 	"encoding/json"
-	"github.com/je4/ubcat/v2/pkg/schema"
 	"testing"
 	"time"
+
+	"github.com/je4/ubcat/v2/pkg/schema"
 )
 
 func TestMappingRDV(t *testing.T) {
@@ -94,50 +95,50 @@ func TestMappingRDV(t *testing.T) {
 				Uniform:    nil,
 			},
 		},
-		Facets: []*schema.Facets{
-			{
-				Agents: []*schema.AgentFacets{
-					{
-						Name: "scribe",
-						Agent: []*schema.Agent{
-							{
-								Identifer: []string{"(DE-588)118560093"},
-								Label:     "Karl V., Heiliges Römisches Reich, Kaiser (1500-1558)",
-								Role:      []string{"scr"},
-							},
-							{
-								Identifer: []string{"(DE-588)118718444"},
-								Label:     "Granvelle, Antoine Perrenot de (1517-1586)",
-								Role:      []string{"scr", "aut"},
-							},
-							{
-								Identifer: []string{"(noid)Seld, V."},
-								Label:     "Seld, V.",
-								Role:      []string{"scr", "aut"},
-							},
+		Facets: &schema.Facets{
+
+			Agents: []*schema.AgentFacets{
+				{
+					Name: "scribe",
+					Agent: []*schema.Agent{
+						{
+							Identifer: []string{"(DE-588)118560093"},
+							Label:     "Karl V., Heiliges Römisches Reich, Kaiser (1500-1558)",
+							Role:      []string{"scr"},
 						},
-					},
-					{
-						Name: "author",
-						Agent: []*schema.Agent{
-							{
-								Identifer: []string{"(DE-588)118718444"},
-								Label:     "Granvelle, Antoine Perrenot de (1517-1586)",
-								Role:      []string{"scr", "aut"},
-							},
-							{
-								Identifer: []string{"(noid)Seld, V."},
-								Label:     "Seld, V.",
-								Role:      []string{"scr", "aut"},
-							},
+						{
+							Identifer: []string{"(DE-588)118718444"},
+							Label:     "Granvelle, Antoine Perrenot de (1517-1586)",
+							Role:      []string{"scr", "aut"},
+						},
+						{
+							Identifer: []string{"(noid)Seld, V."},
+							Label:     "Seld, V.",
+							Role:      []string{"scr", "aut"},
 						},
 					},
 				},
-				Concepts:  nil,
-				Daterange: nil,
-				Strings:   nil,
+				{
+					Name: "author",
+					Agent: []*schema.Agent{
+						{
+							Identifer: []string{"(DE-588)118718444"},
+							Label:     "Granvelle, Antoine Perrenot de (1517-1586)",
+							Role:      []string{"scr", "aut"},
+						},
+						{
+							Identifer: []string{"(noid)Seld, V."},
+							Label:     "Seld, V.",
+							Role:      []string{"scr", "aut"},
+						},
+					},
+				},
 			},
+			Concepts:  nil,
+			Daterange: nil,
+			Strings:   nil,
 		},
+
 		Sets:           nil,
 		Flags:          nil,
 		ACL:            schema.ACL{},

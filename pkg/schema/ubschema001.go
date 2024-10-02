@@ -1,10 +1,11 @@
 package schema
 
 import (
-	"emperror.dev/errors"
 	"encoding/json"
 	"regexp"
 	"time"
+
+	"emperror.dev/errors"
 )
 
 type DataField struct {
@@ -513,7 +514,7 @@ type UBSchema001 struct {
 	// Datafield    []DataField         `json:"datafield,omitempty"`
 	// FieldLists map[string][]string `json:"fieldlists,omitempty"`
 	Mapping        *Mapping001 `json:"mapping,omitempty"`
-	Facets         []*Facets   `json:"facets,omitempty"`
+	Facets         *Facets     `json:"facet,omitempty"`
 	Sets           []string    `json:"sets,omitempty"`
 	Flags          []string    `json:"flags,omitempty"`
 	ACL            ACL         `json:"acl,omitempty"`

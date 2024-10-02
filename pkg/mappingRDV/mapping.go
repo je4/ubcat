@@ -3,9 +3,10 @@ package mappingRDV
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/je4/ubcat/v2/pkg/schema"
 	"regexp"
 	"strings"
+
+	"github.com/je4/ubcat/v2/pkg/schema"
 )
 
 type MappingRDV schema.UBSchema001
@@ -308,27 +309,27 @@ func (m *MappingRDV) GetFacetGeneralAuthor() (key string, result []Element, ok b
 	key = "facetGeneralAuthor"
 	ok = true
 	result = []Element{}
-	for _, f := range m.Facets {
-		for _, af := range f.Agents {
-			if af.Name != "author" {
-				continue
+
+	for _, af := range m.Facets.Agents {
+		if af.Name != "author" {
+			continue
+		}
+		for _, a := range af.Agent {
+			e := Element{
+				Text: a.Label,
 			}
-			for _, a := range af.Agent {
-				e := Element{
-					Text: a.Label,
-				}
-				if len(a.Identifer) > 0 {
-					e.Link = fmt.Sprintf("facet:author:%s", a.Identifer[0])
-				}
-				if len(a.Role) > 0 {
-					e.Extended = map[string]json.RawMessage{}
-					roleBytes, _ := json.Marshal(a.Role)
-					e.Extended["roles"] = roleBytes
-				}
-				result = append(result, e)
+			if len(a.Identifer) > 0 {
+				e.Link = fmt.Sprintf("facet:author:%s", a.Identifer[0])
 			}
+			if len(a.Role) > 0 {
+				e.Extended = map[string]json.RawMessage{}
+				roleBytes, _ := json.Marshal(a.Role)
+				e.Extended["roles"] = roleBytes
+			}
+			result = append(result, e)
 		}
 	}
+
 	if len(result) == 0 {
 		return "", nil, false
 	}
@@ -339,22 +340,22 @@ func (m *MappingRDV) GetFacetAutographScribe() (key string, result []Element, ok
 	key = "facetAutographScribe"
 	ok = true
 	result = []Element{}
-	for _, f := range m.Facets {
-		for _, af := range f.Agents {
-			if af.Name != "scribe" {
-				continue
+
+	for _, af := range m.Facets.Agents {
+		if af.Name != "scribe" {
+			continue
+		}
+		for _, a := range af.Agent {
+			e := Element{
+				Text: a.Label,
 			}
-			for _, a := range af.Agent {
-				e := Element{
-					Text: a.Label,
-				}
-				if len(a.Identifer) > 0 {
-					e.Link = fmt.Sprintf("facet:scribe:%s", a.Identifer[0])
-				}
-				result = append(result, e)
+			if len(a.Identifer) > 0 {
+				e.Link = fmt.Sprintf("facet:scribe:%s", a.Identifer[0])
 			}
+			result = append(result, e)
 		}
 	}
+
 	if len(result) == 0 {
 		return "", nil, false
 	}
