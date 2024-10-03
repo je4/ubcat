@@ -306,6 +306,10 @@ func (m *MappingRDV) GetSwisscollectionsUrl() (key string, result []Element, ok 
 }
 
 func (m *MappingRDV) GetFacetGeneralAuthor() (key string, result []Element, ok bool) {
+	if m.Facets == nil {
+		return
+	}
+
 	key = "facetGeneralAuthor"
 	ok = true
 	result = []Element{}
@@ -337,6 +341,10 @@ func (m *MappingRDV) GetFacetGeneralAuthor() (key string, result []Element, ok b
 }
 
 func (m *MappingRDV) GetFacetAutographScribe() (key string, result []Element, ok bool) {
+	if m.Facets == nil {
+		return
+	}
+
 	key = "facetAutographScribe"
 	ok = true
 	result = []Element{}
