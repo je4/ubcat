@@ -339,8 +339,10 @@ type PhysicalDescription struct {
 }
 
 type Extent struct {
-	Extent     string `json:"extent,omitempty"`
-	Dimensions string `json:"dimensions,omitempty"`
+	AccompanyingMaterial string `json:"accompanyingMaterial,omitempty"`
+	Dimensions           string `json:"dimensions,omitempty"`
+	Extent               string `json:"extent,omitempty"`
+	PhysicalDetails      string `json:"physicalDetails,omitempty"`
 	// PageNumbers []int64 `json:"pageNumbers,omitempty"`
 }
 

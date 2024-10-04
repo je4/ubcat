@@ -426,6 +426,88 @@ func (m *MappingRDV) GetPhysicalDescriptionExtentDimensions() (key string, resul
 	return
 }
 
+// 300 $a : $b ; $c + $e
+func (m *MappingRDV) GetPhysicalDescriptionExtentFull() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.PhysicalDescription == nil {
+		return
+	}
+	if len(m.Mapping.PhysicalDescription.Extent) == 0 {
+		return
+	}
+
+	key = "physicalDescriptionExtentFull"
+	ok = true
+	result = []Element{}
+	for _, v := range m.Mapping.PhysicalDescription.Extent {
+		if v == nil {
+			continue
+		}
+		e := Element{}
+		appendText(&e, v.Extent, "")
+		appendText(&e, v.PhysicalDetails, " : ")
+		appendText(&e, v.Dimensions, " ; ")
+		appendText(&e, v.AccompanyingMaterial, " + ")
+
+		result = append(result, e)
+	}
+	return
+}
+
+// 300 $a : $b
+func (m *MappingRDV) GetPhysicalDescriptionExtentShort() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.PhysicalDescription == nil {
+		return
+	}
+	if len(m.Mapping.PhysicalDescription.Extent) == 0 {
+		return
+	}
+
+	result = []Element{}
+	for _, v := range m.Mapping.PhysicalDescription.Extent {
+		if v == nil {
+			continue
+		}
+		if len(v.Extent) == 0 && len(v.PhysicalDetails) == 0 {
+			continue
+		}
+		key = "physicalDescriptionExtentShort"
+		ok = true
+		e := Element{}
+		appendText(&e, v.Extent, "")
+		appendText(&e, v.PhysicalDetails, " : ")
+
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetPhysicalDescriptionMedium() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.PhysicalDescription == nil {
+		return
+	}
+	if len(m.Mapping.PhysicalDescription.Medium) == 0 {
+		return
+	}
+	result = []Element{}
+	key = "physicalDescriptionMedium"
+	ok = true
+	e := Element{
+		Text: strings.Join(m.Mapping.PhysicalDescription.Medium, ", "),
+	}
+	result = append(result, e)
+
+	return
+}
+
 func (m *MappingRDV) GetTitleInfoMainTitle() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return
@@ -612,6 +694,18 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetPhysicalDescriptionExtentDimensions()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetPhysicalDescriptionExtentFull()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetPhysicalDescriptionExtentShort()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetPhysicalDescriptionMedium()
 	if ok {
 		result[key] = value
 	}

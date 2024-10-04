@@ -61,12 +61,14 @@ func TestMappingRDV(t *testing.T) {
 				DateSequentialDesignation: nil,
 				Extent: []*schema.Extent{
 					{
-						Extent:     "VIII, 230 S. : Ill.",
-						Dimensions: "",
+						AccompanyingMaterial: "",
+						Dimensions:           "23 cm",
+						Extent:               "VIII, 230 S.",
+						PhysicalDetails:      "Ill.",
 					},
 				},
 				Frequency:    nil,
-				Medium:       nil,
+				Medium:       []string{"Papier", "15,9 x 14,3 cm"},
 				NotatedMusic: nil,
 			},
 			RecordIdentifier: []string{"(swissbib)219446946-41slsp_network",
