@@ -62,6 +62,62 @@ func (m *MappingRDV) GetOriginInfoDistribution() (key string, result []Element, 
 	return
 }
 
+func (m *MappingRDV) GetOriginInfoDistributionPlace() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.OriginInfo == nil {
+		return
+	}
+	if len(m.Mapping.OriginInfo.Distribution) == 0 {
+		return
+	}
+	result = []Element{}
+	for _, v := range m.Mapping.OriginInfo.Distribution {
+		if v == nil {
+			continue
+		}
+		if len(v.Place) == 0 {
+			continue
+		}
+		key = "originInfoDistributionPlace"
+		ok = true
+		e := Element{
+			Text: strings.Join(v.Place, ", "),
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetOriginInfoDistributionDate() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.OriginInfo == nil {
+		return
+	}
+	if len(m.Mapping.OriginInfo.Distribution) == 0 {
+		return
+	}
+	result = []Element{}
+	for _, v := range m.Mapping.OriginInfo.Distribution {
+		if v == nil {
+			continue
+		}
+		if len(v.Date) == 0 {
+			continue
+		}
+		key = "originInfoDistributionDate"
+		ok = true
+		e := Element{
+			Text: v.Date,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
 func (m *MappingRDV) GetOriginInfoManufacture() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return
@@ -86,6 +142,62 @@ func (m *MappingRDV) GetOriginInfoManufacture() (key string, result []Element, o
 		appendText(&e, strings.Join(v.Publisher, ", "), " : ")
 		appendText(&e, v.Date, ", ")
 
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetOriginInfoManufacturePlace() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.OriginInfo == nil {
+		return
+	}
+	if len(m.Mapping.OriginInfo.Manufacture) == 0 {
+		return
+	}
+	result = []Element{}
+	for _, v := range m.Mapping.OriginInfo.Manufacture {
+		if v == nil {
+			continue
+		}
+		if len(v.Place) == 0 {
+			continue
+		}
+		key = "originInfoManufacturePlace"
+		ok = true
+		e := Element{
+			Text: strings.Join(v.Place, ", "),
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetOriginInfoManufactureDate() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.OriginInfo == nil {
+		return
+	}
+	if len(m.Mapping.OriginInfo.Manufacture) == 0 {
+		return
+	}
+	result = []Element{}
+	for _, v := range m.Mapping.OriginInfo.Manufacture {
+		if v == nil {
+			continue
+		}
+		if len(v.Date) == 0 {
+			continue
+		}
+		key = "originInfoManufactureDate"
+		ok = true
+		e := Element{
+			Text: v.Date,
+		}
 		result = append(result, e)
 	}
 	return
@@ -120,6 +232,62 @@ func (m *MappingRDV) GetOriginInfoProduction() (key string, result []Element, ok
 	return
 }
 
+func (m *MappingRDV) GetOriginInfoProductionPlace() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.OriginInfo == nil {
+		return
+	}
+	if len(m.Mapping.OriginInfo.Production) == 0 {
+		return
+	}
+	result = []Element{}
+	for _, v := range m.Mapping.OriginInfo.Production {
+		if v == nil {
+			continue
+		}
+		if len(v.Place) == 0 {
+			continue
+		}
+		key = "originInfoProductionPlace"
+		ok = true
+		e := Element{
+			Text: strings.Join(v.Place, ", "),
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetOriginInfoProductionDate() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.OriginInfo == nil {
+		return
+	}
+	if len(m.Mapping.OriginInfo.Production) == 0 {
+		return
+	}
+	result = []Element{}
+	for _, v := range m.Mapping.OriginInfo.Production {
+		if v == nil {
+			continue
+		}
+		if len(v.Date) == 0 {
+			continue
+		}
+		key = "originInfoProductionDate"
+		ok = true
+		e := Element{
+			Text: v.Date,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
 func (m *MappingRDV) GetOriginInfoPublication() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return
@@ -144,6 +312,62 @@ func (m *MappingRDV) GetOriginInfoPublication() (key string, result []Element, o
 		appendText(&e, strings.Join(v.Publisher, ", "), " : ")
 		appendText(&e, v.Date, ", ")
 
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetOriginInfoPublicationPlace() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.OriginInfo == nil {
+		return
+	}
+	if len(m.Mapping.OriginInfo.Publication) == 0 {
+		return
+	}
+	result = []Element{}
+	for _, v := range m.Mapping.OriginInfo.Publication {
+		if v == nil {
+			continue
+		}
+		if len(v.Place) == 0 {
+			continue
+		}
+		key = "originInfoPublicationPlace"
+		ok = true
+		e := Element{
+			Text: strings.Join(v.Place, ", "),
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetOriginInfoPublicationDate() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.OriginInfo == nil {
+		return
+	}
+	if len(m.Mapping.OriginInfo.Publication) == 0 {
+		return
+	}
+	result = []Element{}
+	for _, v := range m.Mapping.OriginInfo.Publication {
+		if v == nil {
+			continue
+		}
+		if len(v.Date) == 0 {
+			continue
+		}
+		key = "originInfoPublicationDate"
+		ok = true
+		e := Element{
+			Text: v.Date,
+		}
 		result = append(result, e)
 	}
 	return
@@ -395,7 +619,23 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
+	key, value, ok = m.GetOriginInfoDistributionPlace()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetOriginInfoDistributionDate()
+	if ok {
+		result[key] = value
+	}
 	key, value, ok = m.GetOriginInfoManufacture()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetOriginInfoManufacturePlace()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetOriginInfoManufactureDate()
 	if ok {
 		result[key] = value
 	}
@@ -403,7 +643,23 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
+	key, value, ok = m.GetOriginInfoProductionPlace()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetOriginInfoProductionDate()
+	if ok {
+		result[key] = value
+	}
 	key, value, ok = m.GetOriginInfoPublication()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetOriginInfoPublicationPlace()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetOriginInfoPublicationDate()
 	if ok {
 		result[key] = value
 	}
