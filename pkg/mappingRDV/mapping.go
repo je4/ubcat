@@ -33,6 +33,53 @@ func appendText(e *Element, text, separator string) {
 	}
 }
 
+func (m *MappingRDV) GetAbstract() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if len(m.Mapping.Abstract) == 0 {
+		return
+	}
+	result = []Element{}
+	key = "abstract"
+	ok = true
+	for _, v := range m.Mapping.Abstract {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteGeneral() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.Note == nil {
+		return
+	}
+	if len(m.Mapping.Note.General) == 0 {
+		return
+	}
+	result = []Element{}
+	key = "noteGeneral"
+	ok = true
+	for _, v := range m.Mapping.Note.General {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
 func (m *MappingRDV) GetOriginInfoDistribution() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return
@@ -611,6 +658,28 @@ func (m *MappingRDV) GetSwisscollectionsUrl() (key string, result []Element, ok 
 	return
 }
 
+// todo: fix URL, encoded & zu /u0026
+func (m *MappingRDV) GetSwisscoveryUrl() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if len(m.Mapping.RecordIdentifier) == 0 {
+		return
+	}
+	key = "swisscoveryUrl"
+	ok = true
+	result = []Element{}
+	for _, v := range m.Mapping.RecordIdentifier {
+		if v == "" {
+			continue
+		}
+		if ok, _ := regexp.MatchString("^99.*5504$", v); ok {
+			result = append(result, Element{Link: "https://basel.swisscovery.org/discovery/fulldisplay?docid=alma" + v + "&context=L&vid=41SLSP_UBS:live"})
+		}
+	}
+	return
+}
+
 func (m *MappingRDV) GetFacetGeneralAuthor() (key string, result []Element, ok bool) {
 	if m.Facets == nil {
 		return
@@ -757,6 +826,14 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
+	key, value, ok = m.GetNoteGeneral()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetAbstract()
+	if ok {
+		result[key] = value
+	}
 	key, value, ok = m.GetFacetGeneralAuthor()
 	if ok {
 		result[key] = value
@@ -773,5 +850,9 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
+	/*key, value, ok = m.GetSwisscoveryUrl()
+	if ok {
+		result[key] = value
+	}*/
 	return
 }
