@@ -637,6 +637,35 @@ func (m *MappingRDV) GetLocationDigital() (key string, result []Element, ok bool
 	return
 }
 
+func (m *MappingRDV) GetLocationHoldingCallNumber() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.Location == nil {
+		return
+	}
+	if len(m.Mapping.Location.Holding) == 0 {
+		return
+	}
+
+	result = []Element{}
+	for _, v := range m.Mapping.Location.Holding {
+		if v == nil {
+			continue
+		}
+		if len(v.CallNumber) == 0 {
+			continue
+		}
+		key = "locationHoldingCallNumber"
+		ok = true
+		e := Element{
+			Text: v.CallNumber,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
 func (m *MappingRDV) GetSwisscollectionsUrl() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return
@@ -676,6 +705,45 @@ func (m *MappingRDV) GetSwisscoveryUrl() (key string, result []Element, ok bool)
 		if ok, _ := regexp.MatchString("^99.*5504$", v); ok {
 			result = append(result, Element{Link: "https://basel.swisscovery.org/discovery/fulldisplay?docid=alma" + v + "&context=L&vid=41SLSP_UBS:live"})
 		}
+	}
+	return
+}
+
+func (m *MappingRDV) GetExtensionPortraetsContact() (key string, result []Element, ok bool) {
+	if m.Flags == nil {
+		return
+	}
+
+	if m.Mapping == nil {
+		return
+	}
+	if len(m.Mapping.RecordIdentifier) == 0 {
+		return
+	}
+
+	var id string
+	result = []Element{}
+	key = "extensionPortraetsContact"
+	ok = true
+	for _, v := range m.Mapping.RecordIdentifier {
+		if v == "" {
+			continue
+		}
+		match, _ := regexp.MatchString("^99.*5504$", v)
+		if match {
+			id = v
+			break
+		}
+	}
+
+	for _, v := range m.Flags {
+		if v != "portraets" {
+			continue
+		}
+		e := Element{
+			Link: "mailto:hss-ub@unibas.ch?subject=Porträtsammlung, Anmerkungen zum Katalogisat" + id,
+		}
+		result = append(result, e)
 	}
 	return
 }
@@ -834,6 +902,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
+	key, value, ok = m.GetLocationHoldingCallNumber()
+	if ok {
+		result[key] = value
+	}
 	key, value, ok = m.GetFacetGeneralAuthor()
 	if ok {
 		result[key] = value
@@ -854,5 +926,9 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}*/
+	key, value, ok = m.GetExtensionPortraetsContact()
+	if ok {
+		result[key] = value
+	}
 	return
 }

@@ -35,7 +35,26 @@ func TestMappingRDV(t *testing.T) {
 					},
 				},
 				Electronic: nil,
-				Holding:    nil,
+				Holding: []*schema.Holding{
+					{
+						CallNumber:  "UBH Test",
+						Item:        nil,
+						Library:     "",
+						Location:    "",
+						Note:        "",
+						Summary:     "",
+						SummaryNote: "",
+					},
+					{
+						CallNumber:  "UBH Test 2",
+						Item:        nil,
+						Library:     "",
+						Location:    "",
+						Note:        "",
+						Summary:     "",
+						SummaryNote: "",
+					},
+				},
 			},
 			Name: nil,
 			Note: &schema.Note{
@@ -170,7 +189,7 @@ func TestMappingRDV(t *testing.T) {
 		},
 
 		Sets:           nil,
-		Flags:          nil,
+		Flags:          []string{"all", "portraets"},
 		ACL:            schema.ACL{},
 		EmbeddingProse: nil,
 		EmbeddingMarc:  nil,

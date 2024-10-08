@@ -37,7 +37,7 @@ type Local struct {
 type Location struct {
 	Digital    []*Url        `json:"digital,omitempty"`
 	Electronic []*Electronic `json:"electronic,omitempty"`
-	Holding    []Holding     `json:"holding,omitempty"`
+	Holding    []*Holding    `json:"holding,omitempty"`
 }
 
 type Holding struct {
