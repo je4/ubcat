@@ -34,12 +34,31 @@ func TestMappingRDV(t *testing.T) {
 						Note:    "Link auf e-manuscripta",
 					},
 				},
-				Electronic: nil,
+				Electronic: []*schema.Electronic{
+					{
+						Library:       "AFREE",
+						Collection:    "Project MUSE Open Access Books",
+						Url:           "https://eu03.alma.exlibrisgroup.com/view/uresolver/41SLSP_UBS/openurl?u.ignore_date_coverage=true&amp;portfolio_pid=53375898680005504&amp;Force_direct=true",
+						AlmaAccessUrl: "https://slsp-ubs.primo.exlibrisgroup.com/discovery/openurl?institution=41SLSP_UBS&amp;vid=41SLSP_UBS:live&amp;?u.ignore_date_coverage=true&amp;rft.mms_id=9972497358305504",
+						Interface:     "Project Muse",
+						Coverage:      "",
+						Note:          "",
+					},
+					{
+						Library:       "A145",
+						Collection:    "ProQuest One Literature",
+						Url:           "https://eu03.alma.exlibrisgroup.com/view/uresolver/41SLSP_UBS/openurl?u.ignore_date_coverage=true&amp;portfolio_pid=53409066940005504&amp;Force_direct=true",
+						AlmaAccessUrl: "",
+						Interface:     "",
+						Coverage:      "Available from 01/01/1616 until 31/01/1640.",
+						Note:          "",
+					},
+				},
 				Holding: []*schema.Holding{
 					{
 						CallNumber:  "UBH Test",
 						Item:        nil,
-						Library:     "",
+						Library:     "A100",
 						Location:    "",
 						Note:        "",
 						Summary:     "",
@@ -48,7 +67,7 @@ func TestMappingRDV(t *testing.T) {
 					{
 						CallNumber:  "UBH Test 2",
 						Item:        nil,
-						Library:     "",
+						Library:     "A125",
 						Location:    "",
 						Note:        "",
 						Summary:     "",

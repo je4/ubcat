@@ -697,6 +697,93 @@ func (m *MappingRDV) GetLocationHoldingCallNumber() (key string, result []Elemen
 	return
 }
 
+func (m *MappingRDV) GetLocationHolding() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.Location == nil {
+		return
+	}
+	if len(m.Mapping.Location.Holding) == 0 {
+		return
+	}
+
+	libraryNames := map[string]string{
+		"A100": "UB Hauptbibliothek",
+		"A125": "UB Wirtschaft",
+	}
+
+	result = []Element{}
+	for _, v := range m.Mapping.Location.Holding {
+		if v == nil {
+			continue
+		}
+		if len(v.CallNumber) == 0 {
+			continue
+		}
+		key = "locationHolding"
+		ok = true
+
+		libraryName := v.Library
+		if libraryNames, exists := libraryNames[v.Library]; exists {
+			libraryName = libraryNames
+		}
+
+		e := Element{
+			Text: libraryName + ", " + v.CallNumber,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+// todo: fix URL, encoded & zu /u0026
+func (m *MappingRDV) GetLocationElectronic() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.Location == nil {
+		return
+	}
+	if len(m.Mapping.Location.Electronic) == 0 {
+		return
+	}
+	key = "locationElectronic"
+	ok = true
+	result = []Element{}
+	for _, v := range m.Mapping.Location.Electronic {
+		if v == nil {
+			continue
+		}
+		e := Element{
+			Link: v.Url,
+		}
+		if len(v.Collection) > 0 {
+			e.Text = v.Collection
+		} else {
+			e.Text = v.Note
+		}
+		if len(v.Coverage) > 0 {
+			e.Extended = map[string]json.RawMessage{}
+			coverageBytes, _ := json.Marshal(v.Coverage)
+			e.Extended["coverage"] = coverageBytes
+		}
+		if v.Library == "AFREE" {
+			if e.Extended == nil {
+				e.Extended = map[string]json.RawMessage{}
+			}
+			openAccessBytes, _ := json.Marshal(true)
+			e.Extended["openAccess"] = openAccessBytes
+		} else {
+			openAccessBytes, _ := json.Marshal(false)
+			e.Extended["openAccess"] = openAccessBytes
+		}
+
+		result = append(result, e)
+	}
+	return
+}
+
 func (m *MappingRDV) GetSwisscollectionsUrl() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return
@@ -995,6 +1082,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
+	key, value, ok = m.GetLocationHolding()
+	if ok {
+		result[key] = value
+	}
 	key, value, ok = m.GetFacetGeneralAuthor()
 	if ok {
 		result[key] = value
@@ -1024,6 +1115,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetResourceType()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetLocationElectronic()
 	if ok {
 		result[key] = value
 	}
