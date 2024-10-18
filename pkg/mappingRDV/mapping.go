@@ -534,6 +534,37 @@ func (m *MappingRDV) GetPhysicalDescriptionExtentShort() (key string, result []E
 	return
 }
 
+// 300 $a, $c
+func (m *MappingRDV) GetPhysicalDescriptionExtentAndDimensions() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.PhysicalDescription == nil {
+		return
+	}
+	if len(m.Mapping.PhysicalDescription.Extent) == 0 {
+		return
+	}
+
+	result = []Element{}
+	for _, v := range m.Mapping.PhysicalDescription.Extent {
+		if v == nil {
+			continue
+		}
+		if len(v.Extent) == 0 && len(v.Dimensions) == 0 {
+			continue
+		}
+		key = "physicalDescriptionExtentAndDimensions"
+		ok = true
+		e := Element{}
+		appendText(&e, v.Extent, "")
+		appendText(&e, v.Dimensions, ", ")
+
+		result = append(result, e)
+	}
+	return
+}
+
 func (m *MappingRDV) GetPhysicalDescriptionMedium() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return
@@ -741,10 +772,34 @@ func (m *MappingRDV) GetExtensionPortraetsContact() (key string, result []Elemen
 			continue
 		}
 		e := Element{
-			Link: "mailto:hss-ub@unibas.ch?subject=Porträtsammlung, Anmerkungen zum Katalogisat" + id,
+			Link: "mailto:hss-ub@unibas.ch?subject=Portraetsammlung, Anmerkungen zum Katalogisat" + id,
 		}
 		result = append(result, e)
 	}
+	return
+}
+
+func (m *MappingRDV) GetResourceType() (key string, result []Element, ok bool) {
+	if m.Facets == nil {
+		return
+	}
+
+	key = "resourceType"
+	ok = true
+	result = []Element{}
+
+	for _, sf := range m.Facets.Strings {
+		if sf.Name != "resourceType" {
+			continue
+		}
+		for _, s := range sf.String {
+			e := Element{
+				Text: s,
+			}
+			result = append(result, e)
+		}
+	}
+
 	return
 }
 
@@ -813,6 +868,36 @@ func (m *MappingRDV) GetFacetAutographScribe() (key string, result []Element, ok
 	return
 }
 
+func (m *MappingRDV) GetFacetPortraetsPictured() (key string, result []Element, ok bool) {
+	if m.Facets == nil {
+		return
+	}
+
+	key = "facetPortraetsPictured"
+	ok = true
+	result = []Element{}
+
+	for _, af := range m.Facets.Agents {
+		if af.Name != "pictured" {
+			continue
+		}
+		for _, a := range af.Agent {
+			e := Element{
+				Text: a.Label,
+			}
+			if len(a.Identifer) > 0 {
+				e.Link = fmt.Sprintf("facet:scribe:%s", a.Identifer[0])
+			}
+			result = append(result, e)
+		}
+	}
+
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
 func (m *MappingRDV) Map() (result map[string][]Element) {
 	result = map[string][]Element{}
 	if m.Mapping == nil {
@@ -839,6 +924,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetPhysicalDescriptionExtentShort()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetPhysicalDescriptionExtentAndDimensions()
 	if ok {
 		result[key] = value
 	}
@@ -914,6 +1003,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
+	key, value, ok = m.GetFacetPortraetsPictured()
+	if ok {
+		result[key] = value
+	}
 	key, value, ok = m.GetLocationDigital()
 	if ok {
 		result[key] = value
@@ -927,6 +1020,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}*/
 	key, value, ok = m.GetExtensionPortraetsContact()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetResourceType()
 	if ok {
 		result[key] = value
 	}

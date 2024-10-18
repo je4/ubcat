@@ -185,7 +185,12 @@ func TestMappingRDV(t *testing.T) {
 			},
 			Concepts:  nil,
 			Daterange: nil,
-			Strings:   nil,
+			Strings: []*schema.StringFacets{
+				{
+					Name:   "resourceType",
+					String: []string{"book", "archivalMaterial"},
+				},
+			},
 		},
 
 		Sets:           nil,
