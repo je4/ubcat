@@ -382,7 +382,7 @@ type Host struct {
 	Part               string   `json:"part,omitempty"`
 	PartSort           string   `json:"partSort,omitempty"`
 	Identifier         []string `json:"identifier,omitempty"`
-	InternalIdentifier string   `json:"internalIdentifer,omitempty"`
+	InternalIdentifier string   `json:"internalIdentifier,omitempty"`
 }
 
 type Url struct {
@@ -475,9 +475,9 @@ type AgentFacets struct {
 }
 
 type Agent struct {
-	Identifer []string `json:"identifer,omitempty"`
-	Label     string   `json:"label"`
-	Role      []string `json:"role,omitempty"`
+	Identifier []string `json:"identifier,omitempty"`
+	Label      string   `json:"label"`
+	Role       []string `json:"role,omitempty"`
 }
 
 type ConceptFacets struct {
@@ -486,8 +486,8 @@ type ConceptFacets struct {
 }
 
 type Concept struct {
-	Identifer []string `json:"identifer,omitempty"`
-	Label     string   `json:"label"`
+	Identifier []string `json:"identifier,omitempty"`
+	Label      string   `json:"label"`
 }
 
 type DateRangeFacets struct {

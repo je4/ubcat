@@ -907,8 +907,8 @@ func (m *MappingRDV) GetFacetGeneralAuthor() (key string, result []Element, ok b
 			e := Element{
 				Text: a.Label,
 			}
-			if len(a.Identifer) > 0 {
-				e.Link = fmt.Sprintf("facet:author:%s", a.Identifer[0])
+			if len(a.Identifier) > 0 {
+				e.Link = fmt.Sprintf("facet:author:%s", a.Identifier[0])
 			}
 			if len(a.Role) > 0 {
 				e.Extended = map[string]json.RawMessage{}
@@ -942,8 +942,8 @@ func (m *MappingRDV) GetFacetAutographScribe() (key string, result []Element, ok
 			e := Element{
 				Text: a.Label,
 			}
-			if len(a.Identifer) > 0 {
-				e.Link = fmt.Sprintf("facet:scribe:%s", a.Identifer[0])
+			if len(a.Identifier) > 0 {
+				e.Link = fmt.Sprintf("facet:scribe:%s", a.Identifier[0])
 			}
 			result = append(result, e)
 		}
@@ -972,8 +972,8 @@ func (m *MappingRDV) GetFacetPortraetsPictured() (key string, result []Element, 
 			e := Element{
 				Text: a.Label,
 			}
-			if len(a.Identifer) > 0 {
-				e.Link = fmt.Sprintf("facet:scribe:%s", a.Identifer[0])
+			if len(a.Identifier) > 0 {
+				e.Link = fmt.Sprintf("facet:scribe:%s", a.Identifier[0])
 			}
 			result = append(result, e)
 		}
