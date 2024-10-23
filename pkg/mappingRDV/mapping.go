@@ -758,20 +758,17 @@ func (m *MappingRDV) GetLocationElectronic() (key string, result []Element, ok b
 		e := Element{
 			Link: v.Url,
 		}
+		e.Extended = map[string]json.RawMessage{}
 		if len(v.Collection) > 0 {
 			e.Text = v.Collection
 		} else {
 			e.Text = v.Note
 		}
 		if len(v.Coverage) > 0 {
-			e.Extended = map[string]json.RawMessage{}
 			coverageBytes, _ := json.Marshal(v.Coverage)
 			e.Extended["coverage"] = coverageBytes
 		}
 		if v.Library == "AFREE" {
-			if e.Extended == nil {
-				e.Extended = map[string]json.RawMessage{}
-			}
 			openAccessBytes, _ := json.Marshal(true)
 			e.Extended["openAccess"] = openAccessBytes
 		} else {
