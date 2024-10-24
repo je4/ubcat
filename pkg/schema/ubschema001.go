@@ -429,14 +429,14 @@ type Media struct {
 }
 
 type Medias struct {
-	Height   int64  `json:"height,omitempty"`
-	License  string `json:"license,omitempty"`
-	Mimetype string `json:"mimetype,omitempty"`
-	Path     string `json:"path,omitempty"`
-	Pronom   string `json:"pronom,omitempty"`
-	Type     string `json:"type,omitempty"`
-	Uri      string `json:"uri,omitempty"`
-	Width    int64  `json:"width,omitempty"`
+	Height       int64  `json:"height,omitempty"`
+	License_abbr string `json:"license_abbr,omitempty"`
+	Mimetype     string `json:"mimetype,omitempty"`
+	Path         string `json:"path,omitempty"`
+	Pronom       string `json:"pronom,omitempty"`
+	Type         string `json:"type,omitempty"`
+	Uri          string `json:"uri,omitempty"`
+	Width        int64  `json:"width,omitempty"`
 }
 
 type Mapping001 struct {

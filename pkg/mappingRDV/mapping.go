@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/je4/ubcat/v2/pkg/schema"
@@ -982,6 +983,105 @@ func (m *MappingRDV) GetFacetPortraetsPictured() (key string, result []Element, 
 	return
 }
 
+func (m *MappingRDV) GetThumbnail() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.Files == nil {
+		return
+	}
+
+	key = "thumbnail"
+	ok = true
+	result = []Element{}
+
+	for _, file := range m.Mapping.Files {
+		if file.Media == nil {
+			continue
+		}
+		if file.Media.Poster == nil {
+			continue
+		}
+
+		e := Element{
+			Link:     file.Media.Poster.Uri,
+			Extended: map[string]json.RawMessage{},
+		}
+
+		widthBytes, _ := json.Marshal(file.Media.Poster.Width)
+		e.Extended["width"] = widthBytes
+		heightBytes, _ := json.Marshal(file.Media.Poster.Height)
+		e.Extended["height"] = heightBytes
+		result = append(result, e)
+	}
+
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+
+}
+
+func (m *MappingRDV) GetFileCount() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.Files == nil {
+		return
+	}
+
+	key = "fileCount"
+	ok = true
+
+	counts := make(map[string]int)
+
+	// List of media types to be counted
+	mediaTypes := []string{"image", "video"}
+
+	for _, file := range m.Mapping.Files {
+		if file.Media != nil && file.Media.Medias != nil {
+			for _, media := range file.Media.Medias {
+				for _, t := range mediaTypes {
+					if media.Type == t {
+						counts[media.Type]++
+						continue
+					}
+				}
+			}
+		}
+	}
+
+	translations := map[string]string{
+		"image": "Bild",
+		"video": "Video",
+	}
+
+	var countsStrs []string
+	for mediaType, count := range counts {
+		if translation, exists := translations[mediaType]; exists {
+			mediaType = translation
+		}
+		if count > 1 {
+			if mediaType == "Bild" {
+				mediaType += "er"
+			} else {
+				mediaType += "s"
+			}
+		}
+
+		countsStrs = append(countsStrs, strconv.Itoa(count)+" "+mediaType)
+	}
+
+	if len(countsStrs) == 0 {
+		ok = false
+		return
+	}
+
+	result = append(result, Element{Text: strings.Join(countsStrs, ", ")})
+
+	return
+}
+
 func (m *MappingRDV) Map() (result map[string][]Element) {
 	result = map[string][]Element{}
 	if m.Mapping == nil {
@@ -1116,6 +1216,14 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetLocationElectronic()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetFileCount()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetThumbnail()
 	if ok {
 		result[key] = value
 	}
