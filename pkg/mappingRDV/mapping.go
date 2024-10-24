@@ -800,6 +800,9 @@ func (m *MappingRDV) GetSwisscollectionsUrl() (key string, result []Element, ok 
 			result = append(result, Element{Link: "https://swisscollections.ch/Record/" + v})
 		}
 	}
+	if len(result) == 0 {
+		return "", nil, false
+	}
 	return
 }
 
