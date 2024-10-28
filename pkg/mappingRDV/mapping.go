@@ -1177,6 +1177,67 @@ func (m *MappingRDV) GetFileCount() (key string, result []Element, ok bool) {
 	return
 }
 
+// GetTranscription todo: replace once there's data in the index, currently only for testing
+func (m *MappingRDV) GetTranscription() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if len(m.Mapping.RecordIdentifier) == 0 {
+		return
+	}
+
+	key = "transcription"
+	ok = true
+	result = []Element{}
+	for _, v := range m.Mapping.RecordIdentifier {
+		if v == "" {
+			continue
+		}
+		if ok, _ := regexp.MatchString("^991170524020205501$", v); ok {
+			content := "<?xml version='1.0' encoding='utf-8'?>\\n<div><p>Die höchste Weisheit, ist<br/>\\ndie höchste Güte.</p>\\n<div class=\\\"align-right\\\">\\n<p>Marie Ebner-Eschenbach.</p>\\n</div>\\n<p>Zdislavic, den 13<sup>ten</sup> Nov. 93.</p></div>"
+			e := Element{
+				Text: content,
+			}
+			result = append(result, e)
+		}
+	}
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
+// GetIIIFManifest todo: use data from index, currently only for testing
+func (m *MappingRDV) GetIIIFManifest() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if len(m.Mapping.RecordIdentifier) == 0 {
+		return
+	}
+
+	key = "iiifManifest"
+	ok = true
+	result = []Element{}
+	for _, v := range m.Mapping.RecordIdentifier {
+		if v == "" {
+			continue
+		}
+		if ok, _ := regexp.MatchString("^991170524020205501$", v); ok {
+			content := "https://www.e-manuscripta.ch/i3f/v20/3987019/manifest"
+			e := Element{
+				Link: content,
+			}
+			result = append(result, e)
+		}
+	}
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+
+}
+
 func (m *MappingRDV) Map() (result map[string][]Element) {
 	result = map[string][]Element{}
 	if m.Mapping == nil {
@@ -1323,6 +1384,14 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetThumbnail()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetTranscription()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetIIIFManifest()
 	if ok {
 		result[key] = value
 	}
