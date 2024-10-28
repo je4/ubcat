@@ -91,6 +91,11 @@ func TestMappingRDV(t *testing.T) {
 						Url:     "https://www.e-manuscripta.ch/bau/content/titleinfo/3802578",
 						Note:    "Link auf e-manuscripta",
 					},
+					{
+						Content: "Porträt Vorschau",
+						Format:  "bild",
+						Url:     "http://www.ub.unibas.ch/digi/a100/portraet/bs/m/IBB_1_004261027.jpg",
+					},
 				},
 				Electronic: []*schema.Electronic{
 					{
@@ -198,9 +203,9 @@ func TestMappingRDV(t *testing.T) {
 			RecordIdentifier: []string{"(swissbib)219446946-41slsp_network",
 				"(NEBIS)002014884EBI01",
 				"(IDSBB)001950248DSV01",
-				"991085081549705501",
+				"991085081549705507",
 				"(EXLNZ-41SLSP_NETWORK)991085081549705501",
-				"9919502480105504"},
+				"9919502480105504", "991170524020205501"},
 			RelatedItem:     nil,
 			Subject:         nil,
 			TableOfContents: nil,

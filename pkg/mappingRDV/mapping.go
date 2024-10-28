@@ -867,6 +867,10 @@ func (m *MappingRDV) GetExtensionPortraetsContact() (key string, result []Elemen
 	return
 }
 
+/*
+todo: change data in index: Index generic values in German, adapt this function to get the code and only one per document
+usually used for selecting icon and configuration in frontend
+*/
 func (m *MappingRDV) GetResourceType() (key string, result []Element, ok bool) {
 	if m.Facets == nil {
 		return
@@ -881,6 +885,53 @@ func (m *MappingRDV) GetResourceType() (key string, result []Element, ok bool) {
 			continue
 		}
 		for _, s := range sf.String {
+			e := Element{
+				Text: s,
+			}
+			result = append(result, e)
+			break
+		}
+	}
+
+	return
+}
+
+// GetResourceTypeGeneric todo: change data in index, will make the translation obsolete
+func (m *MappingRDV) GetResourceTypeGeneric() (key string, result []Element, ok bool) {
+	if m.Facets == nil {
+		return
+	}
+
+	key = "resourceTypeGeneric"
+	ok = true
+	result = []Element{}
+
+	translations := map[string]string{
+		"article":             "Artikel",
+		"book":                "Buch",
+		"journal":             "Zeitschrift",
+		"collection":          "Dokumentensammlung",
+		"sheetMusic":          "Musiknoten",
+		"map":                 "Karte",
+		"image":               "Bild",
+		"movie":               "Video",
+		"soundRecording":      "Tonaufnahme",
+		"musicRecording":      "Musikaufnahme",
+		"computerMedia":       "Computermedien",
+		"educationalResource": "Lehrmittel",
+		"object":              "Objekt",
+		"manuscript":          "Manuskript",
+		"archivalMaterial":    "Archivmaterial",
+	}
+
+	for _, sf := range m.Facets.Strings {
+		if sf.Name != "resourceType" {
+			continue
+		}
+		for _, s := range sf.String {
+			if translation, exists := translations[s]; exists {
+				s = translation
+			}
 			e := Element{
 				Text: s,
 			}
@@ -1007,7 +1058,7 @@ func (m *MappingRDV) GetThumbnail() (key string, result []Element, ok bool) {
 		}
 
 		e := Element{
-			Link:     file.Media.Poster.Uri,
+			Link:     strings.Replace(file.Media.Poster.Uri, "mediaserver:", "https://mediaservermain.ub-dlza-test.k8s-001.unibas.ch/iiif/3/", 1) + "/full/{$widthInPx},/0/default.jpg",
 			Extended: map[string]json.RawMessage{},
 		}
 
@@ -1019,10 +1070,51 @@ func (m *MappingRDV) GetThumbnail() (key string, result []Element, ok bool) {
 	}
 
 	if len(result) == 0 {
-		return "", nil, false
+		key, result, ok = m.GetThumbnailFromData()
 	}
 	return
 
+}
+
+func (m *MappingRDV) GetThumbnailFromData() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.Location == nil {
+		return
+	}
+	if len(m.Mapping.Location.Digital) == 0 {
+		return
+	}
+
+	key = "thumbnail"
+	ok = true
+	result = []Element{}
+
+	for _, v := range m.Mapping.Location.Digital {
+		if v == nil {
+			continue
+		}
+		portraitUrlPattern := regexp.MustCompile(`.*digi/a100/portraet/bs`)
+		portraitIdPattern := regexp.MustCompile(`^.*/([^./]+)\.[^/]+$`)
+
+		if portraitUrlPattern.MatchString(v.Url) {
+			matches := portraitIdPattern.FindStringSubmatch(v.Url)
+			if len(matches) > 1 {
+				portraitId := matches[1]
+				portraitImageUrl := "https://ub-sipi.ub.unibas.ch/portraets/" + portraitId + ".jpx/full/{$widthInPx},/0/default.jpg"
+				e := Element{
+					Link: portraitImageUrl,
+				}
+				result = append(result, e)
+			}
+		}
+	}
+
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
 }
 
 func (m *MappingRDV) GetFileCount() (key string, result []Element, ok bool) {
@@ -1215,6 +1307,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetResourceType()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetResourceTypeGeneric()
 	if ok {
 		result[key] = value
 	}
