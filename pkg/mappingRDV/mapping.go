@@ -1216,6 +1216,43 @@ func (m *MappingRDV) GetFileCount() (key string, result []Element, ok bool) {
 	return
 }
 
+/* toDo: extend for other collections with images */
+func (m *MappingRDV) GetObjectPreview() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.Location == nil {
+		return
+	}
+	if len(m.Mapping.Location.Digital) == 0 {
+		return
+	}
+
+	key = "objectPreview"
+	ok = true
+	result = []Element{}
+
+	for _, v := range m.Mapping.Location.Digital {
+		if v == nil {
+			continue
+		}
+		portraitUrlPattern := regexp.MustCompile(`.*digi/a100/portraet/bs`)
+		portraitIdPattern := regexp.MustCompile(`^.*/([^./]+)\.[^/]+$`)
+
+		if portraitUrlPattern.MatchString(v.Url) && portraitIdPattern.MatchString(v.Url) {
+			e := Element{
+				Text: "zoomImage",
+			}
+			result = append(result, e)
+		}
+	}
+
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
 // GetTranscription todo: replace once there's data in the index, currently only for testing
 func (m *MappingRDV) GetTranscription() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
@@ -1435,6 +1472,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetIIIFManifest()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetObjectPreview()
 	if ok {
 		result[key] = value
 	}
