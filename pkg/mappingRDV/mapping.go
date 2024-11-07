@@ -864,6 +864,9 @@ func (m *MappingRDV) GetExtensionPortraetsContact() (key string, result []Elemen
 		}
 		result = append(result, e)
 	}
+	if len(result) == 0 {
+		return "", nil, false
+	}
 	return
 }
 
