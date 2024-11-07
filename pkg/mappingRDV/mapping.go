@@ -942,6 +942,45 @@ func (m *MappingRDV) GetResourceTypeGeneric() (key string, result []Element, ok 
 	return
 }
 
+/* add specific resource types based on flags, obsolete if there's a facet for these resource types, works only if the flags are exclusive */
+func (m *MappingRDV) GetResourceTypeView() (key string, result []Element, ok bool) {
+	if m.Flags == nil {
+		return
+	}
+
+	if m.Mapping == nil {
+		return
+	}
+	if len(m.Mapping.RecordIdentifier) == 0 {
+		return
+	}
+
+	result = []Element{}
+	key = "resourceTypeView"
+	ok = true
+
+	flagsToTypes := map[string]string{
+		"portraets":  "Porträt",
+		"autograph":  "Autograph",
+		"burckhardt": "Mappentitel",
+	}
+
+	for _, v := range m.Flags {
+
+		if flagsToTypes, exists := flagsToTypes[v]; exists {
+			e := Element{
+				Text: flagsToTypes,
+			}
+			result = append(result, e)
+		}
+
+	}
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
 func (m *MappingRDV) GetFacetGeneralAuthor() (key string, result []Element, ok bool) {
 	if m.Facets == nil {
 		return
@@ -1372,6 +1411,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetResourceTypeGeneric()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetResourceTypeView()
 	if ok {
 		result[key] = value
 	}
