@@ -157,6 +157,9 @@ func (m *MappingRDV) GetNoteCitation() (key string, result []Element, ok bool) {
 		e := Element{
 			Text: v.Main,
 		}
+
+		appendText(&e, v.Add, " ")
+
 		if len(v.Url) != 0 {
 			e.Link = v.Url[0]
 		}
@@ -738,6 +741,66 @@ func (m *MappingRDV) GetTitleInfoMain() (key string, result []Element, ok bool) 
 	key = "titleInfoMain"
 	ok = true
 	for _, v := range m.Mapping.TitleInfo.Main {
+		if v == nil {
+			continue
+		}
+
+		e := Element{}
+
+		appendText(&e, strings.ReplaceAll(strings.ReplaceAll(v.Title, "<<", ""), ">>", ""), "")
+		appendText(&e, strings.Join(v.PartNumber, ", "), ". ")
+		appendText(&e, strings.Join(v.PartName, ", "), ". ")
+		appendText(&e, v.SubTitle, " : ")
+
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetTitleInfoAlternative() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.TitleInfo == nil {
+		return
+	}
+	if len(m.Mapping.TitleInfo.Alternative) == 0 {
+		return
+	}
+	result = []Element{}
+	key = "titleInfoAlternative"
+	ok = true
+	for _, v := range m.Mapping.TitleInfo.Alternative {
+		if v == nil {
+			continue
+		}
+
+		e := Element{}
+
+		appendText(&e, strings.ReplaceAll(strings.ReplaceAll(v.Title, "<<", ""), ">>", ""), "")
+		appendText(&e, strings.Join(v.PartNumber, ", "), ". ")
+		appendText(&e, strings.Join(v.PartName, ", "), ". ")
+		appendText(&e, v.SubTitle, " : ")
+
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetTitleInfoUniform() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.TitleInfo == nil {
+		return
+	}
+	if len(m.Mapping.TitleInfo.Uniform) == 0 {
+		return
+	}
+	result = []Element{}
+	key = "titleInfoUniform"
+	ok = true
+	for _, v := range m.Mapping.TitleInfo.Uniform {
 		if v == nil {
 			continue
 		}
@@ -1584,6 +1647,14 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetTitleInfoMain()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetTitleInfoAlternative()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetTitleInfoUniform()
 	if ok {
 		result[key] = value
 	}
