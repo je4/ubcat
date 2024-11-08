@@ -81,6 +81,118 @@ func (m *MappingRDV) GetNoteGeneral() (key string, result []Element, ok bool) {
 	return
 }
 
+func (m *MappingRDV) GetNoteLanguage() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.Note == nil {
+		return
+	}
+	if len(m.Mapping.Note.Language) == 0 {
+		return
+	}
+	result = []Element{}
+	key = "noteLanguage"
+	ok = true
+	for _, v := range m.Mapping.Note.Language {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteOwnership() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.Note == nil {
+		return
+	}
+	if len(m.Mapping.Note.Ownership) == 0 {
+		return
+	}
+	result = []Element{}
+	key = "noteOwnership"
+	ok = true
+	for _, v := range m.Mapping.Note.Ownership {
+		if v == nil {
+			continue
+		}
+		e := Element{
+			Text: v.Main,
+		}
+		if len(v.Url) != 0 {
+			e.Link = v.Url[0]
+		}
+		result = append(result, e)
+	}
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteCitation() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.Note == nil {
+		return
+	}
+	if len(m.Mapping.Note.Citation) == 0 {
+		return
+	}
+	result = []Element{}
+	key = "noteCitation"
+	ok = true
+	for _, v := range m.Mapping.Note.Citation {
+		if v == nil {
+			continue
+		}
+		e := Element{
+			Text: v.Main,
+		}
+		if len(v.Url) != 0 {
+			e.Link = v.Url[0]
+		}
+		result = append(result, e)
+	}
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
+func (m *MappingRDV) GetNotePublications() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.Note == nil {
+		return
+	}
+	if len(m.Mapping.Note.Publications) == 0 {
+		return
+	}
+	result = []Element{}
+	key = "noteLanguage"
+	ok = true
+	for _, v := range m.Mapping.Note.Publications {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
 func (m *MappingRDV) GetOriginInfoDistribution() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return
@@ -1049,6 +1161,121 @@ func (m *MappingRDV) GetFacetAutographScribe() (key string, result []Element, ok
 	return
 }
 
+func (m *MappingRDV) GetFacetAutographRecipient() (key string, result []Element, ok bool) {
+	if m.Facets == nil {
+		return
+	}
+
+	key = "facetAutographRecipient"
+	ok = true
+	result = []Element{}
+
+	for _, af := range m.Facets.Agents {
+		if af.Name != "recipient" {
+			continue
+		}
+		for _, a := range af.Agent {
+			e := Element{
+				Text: a.Label,
+			}
+			if len(a.Identifier) > 0 {
+				e.Link = fmt.Sprintf("facet:recipient:%s", a.Identifier[0])
+			}
+			result = append(result, e)
+		}
+	}
+
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
+func (m *MappingRDV) GetFacetAutographFormerOwner() (key string, result []Element, ok bool) {
+	if m.Facets == nil {
+		return
+	}
+
+	key = "facetAutographFormerOwner"
+	ok = true
+	result = []Element{}
+
+	for _, af := range m.Facets.Agents {
+		if af.Name != "formerOwner" {
+			continue
+		}
+		for _, a := range af.Agent {
+			e := Element{
+				Text: a.Label,
+			}
+			if len(a.Identifier) > 0 {
+				e.Link = fmt.Sprintf("facet:formerOwner:%s", a.Identifier[0])
+			}
+			result = append(result, e)
+		}
+	}
+
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
+func (m *MappingRDV) GetFacetAutographSeller() (key string, result []Element, ok bool) {
+	if m.Facets == nil {
+		return
+	}
+
+	key = "facetAutographSeller"
+	ok = true
+	result = []Element{}
+
+	for _, af := range m.Facets.Agents {
+		if af.Name != "seller" {
+			continue
+		}
+		for _, a := range af.Agent {
+			e := Element{
+				Text: a.Label,
+			}
+			if len(a.Identifier) > 0 {
+				e.Link = fmt.Sprintf("facet:seller:%s", a.Identifier[0])
+			}
+			result = append(result, e)
+		}
+	}
+
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
+func (m *MappingRDV) GetFacetAutographGeigyNummer() (key string, result []Element, ok bool) {
+	if m.Facets == nil {
+		return
+	}
+
+	key = "facetAutographGeigyNummer"
+	ok = true
+	result = []Element{}
+
+	for _, sf := range m.Facets.Strings {
+		if sf.Name != "geigyNummer" {
+			continue
+		}
+		for _, s := range sf.String {
+			e := Element{
+				Text: s,
+			}
+			result = append(result, e)
+			break
+		}
+	}
+
+	return
+}
+
 func (m *MappingRDV) GetFacetPortraetsPictured() (key string, result []Element, ok bool) {
 	if m.Facets == nil {
 		return
@@ -1068,6 +1295,36 @@ func (m *MappingRDV) GetFacetPortraetsPictured() (key string, result []Element, 
 			}
 			if len(a.Identifier) > 0 {
 				e.Link = fmt.Sprintf("facet:scribe:%s", a.Identifier[0])
+			}
+			result = append(result, e)
+		}
+	}
+
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
+func (m *MappingRDV) GetFacetConceptPublicationPlace() (key string, result []Element, ok bool) {
+	if m.Facets == nil {
+		return
+	}
+
+	key = "facetConceptPublicationPlace"
+	ok = true
+	result = []Element{}
+
+	for _, af := range m.Facets.Concepts {
+		if af.Name != "publicationPlace" {
+			continue
+		}
+		for _, a := range af.Concept {
+			e := Element{
+				Text: a.Label,
+			}
+			if len(a.Identifier) > 0 {
+				e.Link = fmt.Sprintf("facet:publicationPlace:%s", a.Identifier[0])
 			}
 			result = append(result, e)
 		}
@@ -1406,6 +1663,26 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
+	key, value, ok = m.GetNoteOwnership()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteLanguage()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteOwnership()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteCitation()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNotePublications()
+	if ok {
+		result[key] = value
+	}
 	key, value, ok = m.GetAbstract()
 	if ok {
 		result[key] = value
@@ -1426,7 +1703,27 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
+	key, value, ok = m.GetFacetAutographRecipient()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetFacetAutographFormerOwner()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetFacetAutographSeller()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetFacetAutographGeigyNummer()
+	if ok {
+		result[key] = value
+	}
 	key, value, ok = m.GetFacetPortraetsPictured()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetFacetConceptPublicationPlace()
 	if ok {
 		result[key] = value
 	}
