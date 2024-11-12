@@ -1684,6 +1684,30 @@ func (m *MappingRDV) GetIIIFManifest() (key string, result []Element, ok bool) {
 
 }
 
+func (m *MappingRDV) GetAcl() (key string, result []Element, ok bool) {
+	if m.ACL == nil {
+		return
+	}
+
+	key = "acl"
+	ok = true
+	result = []Element{}
+
+	aclMetaBytes, _ := json.Marshal(m.ACL.Meta[0])
+	aclPreviewBytes, _ := json.Marshal(m.ACL.Preview[0])
+	aclContentBytes, _ := json.Marshal(m.ACL.Content[0])
+	e := Element{
+		Extended: map[string]json.RawMessage{
+			"meta":    aclMetaBytes,
+			"preview": aclPreviewBytes,
+			"content": aclContentBytes,
+		},
+	}
+	result = append(result, e)
+
+	return
+}
+
 func (m *MappingRDV) Map() (result map[string][]Element) {
 	result = map[string][]Element{}
 	if m.Mapping == nil {
@@ -1898,6 +1922,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetObjectPreview()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetAcl()
 	if ok {
 		result[key] = value
 	}

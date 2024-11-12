@@ -519,7 +519,7 @@ type UBSchema001 struct {
 	Facets         *Facets     `json:"facet,omitempty"`
 	Sets           []string    `json:"sets,omitempty"`
 	Flags          []string    `json:"flags,omitempty"`
-	ACL            ACL         `json:"acl,omitempty"`
+	ACL            *ACL        `json:"acl,omitempty"`
 	EmbeddingProse []float32   `json:"embedding_prose,omitempty"`
 	EmbeddingMarc  []float32   `json:"embedding_marc,omitempty"`
 	EmbeddingJson  []float32   `json:"embedding_json,omitempty"`

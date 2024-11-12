@@ -306,9 +306,13 @@ func TestMappingRDV(t *testing.T) {
 			},
 		},
 
-		Sets:           nil,
-		Flags:          []string{"all", "portraets"},
-		ACL:            schema.ACL{},
+		Sets:  nil,
+		Flags: []string{"all", "portraets"},
+		ACL: &schema.ACL{
+			Content: []string{"global/guest"},
+			Meta:    []string{"global/guest"},
+			Preview: []string{"global/guest"},
+		},
 		EmbeddingProse: nil,
 		EmbeddingMarc:  nil,
 		EmbeddingJson:  nil,
