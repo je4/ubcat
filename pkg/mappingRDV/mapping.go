@@ -56,6 +56,28 @@ func (m *MappingRDV) GetAbstract() (key string, result []Element, ok bool) {
 	return
 }
 
+func (m *MappingRDV) GetTableOfContents() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if len(m.Mapping.TableOfContents) == 0 {
+		return
+	}
+	result = []Element{}
+	key = "tableOfContents"
+	ok = true
+	for _, v := range m.Mapping.TableOfContents {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
 func (m *MappingRDV) GetNoteGeneral() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return
@@ -1399,6 +1421,31 @@ func (m *MappingRDV) GetFacetConceptPublicationPlace() (key string, result []Ele
 	return
 }
 
+func (m *MappingRDV) GetFacetGenre() (key string, result []Element, ok bool) {
+	if m.Facets == nil {
+		return
+	}
+
+	key = "facetGenre"
+	ok = true
+	result = []Element{}
+
+	for _, sf := range m.Facets.Strings {
+		if sf.Name != "genre" {
+			continue
+		}
+		for _, s := range sf.String {
+			e := Element{
+				Text: s,
+			}
+			result = append(result, e)
+			break
+		}
+	}
+
+	return
+}
+
 func (m *MappingRDV) GetThumbnail() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return
@@ -1755,6 +1802,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetAbstract()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetTableOfContents()
 	if ok {
 		result[key] = value
 	}
