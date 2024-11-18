@@ -27,23 +27,23 @@ func TestMappingRDV(t *testing.T) {
 						Medias: []*schema.Medias{
 							{
 								Height:       0,
-								License_abbr: "",
-								Mimetype:     "",
+								License_abbr: "InC",
+								Mimetype:     "image/tiff",
 								Path:         "",
-								Pronom:       "",
+								Pronom:       "fmt/153",
 								Type:         "metadata",
 								Uri:          "",
 								Width:        0,
 							},
 							{
-								Height:       0,
-								License_abbr: "",
-								Mimetype:     "",
+								Height:       1520,
+								License_abbr: "InC",
+								Mimetype:     "image/tiff",
 								Path:         "",
-								Pronom:       "",
+								Pronom:       "fmt/153",
 								Type:         "image",
 								Uri:          "",
-								Width:        0,
+								Width:        3480,
 							},
 							{
 								Height:       0,
@@ -91,11 +91,16 @@ func TestMappingRDV(t *testing.T) {
 						Url:     "https://www.e-manuscripta.ch/bau/content/titleinfo/3802578",
 						Note:    "Link auf e-manuscripta",
 					},
-					{
+					/*{
 						Content: "Porträt Vorschau",
 						Format:  "bild",
 						Url:     "http://www.ub.unibas.ch/digi/a100/portraet/bs/m/IBB_1_004261027.jpg",
 					},
+					{
+						Content: "Porträt Vorschau",
+						Format:  "bild",
+						Url:     "http://www.ub.unibas.ch/digi/a100/portraet/bs/m/IBB_1_004261099.jpg",
+					},*/
 				},
 				Electronic: []*schema.Electronic{
 					{

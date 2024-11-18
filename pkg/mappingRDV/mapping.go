@@ -1451,7 +1451,7 @@ func (m *MappingRDV) GetThumbnail() (key string, result []Element, ok bool) {
 		return
 	}
 	if m.Mapping.Files == nil {
-		return
+		m.GetThumbnailFromData()
 	}
 
 	key = "thumbnail"
@@ -1623,6 +1623,153 @@ func (m *MappingRDV) GetObjectPreview() (key string, result []Element, ok bool) 
 	return
 }
 
+func (m *MappingRDV) GetMedia() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if m.Mapping.Files == nil {
+		m.GetMediaFromData()
+	}
+
+	key = "media"
+	ok = true
+	result = []Element{}
+	contentArray := []map[string]json.RawMessage{}
+
+	licenseUrls := map[string]string{
+		"PDM 1.0 Deed":      "https://creativecommons.org/public-domain/pdm/",
+		"CC BY-SA 4.0 Deed": "https://creativecommons.org/licenses/by-sa/4.0/",
+		"InC":               "https://rightsstatements.org/page/InC/1.0/",
+	}
+
+	for _, file := range m.Mapping.Files {
+		if file.Media == nil {
+			continue
+		}
+		if file.Media.Medias == nil {
+			continue
+		}
+
+		for _, f := range file.Media.Medias {
+			if f == nil {
+				continue
+			}
+
+			licenseUrl := ""
+			if licenseUrls, exists := licenseUrls[f.License_abbr]; exists {
+				licenseUrl = licenseUrls
+			}
+
+			urlBytes, _ := json.Marshal(strings.Replace(f.Uri, "mediaserver:", "https://mediaservermain.ub-dlza-test.k8s-001.unibas.ch/", 1))
+			licenseBytes, _ := json.Marshal(f.License_abbr)
+			licenseUrlBytes, _ := json.Marshal(licenseUrl)
+			presentationTypeBytes, _ := json.Marshal(f.Type)
+			typeBytes, _ := json.Marshal(f.Type)
+			mimetypeBytes, _ := json.Marshal(f.Mimetype)
+			pronomBytes, _ := json.Marshal(f.Pronom)
+			pronomUrlBytes, _ := json.Marshal("https://www.nationalarchives.gov.uk/pronom/" + f.Pronom)
+			widthBytes, _ := json.Marshal(f.Width)
+			heightBytes, _ := json.Marshal(f.Height)
+
+			contentDetails := map[string]json.RawMessage{
+				/*"title": "",*/
+				/*"fileName": "",*/
+				/*"arkQualifier": "",*/
+				"url": urlBytes,
+				/*"thumbnail": "",*/
+				/*"downloadUrl": "",*/
+				/*"acl": */
+				"license":          licenseBytes,
+				"licenseUrl":       licenseUrlBytes,
+				"presentationType": presentationTypeBytes,
+				"type":             typeBytes,
+				"mimetype":         mimetypeBytes,
+				"pronom":           pronomBytes,
+				"pronomUrl":        pronomUrlBytes,
+				/*"format": "",*/
+				/*"date": "",*/
+				"width":  widthBytes,
+				"height": heightBytes,
+				/*"duration": "",*/
+				/*"orientation": "",*/
+			}
+			contentArray = append(contentArray, contentDetails)
+		}
+	}
+
+	if len(contentArray) > 0 {
+		contentBytes, _ := json.Marshal(contentArray)
+		e := Element{
+			Extended: map[string]json.RawMessage{
+				"content": contentBytes,
+			},
+		}
+		result = append(result, e)
+	}
+
+	if len(result) == 0 {
+		key, result, ok = m.GetMediaFromData()
+	}
+	return
+
+}
+
+func (m *MappingRDV) GetMediaFromData() (key string, result []Element, ok bool) {
+	if m.Mapping == nil || m.Mapping.Location == nil || len(m.Mapping.Location.Digital) == 0 {
+		return "", nil, false
+	}
+
+	key = "media"
+	ok = true
+	result = []Element{}
+	contentArray := []map[string]json.RawMessage{}
+
+	for _, v := range m.Mapping.Location.Digital {
+		if v == nil {
+			continue
+		}
+
+		portraitUrlPattern := regexp.MustCompile(`.*digi/a100/portraet/bs`)
+		portraitIdPattern := regexp.MustCompile(`^.*/([^./]+)\.[^/]+$`)
+
+		if portraitUrlPattern.MatchString(v.Url) && portraitIdPattern.MatchString(v.Url) {
+
+			for _, id := range m.Mapping.RecordIdentifier {
+				if id == "" {
+					continue
+				}
+				if ok, _ := regexp.MatchString("^99.*5504$", id); ok {
+					urlBytes, _ := json.Marshal("https://ub-iiifpresentation.ub.unibas.ch/portraets/" + id + "/manifest/")
+					aclBytes, _ := json.Marshal(m.ACL.Content)
+
+					contentDetails := map[string]json.RawMessage{
+						"url":              urlBytes,
+						"presentationType": json.RawMessage(`"iiif"`),
+						"acl":              aclBytes,
+					}
+					contentArray = append(contentArray, contentDetails)
+				}
+			}
+		}
+	}
+
+	if len(contentArray) > 0 {
+		contentBytes, _ := json.Marshal(contentArray)
+		e := Element{
+			Extended: map[string]json.RawMessage{
+				"content": contentBytes,
+			},
+		}
+		result = append(result, e)
+	}
+
+	if len(result) == 0 {
+		return "", nil, false
+	}
+
+	return
+}
+
 // GetTranscription todo: replace once there's data in the index, currently only for testing
 func (m *MappingRDV) GetTranscription() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
@@ -1693,9 +1840,9 @@ func (m *MappingRDV) GetAcl() (key string, result []Element, ok bool) {
 	ok = true
 	result = []Element{}
 
-	aclMetaBytes, _ := json.Marshal(m.ACL.Meta[0])
-	aclPreviewBytes, _ := json.Marshal(m.ACL.Preview[0])
-	aclContentBytes, _ := json.Marshal(m.ACL.Content[0])
+	aclMetaBytes, _ := json.Marshal(m.ACL.Meta)
+	aclPreviewBytes, _ := json.Marshal(m.ACL.Preview)
+	aclContentBytes, _ := json.Marshal(m.ACL.Content)
 	e := Element{
 		Extended: map[string]json.RawMessage{
 			"meta":    aclMetaBytes,
@@ -1926,6 +2073,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetAcl()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetMedia()
 	if ok {
 		result[key] = value
 	}
