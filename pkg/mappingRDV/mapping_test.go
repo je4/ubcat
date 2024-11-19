@@ -77,7 +77,17 @@ func TestMappingRDV(t *testing.T) {
 							Width:        8945,
 						},
 					},
-					Structure: nil,
+					Structure: &schema.Structure{
+						DigitalObject: &schema.DigitalObject{
+							DigitalContainer: nil,
+							FromRecordHeader: nil,
+							Header:           nil,
+							Id:               "md345678",
+							RecordIdentifier: nil,
+							Label:            "",
+							Type:             "",
+						},
+					},
 				},
 			},
 			Fulltext:   nil,
@@ -91,7 +101,7 @@ func TestMappingRDV(t *testing.T) {
 						Url:     "https://www.e-manuscripta.ch/bau/content/titleinfo/3802578",
 						Note:    "Link auf e-manuscripta",
 					},
-					/*{
+					{
 						Content: "Porträt Vorschau",
 						Format:  "bild",
 						Url:     "http://www.ub.unibas.ch/digi/a100/portraet/bs/m/IBB_1_004261027.jpg",
@@ -100,7 +110,7 @@ func TestMappingRDV(t *testing.T) {
 						Content: "Porträt Vorschau",
 						Format:  "bild",
 						Url:     "http://www.ub.unibas.ch/digi/a100/portraet/bs/m/IBB_1_004261099.jpg",
-					},*/
+					},
 				},
 				Electronic: []*schema.Electronic{
 					{
@@ -312,7 +322,7 @@ func TestMappingRDV(t *testing.T) {
 		},
 
 		Sets:  nil,
-		Flags: []string{"all", "portraets"},
+		Flags: []string{"all", "portraets", "erara"},
 		ACL: &schema.ACL{
 			Content: []string{"global/guest"},
 			Meta:    []string{"global/guest"},

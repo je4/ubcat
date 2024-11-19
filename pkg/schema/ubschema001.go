@@ -419,13 +419,27 @@ type Title struct {
 }
 
 type Files struct {
-	Media     *Media                     `json:"media,omitempty"`
-	Structure map[string]json.RawMessage `json:"structure,omitempty"`
+	Media     *Media     `json:"media,omitempty"`
+	Structure *Structure `json:"structure,omitempty"`
 }
 
 type Media struct {
 	Medias []*Medias `json:"medias,omitempty"`
 	Poster *Medias   `json:"poster,omitempty"`
+}
+
+type Structure struct {
+	DigitalObject *DigitalObject `json:"digitalObject,omitempty"`
+}
+
+type DigitalObject struct {
+	DigitalContainer map[string]json.RawMessage `json:"digitalContainer,omitempty"`
+	FromRecordHeader map[string]json.RawMessage `json:"fromRecordHeader,omitempty"`
+	Header           map[string]json.RawMessage `json:"Header,omitempty"`
+	Id               string                     `json:"id,omitempty"`
+	RecordIdentifier map[string]json.RawMessage `json:"recordIdentifier,omitempty"`
+	Label            string                     `json:"label,omitempty"`
+	Type             string                     `json:"type,omitempty"`
 }
 
 type Medias struct {

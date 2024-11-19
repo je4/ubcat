@@ -1628,7 +1628,7 @@ func (m *MappingRDV) GetMedia() (key string, result []Element, ok bool) {
 		return
 	}
 	if m.Mapping.Files == nil {
-		m.GetMediaFromData()
+		return
 	}
 
 	key = "media"
@@ -1660,7 +1660,7 @@ func (m *MappingRDV) GetMedia() (key string, result []Element, ok bool) {
 				licenseUrl = licenseUrls
 			}
 
-			urlBytes, _ := json.Marshal(strings.Replace(f.Uri, "mediaserver:", "https://mediaservermain.ub-dlza-test.k8s-001.unibas.ch/", 1))
+			urlBytes, _ := json.Marshal(strings.Replace(f.Uri, "mediaserver:", "https://mediaservermain.ub-dlza-test.k8s-001.unibas.ch/iiif/3/", 1))
 			licenseBytes, _ := json.Marshal(f.License_abbr)
 			licenseUrlBytes, _ := json.Marshal(licenseUrl)
 			presentationTypeBytes, _ := json.Marshal(f.Type)
@@ -1708,66 +1708,10 @@ func (m *MappingRDV) GetMedia() (key string, result []Element, ok bool) {
 	}
 
 	if len(result) == 0 {
-		key, result, ok = m.GetMediaFromData()
+		return "", nil, false
 	}
 	return
 
-}
-
-func (m *MappingRDV) GetMediaFromData() (key string, result []Element, ok bool) {
-	if m.Mapping == nil || m.Mapping.Location == nil || len(m.Mapping.Location.Digital) == 0 {
-		return "", nil, false
-	}
-
-	key = "media"
-	ok = true
-	result = []Element{}
-	contentArray := []map[string]json.RawMessage{}
-
-	for _, v := range m.Mapping.Location.Digital {
-		if v == nil {
-			continue
-		}
-
-		portraitUrlPattern := regexp.MustCompile(`.*digi/a100/portraet/bs`)
-		portraitIdPattern := regexp.MustCompile(`^.*/([^./]+)\.[^/]+$`)
-
-		if portraitUrlPattern.MatchString(v.Url) && portraitIdPattern.MatchString(v.Url) {
-
-			for _, id := range m.Mapping.RecordIdentifier {
-				if id == "" {
-					continue
-				}
-				if ok, _ := regexp.MatchString("^99.*5504$", id); ok {
-					urlBytes, _ := json.Marshal("https://ub-iiifpresentation.ub.unibas.ch/portraets/" + id + "/manifest/")
-					aclBytes, _ := json.Marshal(m.ACL.Content)
-
-					contentDetails := map[string]json.RawMessage{
-						"url":              urlBytes,
-						"presentationType": json.RawMessage(`"iiif"`),
-						"acl":              aclBytes,
-					}
-					contentArray = append(contentArray, contentDetails)
-				}
-			}
-		}
-	}
-
-	if len(contentArray) > 0 {
-		contentBytes, _ := json.Marshal(contentArray)
-		e := Element{
-			Extended: map[string]json.RawMessage{
-				"content": contentBytes,
-			},
-		}
-		result = append(result, e)
-	}
-
-	if len(result) == 0 {
-		return "", nil, false
-	}
-
-	return
 }
 
 // GetTranscription todo: replace once there's data in the index, currently only for testing
@@ -1800,28 +1744,60 @@ func (m *MappingRDV) GetTranscription() (key string, result []Element, ok bool) 
 	return
 }
 
-// GetIIIFManifest todo: use data from index, currently only for testing
 func (m *MappingRDV) GetIIIFManifest() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
-	}
-	if len(m.Mapping.RecordIdentifier) == 0 {
 		return
 	}
 
 	key = "iiifManifest"
 	ok = true
 	result = []Element{}
-	for _, v := range m.Mapping.RecordIdentifier {
-		if v == "" {
+
+	/* for e-rara and e-manuscripta */
+	for _, f := range m.Mapping.Files {
+		if f == nil {
 			continue
 		}
-		if ok, _ := regexp.MatchString("^991170524020205501$", v); ok {
-			content := "https://www.e-manuscripta.ch/i3f/v20/3987019/manifest"
-			e := Element{
-				Link: content,
+		if f.Structure.DigitalObject.Id == "" {
+			continue
+		}
+		for _, flag := range m.Flags {
+			if flag == "e-rara" {
+				e := Element{
+					Link: "https://www.e-rara.ch/i3f/v20/" + strings.Replace(f.Structure.DigitalObject.Id, "md", "", 1) + "/manifest",
+				}
+				result = append(result, e)
 			}
-			result = append(result, e)
+			if flag == "e-manuscripta" {
+				e := Element{
+					Link: "https://www.e-manuscripta.ch/i3f/v20/" + strings.Replace(f.Structure.DigitalObject.Id, "md", "", 1) + "/manifest",
+				}
+				result = append(result, e)
+			}
+		}
+	}
+
+	/* for Porträts */
+	for _, v := range m.Mapping.Location.Digital {
+		if v == nil {
+			continue
+		}
+		portraitUrlPattern := regexp.MustCompile(`.*digi/a100/portraet/bs`)
+		portraitIdPattern := regexp.MustCompile(`^.*/([^./]+)\.[^/]+$`)
+
+		if portraitUrlPattern.MatchString(v.Url) && portraitIdPattern.MatchString(v.Url) {
+
+			for _, id := range m.Mapping.RecordIdentifier {
+				if id == "" {
+					continue
+				}
+				if ok, _ := regexp.MatchString("^99.*5504$", id); ok {
+					e := Element{
+						Link: "https://ub-iiifpresentation.ub.unibas.ch/portraets/" + id + "/manifest/",
+					}
+					result = append(result, e)
+				}
+			}
 		}
 	}
 	if len(result) == 0 {
