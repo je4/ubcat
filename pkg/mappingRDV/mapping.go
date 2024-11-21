@@ -1467,7 +1467,8 @@ func (m *MappingRDV) GetThumbnail() (key string, result []Element, ok bool) {
 		}
 
 		e := Element{
-			Link:     strings.Replace(file.Media.Poster.Uri, "mediaserver:", "https://mediaservermain.ub-dlza-test.k8s-001.unibas.ch/iiif/3/", 1) + "/full/{$widthInPx},/0/default.jpg",
+			// Link:     strings.Replace(file.Media.Poster.Uri, "mediaserver:", "https://mediaservermain.ub-dlza-test.k8s-001.unibas.ch/iiif/3/", 1) + "/full/{$widthInPx},/0/default.jpg",
+			Link:     file.Media.Poster.Uri,
 			Extended: map[string]json.RawMessage{},
 		}
 
@@ -1777,6 +1778,9 @@ func (m *MappingRDV) GetIIIFManifest() (key string, result []Element, ok bool) {
 		}
 	}
 
+	if m.Mapping.Location == nil {
+		return
+	}
 	/* for Porträts */
 	for _, v := range m.Mapping.Location.Digital {
 		if v == nil {
