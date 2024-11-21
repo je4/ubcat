@@ -1661,7 +1661,8 @@ func (m *MappingRDV) GetMedia() (key string, result []Element, ok bool) {
 				licenseUrl = licenseUrls
 			}
 
-			urlBytes, _ := json.Marshal(strings.Replace(f.Uri, "mediaserver:", "https://mediaservermain.ub-dlza-test.k8s-001.unibas.ch/iiif/3/", 1))
+			// urlBytes, _ := json.Marshal(strings.Replace(f.Uri, "mediaserver:", "https://mediaservermain.ub-dlza-test.k8s-001.unibas.ch/iiif/3/", 1))
+			urlBytes, _ := json.Marshal(f.Uri)
 			licenseBytes, _ := json.Marshal(f.License_abbr)
 			licenseUrlBytes, _ := json.Marshal(licenseUrl)
 			presentationTypeBytes, _ := json.Marshal(f.Type)
