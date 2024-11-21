@@ -1756,7 +1756,7 @@ func (m *MappingRDV) GetIIIFManifest() (key string, result []Element, ok bool) {
 
 	/* for e-rara and e-manuscripta */
 	for _, f := range m.Mapping.Files {
-		if f == nil {
+		if f == nil || f.Structure == nil || f.Structure.DigitalObject == nil {
 			continue
 		}
 		if f.Structure.DigitalObject.Id == "" {
