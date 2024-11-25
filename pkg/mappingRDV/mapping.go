@@ -1724,6 +1724,7 @@ func (m *MappingRDV) GetMedia() (key string, result []Element, ok bool) {
 
 }
 
+// AddTestMedia todo: remove, creates test data
 func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return
@@ -2674,6 +2675,308 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 	return
 }
 
+// AddTestThumbnail todo: remove, creates test data
+func (m *MappingRDV) AddTestThumbnail() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if len(m.Mapping.RecordIdentifier) == 0 {
+		return
+	}
+
+	key = "thumbnail"
+	ok = true
+	result = []Element{}
+
+	for _, v := range m.Mapping.RecordIdentifier {
+		if v == "" {
+			continue
+		}
+		if ok, _ := regexp.MatchString("^9972650989305504$", v); ok {
+			e := Element{
+				Link:     "mediaserver:test/deep$$wave",
+				Extended: map[string]json.RawMessage{},
+			}
+
+			widthBytes, _ := json.Marshal(1280)
+			e.Extended["width"] = widthBytes
+			heightBytes, _ := json.Marshal(256)
+			e.Extended["height"] = heightBytes
+			typeBytes, _ := json.Marshal("mediaserver")
+			e.Extended["type"] = typeBytes
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9967555870105504$", v); ok {
+			e := Element{
+				Link:     "mediaserver:test/spritefright$$shot$$13",
+				Extended: map[string]json.RawMessage{},
+			}
+
+			widthBytes, _ := json.Marshal(1920)
+			e.Extended["width"] = widthBytes
+			heightBytes, _ := json.Marshal(804)
+			e.Extended["height"] = heightBytes
+			typeBytes, _ := json.Marshal("mediaserver")
+			e.Extended["type"] = typeBytes
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9936873350105504$", v); ok {
+			e := Element{
+				Link:     "mediaserver:test/andromeda10000",
+				Extended: map[string]json.RawMessage{},
+			}
+
+			widthBytes, _ := json.Marshal(10000)
+			e.Extended["width"] = widthBytes
+			heightBytes, _ := json.Marshal(3197)
+			e.Extended["height"] = heightBytes
+			typeBytes, _ := json.Marshal("mediaserver")
+			e.Extended["type"] = typeBytes
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9936340160105504$", v); ok {
+			e := Element{
+				Link:     "mediaserver:test/slsp$$cover",
+				Extended: map[string]json.RawMessage{},
+			}
+
+			widthBytes, _ := json.Marshal(1191)
+			e.Extended["width"] = widthBytes
+			heightBytes, _ := json.Marshal(1684)
+			e.Extended["height"] = heightBytes
+			typeBytes, _ := json.Marshal("mediaserver")
+			e.Extended["type"] = typeBytes
+			result = append(result, e)
+		}
+	}
+
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
+// AddTestObjectPreview todo: remove, creates test data
+func (m *MappingRDV) AddTestObjectPreview() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if len(m.Mapping.RecordIdentifier) == 0 {
+		return
+	}
+
+	key = "objectPreview"
+	ok = true
+	result = []Element{}
+
+	for _, v := range m.Mapping.RecordIdentifier {
+		if v == "" {
+			continue
+		}
+		if ok, _ := regexp.MatchString("^9972650989305504$", v); ok {
+
+			// titleBytes, _ := json.Marshal("Deep")
+			// fileNameBytes, _ := json.Marshal("Alex-Productions_-_Deep_(Dark_Ambient_Background_music).oga.mp3")
+			// arkQualifierBytes, _ := json.Marshal("Alex-Productions_-_Deep_(Dark_Ambient_Background_music).oga.mp3")
+			// urlBytes, _ := json.Marshal("mediaserver:test/deep")
+			// thumbnailBytes, _ := json.Marshal("mediaserver:test/deep$$wave")
+			// downloadUrlBytes, _ := json.Marshal("mediaserver:test/deep/item")
+			// aclBytes, _ := json.Marshal("global/guest")
+			// formatBytes, _ := json.Marshal("Audio, 6.3 MB")
+			// dateBytes, _ := json.Marshal()
+			// licenseBytes, _ := json.Marshal("PDM 1.0 Deed")
+			// licenseUrlBytes, _ := json.Marshal("https://creativecommons.org/public-domain/pdm/")
+			presentationTypeBytes, _ := json.Marshal("audio")
+			// typeBytes, _ := json.Marshal("audio")
+			// mimetypeBytes, _ := json.Marshal("audio/mp3")
+			// pronomBytes, _ := json.Marshal("fmt/134")
+			// pronomUrlBytes, _ := json.Marshal("https://www.nationalarchives.gov.uk/pronom/fmt/134")
+			durationBytes, _ := json.Marshal(268)
+
+			e := Element{
+				Link:     "mediaserver:test/deep",
+				Extended: map[string]json.RawMessage{},
+			}
+
+			e.Extended["presentationType"] = presentationTypeBytes
+			e.Extended["duration"] = durationBytes
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9967555870105504$", v); ok {
+
+			//titleBytes, _ := json.Marshal("Sprite Fright")
+			//fileNameBytes, _ := json.Marshal("Sprite_Fright_-_Blender_Open_Movie-full_movie.webm.1080p.vp9.webm")
+			//arkQualifierBytes, _ := json.Marshal("Sprite_Fright_-_Blender_Open_Movie-full_movie.webm.1080p.vp9.webm")
+			//urlBytes, _ := json.Marshal("mediaserver:test/spritefright")
+			//thumbnailBytes, _ := json.Marshal("mediaserver:test/spritefright$$shot$$13")
+			//downloadUrlBytes, _ := json.Marshal("mediaserver:test/spritefright/item") /* brauchts das jetzt oder nicht? */
+			//aclBytes, _ := json.Marshal("global/guest")
+			//formatBytes, _ := json.Marshal("Video, 188.3 MB")
+			//dateBytes, _ := json.Marshal("")
+			//licenseBytes, _ := json.Marshal("PDM 1.0 Deed")
+			//licenseUrlBytes, _ := json.Marshal("https://creativecommons.org/public-domain/pdm/")
+			presentationTypeBytes, _ := json.Marshal("video")
+			//typeBytes, _ := json.Marshal("video")
+			//mimetypeBytes, _ := json.Marshal("video/webm")
+			//pronomBytes, _ := json.Marshal("fmt/573")
+			//pronomUrlBytes, _ := json.Marshal("https://www.nationalarchives.gov.uk/pronom/fmt/573")
+			widthBytes, _ := json.Marshal(1920)
+			heightBytes, _ := json.Marshal(804)
+			durationBytes, _ := json.Marshal(629)
+
+			e := Element{
+				Link:     "test/spritefright",
+				Extended: map[string]json.RawMessage{},
+			}
+
+			e.Extended["width"] = widthBytes
+			e.Extended["height"] = heightBytes
+			e.Extended["duration"] = durationBytes
+			e.Extended["presentationType"] = presentationTypeBytes
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9936873350105504$", v); ok {
+			//titleBytes, _ := json.Marshal("Sharpest ever view of the Andromeda Galaxy")
+			//fileNameBytes, _ := json.Marshal("heic1502a_10000x3197.tif")
+			//arkQualifierBytes, _ := json.Marshal("heic1502a_10000x3197.tif")
+			//urlBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
+			//thumbnailBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
+			//downloadUrlBytes, _ := json.Marshal("mediaserver:test/andromeda10000/item") /* brauchts das jetzt oder nicht? */
+			//aclBytes, _ := json.Marshal("global/guest")
+			//formatBytes, _ := json.Marshal("Bild TIFF, 114")
+			//dateBytes, _ := json.Marshal("05.01.2015")
+			//licenseBytes, _ := json.Marshal("PDM 1.0 Deed")
+			//licenseUrlBytes, _ := json.Marshal("https://creativecommons.org/public-domain/pdm/")
+			presentationTypeBytes, _ := json.Marshal("zoomImage")
+			//typeBytes, _ := json.Marshal("image")
+			//mimetypeBytes, _ := json.Marshal("image/tiff")
+			//pronomBytes, _ := json.Marshal("fmt/353")
+			//pronomUrlBytes, _ := json.Marshal("https://www.nationalarchives.gov.uk/pronom/fmt/353")
+			widthBytes, _ := json.Marshal(10000)
+			heightBytes, _ := json.Marshal(3197)
+			e := Element{
+				Link:     "mediaserver:test/andromeda10000",
+				Extended: map[string]json.RawMessage{},
+			}
+
+			e.Extended["width"] = widthBytes
+			e.Extended["height"] = heightBytes
+			e.Extended["presentationType"] = presentationTypeBytes
+			result = append(result, e)
+		}
+	}
+
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
+// AddTestFileCount todo: remove, creates test data
+func (m *MappingRDV) AddTestFileCount() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return
+	}
+	if len(m.Mapping.RecordIdentifier) == 0 {
+		return
+	}
+
+	key = "fileCount"
+	ok = true
+	result = []Element{}
+
+	for _, v := range m.Mapping.RecordIdentifier {
+		if v == "" {
+			continue
+		}
+
+		if ok, _ := regexp.MatchString("^9972650989305504$", v); ok {
+			e := Element{
+				Text: "1 Audio",
+			}
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9967555870105504$", v); ok {
+			e := Element{
+				Text: "1 Video",
+			}
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9936873350105504$", v); ok {
+			e := Element{
+				Text: "1 Bild",
+			}
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9936340160105504$", v); ok {
+			e := Element{
+				Text: "1 PDF",
+			}
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9964808620105504$", v); ok {
+			e := Element{
+				Text: "1 JSON",
+			}
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9959975600105504$", v); ok {
+			e := Element{
+				Text: "1 EPub",
+			}
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^99988730105504$", v); ok {
+			e := Element{
+				Text: "1 Web archive",
+			}
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9972789864805504$", v); ok {
+			e := Element{
+				Text: "4 Audios",
+			}
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9972529169305504$", v); ok {
+			e := Element{
+				Text: "3 Videos",
+			}
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9972536425205504$", v); ok {
+			e := Element{
+				Text: "12 Bilder",
+			}
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9972768968505504$", v); ok {
+			e := Element{
+				Text: "8 PDFs",
+			}
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9970786120105504$", v); ok {
+			e := Element{
+				Text: "2 Audios, 3 Videos, 4 Bilder, 2 PDFs",
+			}
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9972608858805504$", v); ok {
+			e := Element{
+				Text: "4 Bilder, 3 Videos, 3 PDFs, 7 CSVs, 1 Audio",
+			}
+			result = append(result, e)
+		}
+
+	}
+
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
 // GetTranscription todo: replace once there's data in the index, currently only for testing
 func (m *MappingRDV) GetTranscription() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
@@ -3020,6 +3323,18 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.AddTestMedia()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.AddTestThumbnail()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.AddTestFileCount()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.AddTestObjectPreview()
 	if ok {
 		result[key] = value
 	}
