@@ -1476,6 +1476,8 @@ func (m *MappingRDV) GetThumbnail() (key string, result []Element, ok bool) {
 		e.Extended["width"] = widthBytes
 		heightBytes, _ := json.Marshal(file.Media.Poster.Height)
 		e.Extended["height"] = heightBytes
+		typeBytes, _ := json.Marshal("mediaserver")
+		e.Extended["type"] = typeBytes
 		result = append(result, e)
 	}
 
@@ -1514,8 +1516,11 @@ func (m *MappingRDV) GetThumbnailFromData() (key string, result []Element, ok bo
 				portraitId := matches[1]
 				portraitImageUrl := "https://ub-sipi.ub.unibas.ch/portraets/" + portraitId + ".jpx/full/{$widthInPx},/0/default.jpg"
 				e := Element{
-					Link: portraitImageUrl,
+					Link:     portraitImageUrl,
+					Extended: map[string]json.RawMessage{},
 				}
+				typeBytes, _ := json.Marshal("iiif")
+				e.Extended["type"] = typeBytes
 				result = append(result, e)
 			}
 		}
@@ -1656,46 +1661,49 @@ func (m *MappingRDV) GetMedia() (key string, result []Element, ok bool) {
 				continue
 			}
 
-			licenseUrl := ""
-			if licenseUrls, exists := licenseUrls[f.License_abbr]; exists {
-				licenseUrl = licenseUrls
-			}
+			/* todo: change criteria once we have other data types */
+			if f.Type == "image" {
+				licenseUrl := ""
+				if licenseUrls, exists := licenseUrls[f.License_abbr]; exists {
+					licenseUrl = licenseUrls
+				}
 
-			// urlBytes, _ := json.Marshal(strings.Replace(f.Uri, "mediaserver:", "https://mediaservermain.ub-dlza-test.k8s-001.unibas.ch/iiif/3/", 1))
-			urlBytes, _ := json.Marshal(f.Uri)
-			licenseBytes, _ := json.Marshal(f.License_abbr)
-			licenseUrlBytes, _ := json.Marshal(licenseUrl)
-			presentationTypeBytes, _ := json.Marshal(f.Type)
-			typeBytes, _ := json.Marshal(f.Type)
-			mimetypeBytes, _ := json.Marshal(f.Mimetype)
-			pronomBytes, _ := json.Marshal(f.Pronom)
-			pronomUrlBytes, _ := json.Marshal("https://www.nationalarchives.gov.uk/pronom/" + f.Pronom)
-			widthBytes, _ := json.Marshal(f.Width)
-			heightBytes, _ := json.Marshal(f.Height)
+				// urlBytes, _ := json.Marshal(strings.Replace(f.Uri, "mediaserver:", "https://mediaservermain.ub-dlza-test.k8s-001.unibas.ch/iiif/3/", 1))
+				urlBytes, _ := json.Marshal(f.Uri)
+				licenseBytes, _ := json.Marshal(f.License_abbr)
+				licenseUrlBytes, _ := json.Marshal(licenseUrl)
+				presentationTypeBytes, _ := json.Marshal(f.Type)
+				typeBytes, _ := json.Marshal(f.Type)
+				mimetypeBytes, _ := json.Marshal(f.Mimetype)
+				pronomBytes, _ := json.Marshal(f.Pronom)
+				pronomUrlBytes, _ := json.Marshal("https://www.nationalarchives.gov.uk/pronom/" + f.Pronom)
+				widthBytes, _ := json.Marshal(f.Width)
+				heightBytes, _ := json.Marshal(f.Height)
 
-			contentDetails := map[string]json.RawMessage{
-				/*"title": "",*/
-				/*"fileName": "",*/
-				/*"arkQualifier": "",*/
-				"url": urlBytes,
-				/*"thumbnail": "",*/
-				/*"downloadUrl": "",*/
-				/*"acl": */
-				"license":          licenseBytes,
-				"licenseUrl":       licenseUrlBytes,
-				"presentationType": presentationTypeBytes,
-				"type":             typeBytes,
-				"mimetype":         mimetypeBytes,
-				"pronom":           pronomBytes,
-				"pronomUrl":        pronomUrlBytes,
-				/*"format": "",*/
-				/*"date": "",*/
-				"width":  widthBytes,
-				"height": heightBytes,
-				/*"duration": "",*/
-				/*"orientation": "",*/
+				contentDetails := map[string]json.RawMessage{
+					/*"title": "",*/
+					/*"fileName": "",*/
+					/*"arkQualifier": "",*/
+					"url": urlBytes,
+					/*"thumbnail": "",*/
+					/*"downloadUrl": "",*/
+					/*"acl": */
+					"license":          licenseBytes,
+					"licenseUrl":       licenseUrlBytes,
+					"presentationType": presentationTypeBytes,
+					"type":             typeBytes,
+					"mimetype":         mimetypeBytes,
+					"pronom":           pronomBytes,
+					"pronomUrl":        pronomUrlBytes,
+					/*"format": "",*/
+					/*"date": "",*/
+					"width":  widthBytes,
+					"height": heightBytes,
+					/*"duration": "",*/
+					/*"orientation": "",*/
+				}
+				contentArray = append(contentArray, contentDetails)
 			}
-			contentArray = append(contentArray, contentDetails)
 		}
 	}
 
