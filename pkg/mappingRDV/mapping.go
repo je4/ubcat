@@ -1592,43 +1592,6 @@ func (m *MappingRDV) GetFileCount() (key string, result []Element, ok bool) {
 	return
 }
 
-/* toDo: extend for other collections with images */
-func (m *MappingRDV) GetObjectPreview() (key string, result []Element, ok bool) {
-	if m.Mapping == nil {
-		return
-	}
-	if m.Mapping.Location == nil {
-		return
-	}
-	if len(m.Mapping.Location.Digital) == 0 {
-		return
-	}
-
-	key = "objectPreview"
-	ok = true
-	result = []Element{}
-
-	for _, v := range m.Mapping.Location.Digital {
-		if v == nil {
-			continue
-		}
-		portraitUrlPattern := regexp.MustCompile(`.*digi/a100/portraet/bs`)
-		portraitIdPattern := regexp.MustCompile(`^.*/([^./]+)\.[^/]+$`)
-
-		if portraitUrlPattern.MatchString(v.Url) && portraitIdPattern.MatchString(v.Url) {
-			e := Element{
-				Text: "zoomImage",
-			}
-			result = append(result, e)
-		}
-	}
-
-	if len(result) == 0 {
-		return "", nil, false
-	}
-	return
-}
-
 func (m *MappingRDV) GetMedia() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return
@@ -1661,7 +1624,9 @@ func (m *MappingRDV) GetMedia() (key string, result []Element, ok bool) {
 				continue
 			}
 
-			/* todo: change criteria once we have other data types */
+			/* todo: change criteria once we have other data types
+			- set presentationType depending on type -> webarchive and epub as iframe with action in URL
+			*/
 			if f.Type == "image" {
 				licenseUrl := ""
 				if licenseUrls, exists := licenseUrls[f.License_abbr]; exists {
@@ -1750,7 +1715,9 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierBytes, _ := json.Marshal("Alex-Productions_-_Deep_(Dark_Ambient_Background_music).oga.mp3")
 			urlBytes, _ := json.Marshal("mediaserver:test/deep")
 			thumbnailBytes, _ := json.Marshal("mediaserver:test/deep$$wave")
-			downloadUrlBytes, _ := json.Marshal("mediaserver:test/deep/item")
+			thumbnailWidthBytes, _ := json.Marshal(1280)
+			thumbnailHeightBytes, _ := json.Marshal(256)
+			downloadUrlBytes, _ := json.Marshal("mediaserver:test/deep")
 			aclBytes, _ := json.Marshal("global/guest")
 			formatBytes, _ := json.Marshal("Audio, 6.3 MB")
 			/*dateBytes, _ := json.Marshal()*/
@@ -1769,6 +1736,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierBytes,
 				"url":              urlBytes,
 				"thumbnail":        thumbnailBytes,
+				"thumbnailWidth":   thumbnailWidthBytes,
+				"thumbnailHeight":  thumbnailHeightBytes,
 				"downloadUrl":      downloadUrlBytes,
 				"acl":              aclBytes,
 				"license":          licenseBytes,
@@ -1793,7 +1762,9 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierBytes, _ := json.Marshal("Sprite_Fright_-_Blender_Open_Movie-full_movie.webm.1080p.vp9.webm")
 			urlBytes, _ := json.Marshal("mediaserver:test/spritefright")
 			thumbnailBytes, _ := json.Marshal("mediaserver:test/spritefright$$shot$$13")
-			downloadUrlBytes, _ := json.Marshal("mediaserver:test/spritefright/item") /* brauchts das jetzt oder nicht? */
+			thumbnailWidthBytes, _ := json.Marshal(1920)
+			thumbnailHeightBytes, _ := json.Marshal(804)
+			downloadUrlBytes, _ := json.Marshal("mediaserver:test/spritefright")
 			aclBytes, _ := json.Marshal("global/guest")
 			formatBytes, _ := json.Marshal("Video, 188.3 MB")
 			/*dateBytes, _ := json.Marshal("")*/
@@ -1814,6 +1785,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierBytes,
 				"url":              urlBytes,
 				"thumbnail":        thumbnailBytes,
+				"thumbnailWidth":   thumbnailWidthBytes,
+				"thumbnailHeight":  thumbnailHeightBytes,
 				"downloadUrl":      downloadUrlBytes,
 				"acl":              aclBytes,
 				"license":          licenseBytes,
@@ -1832,8 +1805,7 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			}
 			contentArray = append(contentArray, contentDetails)
 		}
-		/* Test Beispiel 1 Image -> siehe echtes media */
-		/* Test Beispiel 1 Zoom Image */
+		/* Test Beispiel 1 Image */
 		if ok, _ := regexp.MatchString("^9936873350105504$", v); ok {
 
 			titleBytes, _ := json.Marshal("Sharpest ever view of the Andromeda Galaxy")
@@ -1841,13 +1813,15 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierBytes, _ := json.Marshal("heic1502a_10000x3197.tif")
 			urlBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
 			thumbnailBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
-			downloadUrlBytes, _ := json.Marshal("mediaserver:test/andromeda10000/item") /* brauchts das jetzt oder nicht? */
+			thumbnailWidthBytes, _ := json.Marshal(10000)
+			thumbnailHeightBytes, _ := json.Marshal(3197)
+			downloadUrlBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
 			aclBytes, _ := json.Marshal("global/guest")
 			formatBytes, _ := json.Marshal("Bild TIFF, 114")
 			dateBytes, _ := json.Marshal("05.01.2015")
 			licenseBytes, _ := json.Marshal("PDM 1.0 Deed")
 			licenseUrlBytes, _ := json.Marshal("https://creativecommons.org/public-domain/pdm/")
-			presentationTypeBytes, _ := json.Marshal("zoomImage")
+			presentationTypeBytes, _ := json.Marshal("image")
 			typeBytes, _ := json.Marshal("image")
 			mimetypeBytes, _ := json.Marshal("image/tiff")
 			pronomBytes, _ := json.Marshal("fmt/353")
@@ -1861,6 +1835,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierBytes,
 				"url":              urlBytes,
 				"thumbnail":        thumbnailBytes,
+				"thumbnailWidth":   thumbnailWidthBytes,
+				"thumbnailHeight":  thumbnailHeightBytes,
 				"downloadUrl":      downloadUrlBytes,
 				"acl":              aclBytes,
 				"license":          licenseBytes,
@@ -1886,7 +1862,9 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierBytes, _ := json.Marshal("stellungnahme_slsp_ag_oeffentlichkeitsgesetz (1).pdf")
 			urlBytes, _ := json.Marshal("mediaserver:test/slsp")
 			thumbnailBytes, _ := json.Marshal("mediaserver:test/slsp$$cover")
-			downloadUrlBytes, _ := json.Marshal("mediaserver:test/slsp/item")
+			thumbnailWidthBytes, _ := json.Marshal(1191)
+			thumbnailHeightBytes, _ := json.Marshal(1684)
+			downloadUrlBytes, _ := json.Marshal("mediaserver:test/slsp")
 			aclBytes, _ := json.Marshal("global/guest")
 			formatBytes, _ := json.Marshal("PDF, 279 KB")
 			/*dateBytes, _ := json.Marshal("25.01.2021")*/
@@ -1906,6 +1884,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierBytes,
 				"url":              urlBytes,
 				"thumbnail":        thumbnailBytes,
+				"thumbnailWidth":   thumbnailWidthBytes,
+				"thumbnailHeight":  thumbnailHeightBytes,
 				"downloadUrl":      downloadUrlBytes,
 				"acl":              aclBytes,
 				"license":          licenseBytes,
@@ -1931,7 +1911,7 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierBytes, _ := json.Marshal("media_file_links_000001.csv")
 			urlBytes, _ := json.Marshal("mediaserver:test/media_file_links_000001.csv")
 			/*thumbnailBytes, _ := json.Marshal("")*/
-			downloadUrlBytes, _ := json.Marshal("mediaserver:test/media_file_links_000001.csv/item")
+			downloadUrlBytes, _ := json.Marshal("mediaserver:test/media_file_links_000001.csv")
 			aclBytes, _ := json.Marshal("global/guest")
 			formatBytes, _ := json.Marshal("CSV, 398 KB")
 			dateBytes, _ := json.Marshal("22.11.2024")
@@ -1971,7 +1951,7 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierBytes, _ := json.Marshal("metadata_000001.jsonl")
 			urlBytes, _ := json.Marshal("mediaserver:test/metadata_000001.jsonl")
 			/*thumbnailBytes, _ := json.Marshal("")*/
-			downloadUrlBytes, _ := json.Marshal("mediaserver:test/metadata_000001.jsonl/item")
+			downloadUrlBytes, _ := json.Marshal("mediaserver:test/metadata_000001.jsonl")
 			aclBytes, _ := json.Marshal("global/guest")
 			formatBytes, _ := json.Marshal("PDF, 279 KB")
 			dateBytes, _ := json.Marshal("22.11.2024")
@@ -2003,21 +1983,21 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			}
 			contentArray = append(contentArray, contentDetails)
 		}
-		/* Test Beispiel 1 epub -> iframe? */
+		/* Test Beispiel 1 epub -> iframe */
 		if ok, _ := regexp.MatchString("^9959975600105504$", v); ok {
 
 			titleBytes, _ := json.Marshal("EPUB 3.0 Specification")
 			fileNameBytes, _ := json.Marshal("epub30-spec.epub")
 			arkQualifierBytes, _ := json.Marshal("epub30-spec.epub")
-			urlBytes, _ := json.Marshal("mediaserver:test/epub30-spec")
+			urlBytes, _ := json.Marshal("mediaserver:test/epub30-spec/foliateviewer") // mit action, da iframe
 			/*thumbnailBytes, _ := json.Marshal("") */
-			downloadUrlBytes, _ := json.Marshal("mediaserver:test/epub30-spec/item") /* brauchts das jetzt oder nicht? */
+			downloadUrlBytes, _ := json.Marshal("mediaserver:test/epub30-spec")
 			aclBytes, _ := json.Marshal("global/guest")
 			formatBytes, _ := json.Marshal("EPUB, 222 KB")
 			/*dateBytes, _ := json.Marshal("")*/
 			licenseBytes, _ := json.Marshal("PDM 1.0 Deed")
 			licenseUrlBytes, _ := json.Marshal("https://creativecommons.org/public-domain/pdm/")
-			presentationTypeBytes, _ := json.Marshal("epub")
+			presentationTypeBytes, _ := json.Marshal("iframe")
 			typeBytes, _ := json.Marshal("text")
 			mimetypeBytes, _ := json.Marshal("application/epub+zip")
 			pronomBytes, _ := json.Marshal("fmt/483")
@@ -2043,15 +2023,15 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			}
 			contentArray = append(contentArray, contentDetails)
 		}
-		/* Test Beispiel 1 wacz -> iframe? */
+		/* Test Beispiel 1 wacz -> iframe */
 		if ok, _ := regexp.MatchString("^99988730105504$", v); ok {
 
 			titleBytes, _ := json.Marshal("Website UB Basel")
 			fileNameBytes, _ := json.Marshal("ub-basel.wacz")
 			arkQualifierBytes, _ := json.Marshal("ub-basel.wacz")
-			urlBytes, _ := json.Marshal("mediaserver:test/ub-baselweb/replaywebviewer")
-			/*thumbnailBytes, _ := json.Marshal("")*/
-			downloadUrlBytes, _ := json.Marshal("mediaserver:test/ub-baselweb/item") /* brauchts das jetzt oder nicht? */
+			urlBytes, _ := json.Marshal("mediaserver:test/ub-baselweb/replaywebviewer") // mit action, da iframe
+			//thumbnailBytes, _ := json.Marshal("")
+			//downloadUrlBytes, _ := json.Marshal("mediaserver:test/ub-baselweb/item")
 			aclBytes, _ := json.Marshal("global/guest")
 			formatBytes, _ := json.Marshal("Web archive")
 			/*dateBytes, _ := json.Marshal("")*/
@@ -2068,8 +2048,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"fileName":     fileNameBytes,
 				"arkQualifier": arkQualifierBytes,
 				"url":          urlBytes,
-				/*"thumbnail":        thumbnailBytes,*/
-				"downloadUrl":      downloadUrlBytes,
+				//"thumbnail":        thumbnailBytes,
+				//"downloadUrl":      downloadUrlBytes,
 				"acl":              aclBytes,
 				"license":          licenseBytes,
 				"licenseUrl":       licenseUrlBytes,
@@ -2089,7 +2069,9 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierBytes, _ := json.Marshal("Alex-Productions_-_Deep_(Dark_Ambient_Background_music).oga.mp3")
 			urlBytes, _ := json.Marshal("mediaserver:test/deep")
 			thumbnailBytes, _ := json.Marshal("mediaserver:test/deep$$wave")
-			downloadUrlBytes, _ := json.Marshal("mediaserver:test/deep/item")
+			thumbnailWidthBytes, _ := json.Marshal(1280)
+			thumbnailHeightBytes, _ := json.Marshal(256)
+			downloadUrlBytes, _ := json.Marshal("mediaserver:test/deep")
 			aclBytes, _ := json.Marshal("global/guest")
 			formatBytes, _ := json.Marshal("Audio, 6.3 MB")
 			/*dateBytes, _ := json.Marshal()*/
@@ -2108,6 +2090,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierBytes,
 				"url":              urlBytes,
 				"thumbnail":        thumbnailBytes,
+				"thumbnailWidth":   thumbnailWidthBytes,
+				"thumbnailHeight":  thumbnailHeightBytes,
 				"downloadUrl":      downloadUrlBytes,
 				"acl":              aclBytes,
 				"license":          licenseBytes,
@@ -2132,7 +2116,9 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierBytes, _ := json.Marshal("Sprite_Fright_-_Blender_Open_Movie-full_movie.webm.1080p.vp9.webm")
 			urlBytes, _ := json.Marshal("mediaserver:test/spritefright")
 			thumbnailBytes, _ := json.Marshal("mediaserver:test/spritefright$$shot$$13")
-			downloadUrlBytes, _ := json.Marshal("mediaserver:test/spritefright/item") /* brauchts das jetzt oder nicht? */
+			thumbnailWidthBytes, _ := json.Marshal(1920)
+			thumbnailHeightBytes, _ := json.Marshal(804)
+			downloadUrlBytes, _ := json.Marshal("mediaserver:test/spritefright")
 			aclBytes, _ := json.Marshal("global/guest")
 			formatBytes, _ := json.Marshal("Video, 188.3 MB")
 			/*dateBytes, _ := json.Marshal("")*/
@@ -2153,6 +2139,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierBytes,
 				"url":              urlBytes,
 				"thumbnail":        thumbnailBytes,
+				"thumbnailWidth":   thumbnailWidthBytes,
+				"thumbnailHeight":  thumbnailHeightBytes,
 				"downloadUrl":      downloadUrlBytes,
 				"acl":              aclBytes,
 				"license":          licenseBytes,
@@ -2179,13 +2167,15 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierBytes, _ := json.Marshal("heic1502a_10000x3197.tif")
 			urlBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
 			thumbnailBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
-			downloadUrlBytes, _ := json.Marshal("mediaserver:test/andromeda10000/item") /* brauchts das jetzt oder nicht? */
+			thumbnailWidthBytes, _ := json.Marshal(10000)
+			thumbnailHeightBytes, _ := json.Marshal(3197)
+			downloadUrlBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
 			aclBytes, _ := json.Marshal("global/guest")
 			formatBytes, _ := json.Marshal("Bild TIFF, 114")
 			dateBytes, _ := json.Marshal("05.01.2015")
 			licenseBytes, _ := json.Marshal("PDM 1.0 Deed")
 			licenseUrlBytes, _ := json.Marshal("https://creativecommons.org/public-domain/pdm/")
-			presentationTypeBytes, _ := json.Marshal("zoomImage")
+			presentationTypeBytes, _ := json.Marshal("image")
 			typeBytes, _ := json.Marshal("image")
 			mimetypeBytes, _ := json.Marshal("image/tiff")
 			pronomBytes, _ := json.Marshal("fmt/353")
@@ -2199,6 +2189,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierBytes,
 				"url":              urlBytes,
 				"thumbnail":        thumbnailBytes,
+				"thumbnailWidth":   thumbnailWidthBytes,
+				"thumbnailHeight":  thumbnailHeightBytes,
 				"downloadUrl":      downloadUrlBytes,
 				"acl":              aclBytes,
 				"license":          licenseBytes,
@@ -2224,7 +2216,9 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierBytes, _ := json.Marshal("stellungnahme_slsp_ag_oeffentlichkeitsgesetz (1).pdf")
 			urlBytes, _ := json.Marshal("mediaserver:test/slsp")
 			thumbnailBytes, _ := json.Marshal("mediaserver:test/slsp$$cover")
-			downloadUrlBytes, _ := json.Marshal("mediaserver:test/slsp/item")
+			thumbnailWidthBytes, _ := json.Marshal(1191)
+			thumbnailHeightBytes, _ := json.Marshal(1684)
+			downloadUrlBytes, _ := json.Marshal("mediaserver:test/slsp")
 			aclBytes, _ := json.Marshal("global/guest")
 			formatBytes, _ := json.Marshal("PDF, 279 KB")
 			/*dateBytes, _ := json.Marshal("25.01.2021")*/
@@ -2244,6 +2238,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierBytes,
 				"url":              urlBytes,
 				"thumbnail":        thumbnailBytes,
+				"thumbnailWidth":   thumbnailWidthBytes,
+				"thumbnailHeight":  thumbnailHeightBytes,
 				"downloadUrl":      downloadUrlBytes,
 				"acl":              aclBytes,
 				"license":          licenseBytes,
@@ -2269,7 +2265,9 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierAudioBytes, _ := json.Marshal("Alex-Productions_-_Deep_(Dark_Ambient_Background_music).oga.mp3")
 			urlAudioBytes, _ := json.Marshal("mediaserver:test/deep")
 			thumbnailAudioBytes, _ := json.Marshal("mediaserver:test/deep$$wave")
-			downloadUrlAudioBytes, _ := json.Marshal("mediaserver:test/deep/item")
+			thumbnailAudioWidthBytes, _ := json.Marshal(1280)
+			thumbnailAudioHeightBytes, _ := json.Marshal(256)
+			downloadUrlAudioBytes, _ := json.Marshal("mediaserver:test/deep")
 			aclAudioBytes, _ := json.Marshal("global/guest")
 			formatAudioBytes, _ := json.Marshal("Audio, 6.3 MB")
 			/*dateAudioBytes, _ := json.Marshal()*/
@@ -2288,6 +2286,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierAudioBytes,
 				"url":              urlAudioBytes,
 				"thumbnail":        thumbnailAudioBytes,
+				"thumbnailWidth":   thumbnailAudioWidthBytes,
+				"thumbnailHeight":  thumbnailAudioHeightBytes,
 				"downloadUrl":      downloadUrlAudioBytes,
 				"acl":              aclAudioBytes,
 				"license":          licenseAudioBytes,
@@ -2308,7 +2308,9 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierVideoBytes, _ := json.Marshal("Sprite_Fright_-_Blender_Open_Movie-full_movie.webm.1080p.vp9.webm")
 			urlVideoBytes, _ := json.Marshal("mediaserver:test/spritefright")
 			thumbnailVideoBytes, _ := json.Marshal("mediaserver:test/spritefright$$shot$$13")
-			downloadUrlVideoBytes, _ := json.Marshal("mediaserver:test/spritefright/item") /* brauchts das jetzt oder nicht? */
+			thumbnailVideoWidthBytes, _ := json.Marshal(1920)
+			thumbnailVideoHeightBytes, _ := json.Marshal(804)
+			downloadUrlVideoBytes, _ := json.Marshal("mediaserver:test/spritefright")
 			aclVideoBytes, _ := json.Marshal("global/guest")
 			formatVideoBytes, _ := json.Marshal("Video, 188.3 MB")
 			/*dateVideoBytes, _ := json.Marshal("")*/
@@ -2329,6 +2331,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierVideoBytes,
 				"url":              urlVideoBytes,
 				"thumbnail":        thumbnailVideoBytes,
+				"thumbnailWidth":   thumbnailVideoWidthBytes,
+				"thumbnailHeight":  thumbnailVideoHeightBytes,
 				"downloadUrl":      downloadUrlVideoBytes,
 				"acl":              aclVideoBytes,
 				"license":          licenseVideoBytes,
@@ -2351,13 +2355,15 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierImageBytes, _ := json.Marshal("heic1502a_10000x3197.tif")
 			urlImageBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
 			thumbnailImageBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
-			downloadUrlImageBytes, _ := json.Marshal("mediaserver:test/andromeda10000/item") /* brauchts das jetzt oder nicht? */
+			thumbnailImageWidthBytes, _ := json.Marshal(10000)
+			thumbnailImageHeightBytes, _ := json.Marshal(3197)
+			downloadUrlImageBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
 			aclImageBytes, _ := json.Marshal("global/guest")
 			formatImageBytes, _ := json.Marshal("Bild TIFF, 114")
 			dateImageBytes, _ := json.Marshal("05.01.2015")
 			licenseImageBytes, _ := json.Marshal("PDM 1.0 Deed")
 			licenseUrlImageBytes, _ := json.Marshal("https://creativecommons.org/public-domain/pdm/")
-			presentationTypeImageBytes, _ := json.Marshal("zoomImage")
+			presentationTypeImageBytes, _ := json.Marshal("image")
 			typeImageBytes, _ := json.Marshal("image")
 			mimetypeImageBytes, _ := json.Marshal("image/tiff")
 			pronomImageBytes, _ := json.Marshal("fmt/353")
@@ -2371,6 +2377,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierImageBytes,
 				"url":              urlImageBytes,
 				"thumbnail":        thumbnailImageBytes,
+				"thumbnailWidth":   thumbnailImageWidthBytes,
+				"thumbnailHeight":  thumbnailImageHeightBytes,
 				"downloadUrl":      downloadUrlImageBytes,
 				"acl":              aclImageBytes,
 				"license":          licenseImageBytes,
@@ -2392,7 +2400,9 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierPdfBytes, _ := json.Marshal("stellungnahme_slsp_ag_oeffentlichkeitsgesetz (1).pdf")
 			urlPdfBytes, _ := json.Marshal("mediaserver:test/slsp")
 			thumbnailPdfBytes, _ := json.Marshal("mediaserver:test/slsp$$cover")
-			downloadUrlPdfBytes, _ := json.Marshal("mediaserver:test/slsp/item")
+			thumbnailWidthBytes, _ := json.Marshal(1191)
+			thumbnailHeightBytes, _ := json.Marshal(1684)
+			downloadUrlPdfBytes, _ := json.Marshal("mediaserver:test/slsp")
 			aclPdfBytes, _ := json.Marshal("global/guest")
 			formatPdfBytes, _ := json.Marshal("PDF, 279 KB")
 			/*datePdfBytes, _ := json.Marshal("25.01.2021")*/
@@ -2412,6 +2422,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierPdfBytes,
 				"url":              urlPdfBytes,
 				"thumbnail":        thumbnailPdfBytes,
+				"thumbnailWidth":   thumbnailWidthBytes,
+				"thumbnailHeight":  thumbnailHeightBytes,
 				"downloadUrl":      downloadUrlPdfBytes,
 				"acl":              aclPdfBytes,
 				"license":          licensePdfBytes,
@@ -2441,7 +2453,9 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierAudioBytes, _ := json.Marshal("Alex-Productions_-_Deep_(Dark_Ambient_Background_music).oga.mp3")
 			urlAudioBytes, _ := json.Marshal("mediaserver:test/deep")
 			thumbnailAudioBytes, _ := json.Marshal("mediaserver:test/deep$$wave")
-			downloadUrlAudioBytes, _ := json.Marshal("mediaserver:test/deep/item")
+			thumbnailAudioWidthBytes, _ := json.Marshal(1280)
+			thumbnailAudioHeightBytes, _ := json.Marshal(256)
+			downloadUrlAudioBytes, _ := json.Marshal("mediaserver:test/deep")
 			aclAudioBytes, _ := json.Marshal("global/guest")
 			formatAudioBytes, _ := json.Marshal("Audio, 6.3 MB")
 			/*dateAudioBytes, _ := json.Marshal()*/
@@ -2460,6 +2474,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierAudioBytes,
 				"url":              urlAudioBytes,
 				"thumbnail":        thumbnailAudioBytes,
+				"thumbnailWidth":   thumbnailAudioWidthBytes,
+				"thumbnailHeight":  thumbnailAudioHeightBytes,
 				"downloadUrl":      downloadUrlAudioBytes,
 				"acl":              aclAudioBytes,
 				"license":          licenseAudioBytes,
@@ -2480,7 +2496,9 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierVideoBytes, _ := json.Marshal("Sprite_Fright_-_Blender_Open_Movie-full_movie.webm.1080p.vp9.webm")
 			urlVideoBytes, _ := json.Marshal("mediaserver:test/spritefright")
 			thumbnailVideoBytes, _ := json.Marshal("mediaserver:test/spritefright$$shot$$13")
-			downloadUrlVideoBytes, _ := json.Marshal("mediaserver:test/spritefright/item") /* brauchts das jetzt oder nicht? */
+			thumbnailVideoWidthBytes, _ := json.Marshal(1920)
+			thumbnailVideoHeightBytes, _ := json.Marshal(804)
+			downloadUrlVideoBytes, _ := json.Marshal("mediaserver:test/spritefright")
 			aclVideoBytes, _ := json.Marshal("global/guest")
 			formatVideoBytes, _ := json.Marshal("Video, 188.3 MB")
 			/*dateVideoBytes, _ := json.Marshal("")*/
@@ -2501,6 +2519,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierVideoBytes,
 				"url":              urlVideoBytes,
 				"thumbnail":        thumbnailVideoBytes,
+				"thumbnailWidth":   thumbnailVideoWidthBytes,
+				"thumbnailHeight":  thumbnailVideoHeightBytes,
 				"downloadUrl":      downloadUrlVideoBytes,
 				"acl":              aclVideoBytes,
 				"license":          licenseVideoBytes,
@@ -2523,13 +2543,15 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierImageBytes, _ := json.Marshal("heic1502a_10000x3197.tif")
 			urlImageBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
 			thumbnailImageBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
-			downloadUrlImageBytes, _ := json.Marshal("mediaserver:test/andromeda10000/item") /* brauchts das jetzt oder nicht? */
+			thumbnailImageWidthBytes, _ := json.Marshal(10000)
+			thumbnailImageHeightBytes, _ := json.Marshal(3197)
+			downloadUrlImageBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
 			aclImageBytes, _ := json.Marshal("global/guest")
 			formatImageBytes, _ := json.Marshal("Bild TIFF, 114")
 			dateImageBytes, _ := json.Marshal("05.01.2015")
 			licenseImageBytes, _ := json.Marshal("PDM 1.0 Deed")
 			licenseUrlImageBytes, _ := json.Marshal("https://creativecommons.org/public-domain/pdm/")
-			presentationTypeImageBytes, _ := json.Marshal("zoomImage")
+			presentationTypeImageBytes, _ := json.Marshal("image")
 			typeImageBytes, _ := json.Marshal("image")
 			mimetypeImageBytes, _ := json.Marshal("image/tiff")
 			pronomImageBytes, _ := json.Marshal("fmt/353")
@@ -2543,6 +2565,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierImageBytes,
 				"url":              urlImageBytes,
 				"thumbnail":        thumbnailImageBytes,
+				"thumbnailWidth":   thumbnailImageWidthBytes,
+				"thumbnailHeight":  thumbnailImageHeightBytes,
 				"downloadUrl":      downloadUrlImageBytes,
 				"acl":              aclImageBytes,
 				"license":          licenseImageBytes,
@@ -2564,7 +2588,9 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierPdfBytes, _ := json.Marshal("stellungnahme_slsp_ag_oeffentlichkeitsgesetz (1).pdf")
 			urlPdfBytes, _ := json.Marshal("mediaserver:test/slsp")
 			thumbnailPdfBytes, _ := json.Marshal("mediaserver:test/slsp$$cover")
-			downloadUrlPdfBytes, _ := json.Marshal("mediaserver:test/slsp/item")
+			thumbnailPdfWidthBytes, _ := json.Marshal(1191)
+			thumbnailPdfHeightBytes, _ := json.Marshal(1684)
+			downloadUrlPdfBytes, _ := json.Marshal("mediaserver:test/slsp")
 			aclPdfBytes, _ := json.Marshal("global/guest")
 			formatPdfBytes, _ := json.Marshal("PDF, 279 KB")
 			/*datePdfBytes, _ := json.Marshal("25.01.2021")*/
@@ -2584,6 +2610,8 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 				"arkQualifier":     arkQualifierPdfBytes,
 				"url":              urlPdfBytes,
 				"thumbnail":        thumbnailPdfBytes,
+				"thumbnailWidth":   thumbnailPdfWidthBytes,
+				"thumbnailHeight":  thumbnailPdfHeightBytes,
 				"downloadUrl":      downloadUrlPdfBytes,
 				"acl":              aclPdfBytes,
 				"license":          licensePdfBytes,
@@ -2605,7 +2633,7 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			arkQualifierCsvBytes, _ := json.Marshal("media_file_links_000001.csv")
 			urlCsvBytes, _ := json.Marshal("mediaserver:test/media_file_links_000001.csv")
 			/*thumbnailCsvBytes, _ := json.Marshal("")*/
-			downloadUrlCsvBytes, _ := json.Marshal("mediaserver:test/media_file_links_000001.csv/item")
+			downloadUrlCsvBytes, _ := json.Marshal("mediaserver:test/media_file_links_000001.csv")
 			aclCsvBytes, _ := json.Marshal("global/guest")
 			formatCsvBytes, _ := json.Marshal("CSV, 398 KB")
 			dateCsvBytes, _ := json.Marshal("22.11.2024")
@@ -2746,122 +2774,6 @@ func (m *MappingRDV) AddTestThumbnail() (key string, result []Element, ok bool) 
 			e.Extended["height"] = heightBytes
 			typeBytes, _ := json.Marshal("mediaserver")
 			e.Extended["type"] = typeBytes
-			result = append(result, e)
-		}
-	}
-
-	if len(result) == 0 {
-		return "", nil, false
-	}
-	return
-}
-
-// AddTestObjectPreview todo: remove, creates test data
-func (m *MappingRDV) AddTestObjectPreview() (key string, result []Element, ok bool) {
-	if m.Mapping == nil {
-		return
-	}
-	if len(m.Mapping.RecordIdentifier) == 0 {
-		return
-	}
-
-	key = "objectPreview"
-	ok = true
-	result = []Element{}
-
-	for _, v := range m.Mapping.RecordIdentifier {
-		if v == "" {
-			continue
-		}
-		if ok, _ := regexp.MatchString("^9972650989305504$", v); ok {
-
-			// titleBytes, _ := json.Marshal("Deep")
-			// fileNameBytes, _ := json.Marshal("Alex-Productions_-_Deep_(Dark_Ambient_Background_music).oga.mp3")
-			// arkQualifierBytes, _ := json.Marshal("Alex-Productions_-_Deep_(Dark_Ambient_Background_music).oga.mp3")
-			// urlBytes, _ := json.Marshal("mediaserver:test/deep")
-			// thumbnailBytes, _ := json.Marshal("mediaserver:test/deep$$wave")
-			// downloadUrlBytes, _ := json.Marshal("mediaserver:test/deep/item")
-			// aclBytes, _ := json.Marshal("global/guest")
-			// formatBytes, _ := json.Marshal("Audio, 6.3 MB")
-			// dateBytes, _ := json.Marshal()
-			// licenseBytes, _ := json.Marshal("PDM 1.0 Deed")
-			// licenseUrlBytes, _ := json.Marshal("https://creativecommons.org/public-domain/pdm/")
-			presentationTypeBytes, _ := json.Marshal("audio")
-			// typeBytes, _ := json.Marshal("audio")
-			// mimetypeBytes, _ := json.Marshal("audio/mp3")
-			// pronomBytes, _ := json.Marshal("fmt/134")
-			// pronomUrlBytes, _ := json.Marshal("https://www.nationalarchives.gov.uk/pronom/fmt/134")
-			durationBytes, _ := json.Marshal(268)
-
-			e := Element{
-				Link:     "mediaserver:test/deep",
-				Extended: map[string]json.RawMessage{},
-			}
-
-			e.Extended["presentationType"] = presentationTypeBytes
-			e.Extended["duration"] = durationBytes
-			result = append(result, e)
-		}
-		if ok, _ := regexp.MatchString("^9967555870105504$", v); ok {
-
-			//titleBytes, _ := json.Marshal("Sprite Fright")
-			//fileNameBytes, _ := json.Marshal("Sprite_Fright_-_Blender_Open_Movie-full_movie.webm.1080p.vp9.webm")
-			//arkQualifierBytes, _ := json.Marshal("Sprite_Fright_-_Blender_Open_Movie-full_movie.webm.1080p.vp9.webm")
-			//urlBytes, _ := json.Marshal("mediaserver:test/spritefright")
-			//thumbnailBytes, _ := json.Marshal("mediaserver:test/spritefright$$shot$$13")
-			//downloadUrlBytes, _ := json.Marshal("mediaserver:test/spritefright/item") /* brauchts das jetzt oder nicht? */
-			//aclBytes, _ := json.Marshal("global/guest")
-			//formatBytes, _ := json.Marshal("Video, 188.3 MB")
-			//dateBytes, _ := json.Marshal("")
-			//licenseBytes, _ := json.Marshal("PDM 1.0 Deed")
-			//licenseUrlBytes, _ := json.Marshal("https://creativecommons.org/public-domain/pdm/")
-			presentationTypeBytes, _ := json.Marshal("video")
-			//typeBytes, _ := json.Marshal("video")
-			//mimetypeBytes, _ := json.Marshal("video/webm")
-			//pronomBytes, _ := json.Marshal("fmt/573")
-			//pronomUrlBytes, _ := json.Marshal("https://www.nationalarchives.gov.uk/pronom/fmt/573")
-			widthBytes, _ := json.Marshal(1920)
-			heightBytes, _ := json.Marshal(804)
-			durationBytes, _ := json.Marshal(629)
-
-			e := Element{
-				Link:     "test/spritefright",
-				Extended: map[string]json.RawMessage{},
-			}
-
-			e.Extended["width"] = widthBytes
-			e.Extended["height"] = heightBytes
-			e.Extended["duration"] = durationBytes
-			e.Extended["presentationType"] = presentationTypeBytes
-			result = append(result, e)
-		}
-		if ok, _ := regexp.MatchString("^9936873350105504$", v); ok {
-			//titleBytes, _ := json.Marshal("Sharpest ever view of the Andromeda Galaxy")
-			//fileNameBytes, _ := json.Marshal("heic1502a_10000x3197.tif")
-			//arkQualifierBytes, _ := json.Marshal("heic1502a_10000x3197.tif")
-			//urlBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
-			//thumbnailBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
-			//downloadUrlBytes, _ := json.Marshal("mediaserver:test/andromeda10000/item") /* brauchts das jetzt oder nicht? */
-			//aclBytes, _ := json.Marshal("global/guest")
-			//formatBytes, _ := json.Marshal("Bild TIFF, 114")
-			//dateBytes, _ := json.Marshal("05.01.2015")
-			//licenseBytes, _ := json.Marshal("PDM 1.0 Deed")
-			//licenseUrlBytes, _ := json.Marshal("https://creativecommons.org/public-domain/pdm/")
-			presentationTypeBytes, _ := json.Marshal("zoomImage")
-			//typeBytes, _ := json.Marshal("image")
-			//mimetypeBytes, _ := json.Marshal("image/tiff")
-			//pronomBytes, _ := json.Marshal("fmt/353")
-			//pronomUrlBytes, _ := json.Marshal("https://www.nationalarchives.gov.uk/pronom/fmt/353")
-			widthBytes, _ := json.Marshal(10000)
-			heightBytes, _ := json.Marshal(3197)
-			e := Element{
-				Link:     "mediaserver:test/andromeda10000",
-				Extended: map[string]json.RawMessage{},
-			}
-
-			e.Extended["width"] = widthBytes
-			e.Extended["height"] = heightBytes
-			e.Extended["presentationType"] = presentationTypeBytes
 			result = append(result, e)
 		}
 	}
@@ -3310,10 +3222,6 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
-	key, value, ok = m.GetObjectPreview()
-	if ok {
-		result[key] = value
-	}
 	key, value, ok = m.GetAcl()
 	if ok {
 		result[key] = value
@@ -3331,10 +3239,6 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.AddTestFileCount()
-	if ok {
-		result[key] = value
-	}
-	key, value, ok = m.AddTestObjectPreview()
 	if ok {
 		result[key] = value
 	}
