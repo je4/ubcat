@@ -429,7 +429,7 @@ type Media struct {
 }
 
 type Structure struct {
-	DigitalObject *DigitalObject `json:"digitalObject,omitempty"`
+	DigitalObject *DigitalObject `json:"digital_object,omitempty"`
 }
 
 type DigitalObject struct {
