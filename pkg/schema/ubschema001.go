@@ -433,15 +433,39 @@ type Structure struct {
 }
 
 type DigitalObject struct {
-	DigitalContainer map[string]json.RawMessage `json:"digitalContainer,omitempty"`
-	FromRecordHeader map[string]json.RawMessage `json:"fromRecordHeader,omitempty"`
-	Header           map[string]json.RawMessage `json:"Header,omitempty"`
+	DigitalContainer []*DigitalContainer        `json:"digital_container,omitempty"`
+	FromRecordHeader map[string]json.RawMessage `json:"from_record_header,omitempty"`
+	Header           map[string]json.RawMessage `json:"header,omitempty"`
 	Id               string                     `json:"id,omitempty"`
-	RecordIdentifier map[string]json.RawMessage `json:"recordIdentifier,omitempty"`
+	RecordIdentifier map[string]json.RawMessage `json:"record_identifier,omitempty"`
 	Label            string                     `json:"label,omitempty"`
 	Type             string                     `json:"type,omitempty"`
 }
 
+type DigitalContainer struct {
+	ID               string              `json:"id"`
+	Type             string              `json:"type,omitempty"`
+	Label            string              `json:"label,omitempty"`
+	Order            string              `json:"order,omitempty"`
+	Files            []*DigitalFile      `json:"files,omitempty"`
+	DigitalContainer []*DigitalContainer `json:"digital_container,omitempty"`
+}
+type DigitalFile struct {
+	ID              string            `json:"id"`
+	MediaserverID   string            `json:"mediaserver_id"`
+	MimeType        string            `json:"mime_type,omitempty"`
+	Created         time.Time         `json:"created,omitempty"`
+	Checksum        string            `json:"checksum,omitempty"`
+	ChecksumType    string            `json:"checksum_type,omitempty"`
+	Href            string            `json:"href,omitempty"`
+	HrefMediaserver string            `json:"href_mediaserver,omitempty"`
+	OldHref         string            `json:"old_href,omitempty"`
+	LocType         string            `json:"loc_type,omitempty"`
+	Label           string            `json:"label,omitempty"`
+	Size            int               `json:"size,omitempty"`
+	Internal        bool              `json:"internal,omitempty"`
+	HrefMap         map[string]string `json:"href_map,omitempty"`
+}
 type Medias struct {
 	Height       int64  `json:"height,omitempty"`
 	License_abbr string `json:"license_abbr,omitempty"`
