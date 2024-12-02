@@ -1507,7 +1507,7 @@ func (m *MappingRDV) GetThumbnailFromData() (key string, result []Element, ok bo
 		if v == nil {
 			continue
 		}
-		portraitUrlPattern := regexp.MustCompile(`.*digi/a100/portraet/bs`)
+		portraitUrlPattern := regexp.MustCompile(`.*digi/a100/portraet/`)
 		portraitIdPattern := regexp.MustCompile(`^.*/([^./]+)\.[^/]+$`)
 
 		if portraitUrlPattern.MatchString(v.Url) {
@@ -2960,7 +2960,7 @@ func (m *MappingRDV) GetIIIFManifest() (key string, result []Element, ok bool) {
 		if v == nil {
 			continue
 		}
-		portraitUrlPattern := regexp.MustCompile(`.*digi/a100/portraet/bs`)
+		portraitUrlPattern := regexp.MustCompile(`.*digi/a100/portraet/`)
 		portraitIdPattern := regexp.MustCompile(`^.*/([^./]+)\.[^/]+$`)
 
 		if portraitUrlPattern.MatchString(v.Url) && portraitIdPattern.MatchString(v.Url) {
