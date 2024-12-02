@@ -2499,7 +2499,7 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 			thumbnailVideoWidthBytes, _ := json.Marshal(1920)
 			thumbnailVideoHeightBytes, _ := json.Marshal(804)
 			downloadUrlVideoBytes, _ := json.Marshal("mediaserver:test/spritefright")
-			aclVideoBytes, _ := json.Marshal("global/guest")
+			aclVideoBytes, _ := json.Marshal("unibas/testuser")
 			formatVideoBytes, _ := json.Marshal("Video, 188.3 MB")
 			/*dateVideoBytes, _ := json.Marshal("")*/
 			licenseVideoBytes, _ := json.Marshal("PDM 1.0 Deed")
@@ -2985,6 +2985,75 @@ func (m *MappingRDV) GetIIIFManifest() (key string, result []Element, ok bool) {
 
 }
 
+func (m *MappingRDV) GetTestAcl() (key string, result []Element, ok bool) {
+	if m.ACL == nil {
+		return
+	}
+
+	key = "acl"
+	ok = true
+	result = []Element{}
+
+	for _, v := range m.Mapping.RecordIdentifier {
+		if v == "" {
+			continue
+		}
+		if ok, _ := regexp.MatchString("^9943658970105504$", v); ok {
+			aclMetaBytes, _ := json.Marshal([]string{"unibas/testuser"})
+			aclPreviewBytes, _ := json.Marshal([]string{"unibas/testuser"})
+			aclContentBytes, _ := json.Marshal([]string{"unibas/testuser"})
+			e := Element{
+				Extended: map[string]json.RawMessage{
+					"meta":    aclMetaBytes,
+					"preview": aclPreviewBytes,
+					"content": aclContentBytes,
+				},
+			}
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9972352018205504$", v); ok {
+			aclMetaBytes, _ := json.Marshal([]string{"global/guest"})
+			aclPreviewBytes, _ := json.Marshal([]string{"unibas/testuser"})
+			aclContentBytes, _ := json.Marshal([]string{"unibas/testuser"})
+			e := Element{
+				Extended: map[string]json.RawMessage{
+					"meta":    aclMetaBytes,
+					"preview": aclPreviewBytes,
+					"content": aclContentBytes,
+				},
+			}
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9920530890105504$", v); ok {
+			aclMetaBytes, _ := json.Marshal([]string{"global/guest"})
+			aclPreviewBytes, _ := json.Marshal([]string{"global/guest"})
+			aclContentBytes, _ := json.Marshal([]string{"unibas/testuser"})
+			e := Element{
+				Extended: map[string]json.RawMessage{
+					"meta":    aclMetaBytes,
+					"preview": aclPreviewBytes,
+					"content": aclContentBytes,
+				},
+			}
+			result = append(result, e)
+		} else {
+			aclMetaBytes, _ := json.Marshal(m.ACL.Meta)
+			aclPreviewBytes, _ := json.Marshal(m.ACL.Preview)
+			aclContentBytes, _ := json.Marshal(m.ACL.Content)
+			e := Element{
+				Extended: map[string]json.RawMessage{
+					"meta":    aclMetaBytes,
+					"preview": aclPreviewBytes,
+					"content": aclContentBytes,
+				},
+			}
+			result = append(result, e)
+		}
+	}
+
+	return
+}
+
 func (m *MappingRDV) GetAcl() (key string, result []Element, ok bool) {
 	if m.ACL == nil {
 		return
@@ -3222,7 +3291,12 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
-	key, value, ok = m.GetAcl()
+	// todo: use GetAcl instead of test function
+	//key, value, ok = m.GetAcl()
+	//if ok {
+	//	result[key] = value
+	//}
+	key, value, ok = m.GetTestAcl()
 	if ok {
 		result[key] = value
 	}
