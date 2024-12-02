@@ -2776,6 +2776,17 @@ func (m *MappingRDV) AddTestThumbnail() (key string, result []Element, ok bool) 
 			e.Extended["type"] = typeBytes
 			result = append(result, e)
 		}
+		// todo: implement for all data (Alma 945, Publishing Anpassung) - currently only used for Tschichold
+		if ok, _ := regexp.MatchString("^9972566811505504$", v); ok {
+			e := Element{
+				Link:     "https: //slsp-ubs.alma.exlibrisgroup.com/view/delivery/thumbnail/41SLSP_UBS/12399106480005504",
+				Extended: map[string]json.RawMessage{},
+			}
+
+			typeBytes, _ := json.Marshal("file")
+			e.Extended["type"] = typeBytes
+			result = append(result, e)
+		}
 	}
 
 	if len(result) == 0 {
