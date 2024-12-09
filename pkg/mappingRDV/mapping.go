@@ -36,10 +36,10 @@ func appendText(e *Element, text, separator string) {
 
 func (m *MappingRDV) GetAbstract() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.Abstract) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "abstract"
@@ -58,10 +58,10 @@ func (m *MappingRDV) GetAbstract() (key string, result []Element, ok bool) {
 
 func (m *MappingRDV) GetTableOfContents() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.TableOfContents) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "tableOfContents"
@@ -80,13 +80,13 @@ func (m *MappingRDV) GetTableOfContents() (key string, result []Element, ok bool
 
 func (m *MappingRDV) GetNoteGeneral() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.Note == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.Note.General) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "noteGeneral"
@@ -105,13 +105,13 @@ func (m *MappingRDV) GetNoteGeneral() (key string, result []Element, ok bool) {
 
 func (m *MappingRDV) GetNoteLanguage() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.Note == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.Note.Language) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "noteLanguage"
@@ -130,13 +130,13 @@ func (m *MappingRDV) GetNoteLanguage() (key string, result []Element, ok bool) {
 
 func (m *MappingRDV) GetNoteOwnership() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.Note == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.Note.Ownership) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "noteOwnership"
@@ -161,13 +161,13 @@ func (m *MappingRDV) GetNoteOwnership() (key string, result []Element, ok bool) 
 
 func (m *MappingRDV) GetNoteCitation() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.Note == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.Note.Citation) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "noteCitation"
@@ -195,13 +195,13 @@ func (m *MappingRDV) GetNoteCitation() (key string, result []Element, ok bool) {
 
 func (m *MappingRDV) GetNotePublications() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.Note == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.Note.Publications) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "noteLanguage"
@@ -220,13 +220,13 @@ func (m *MappingRDV) GetNotePublications() (key string, result []Element, ok boo
 
 func (m *MappingRDV) GetOriginInfoDistribution() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.OriginInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.OriginInfo.Distribution) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "originInfoDistribution"
@@ -249,13 +249,13 @@ func (m *MappingRDV) GetOriginInfoDistribution() (key string, result []Element, 
 
 func (m *MappingRDV) GetOriginInfoDistributionPlace() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.OriginInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.OriginInfo.Distribution) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	for _, v := range m.Mapping.OriginInfo.Distribution {
@@ -277,13 +277,13 @@ func (m *MappingRDV) GetOriginInfoDistributionPlace() (key string, result []Elem
 
 func (m *MappingRDV) GetOriginInfoDistributionDate() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.OriginInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.OriginInfo.Distribution) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	for _, v := range m.Mapping.OriginInfo.Distribution {
@@ -305,13 +305,13 @@ func (m *MappingRDV) GetOriginInfoDistributionDate() (key string, result []Eleme
 
 func (m *MappingRDV) GetOriginInfoManufacture() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.OriginInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.OriginInfo.Manufacture) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "originInfoManufacture"
@@ -334,13 +334,13 @@ func (m *MappingRDV) GetOriginInfoManufacture() (key string, result []Element, o
 
 func (m *MappingRDV) GetOriginInfoManufacturePlace() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.OriginInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.OriginInfo.Manufacture) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	for _, v := range m.Mapping.OriginInfo.Manufacture {
@@ -362,13 +362,13 @@ func (m *MappingRDV) GetOriginInfoManufacturePlace() (key string, result []Eleme
 
 func (m *MappingRDV) GetOriginInfoManufactureDate() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.OriginInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.OriginInfo.Manufacture) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	for _, v := range m.Mapping.OriginInfo.Manufacture {
@@ -390,13 +390,13 @@ func (m *MappingRDV) GetOriginInfoManufactureDate() (key string, result []Elemen
 
 func (m *MappingRDV) GetOriginInfoProduction() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.OriginInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.OriginInfo.Production) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "originInfoProduction"
@@ -419,13 +419,13 @@ func (m *MappingRDV) GetOriginInfoProduction() (key string, result []Element, ok
 
 func (m *MappingRDV) GetOriginInfoProductionPlace() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.OriginInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.OriginInfo.Production) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	for _, v := range m.Mapping.OriginInfo.Production {
@@ -447,13 +447,13 @@ func (m *MappingRDV) GetOriginInfoProductionPlace() (key string, result []Elemen
 
 func (m *MappingRDV) GetOriginInfoProductionDate() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.OriginInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.OriginInfo.Production) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	for _, v := range m.Mapping.OriginInfo.Production {
@@ -475,13 +475,13 @@ func (m *MappingRDV) GetOriginInfoProductionDate() (key string, result []Element
 
 func (m *MappingRDV) GetOriginInfoPublication() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.OriginInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.OriginInfo.Publication) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "originInfoPublication"
@@ -504,13 +504,13 @@ func (m *MappingRDV) GetOriginInfoPublication() (key string, result []Element, o
 
 func (m *MappingRDV) GetOriginInfoPublicationPlace() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.OriginInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.OriginInfo.Publication) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	for _, v := range m.Mapping.OriginInfo.Publication {
@@ -532,13 +532,13 @@ func (m *MappingRDV) GetOriginInfoPublicationPlace() (key string, result []Eleme
 
 func (m *MappingRDV) GetOriginInfoPublicationDate() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.OriginInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.OriginInfo.Publication) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	for _, v := range m.Mapping.OriginInfo.Publication {
@@ -560,13 +560,13 @@ func (m *MappingRDV) GetOriginInfoPublicationDate() (key string, result []Elemen
 
 func (m *MappingRDV) GetPhysicalDescriptionExtent() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.PhysicalDescription == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.PhysicalDescription.Extent) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "physicalDescriptionExtent"
@@ -585,13 +585,13 @@ func (m *MappingRDV) GetPhysicalDescriptionExtent() (key string, result []Elemen
 
 func (m *MappingRDV) GetPhysicalDescriptionExtentDimensions() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.PhysicalDescription == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.PhysicalDescription.Extent) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	for _, v := range m.Mapping.PhysicalDescription.Extent {
@@ -614,13 +614,13 @@ func (m *MappingRDV) GetPhysicalDescriptionExtentDimensions() (key string, resul
 // 300 $a : $b ; $c + $e
 func (m *MappingRDV) GetPhysicalDescriptionExtentFull() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.PhysicalDescription == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.PhysicalDescription.Extent) == 0 {
-		return
+		return "", nil, false
 	}
 
 	key = "physicalDescriptionExtentFull"
@@ -644,13 +644,13 @@ func (m *MappingRDV) GetPhysicalDescriptionExtentFull() (key string, result []El
 // 300 $a : $b
 func (m *MappingRDV) GetPhysicalDescriptionExtentShort() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.PhysicalDescription == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.PhysicalDescription.Extent) == 0 {
-		return
+		return "", nil, false
 	}
 
 	result = []Element{}
@@ -675,13 +675,13 @@ func (m *MappingRDV) GetPhysicalDescriptionExtentShort() (key string, result []E
 // 300 $a, $c
 func (m *MappingRDV) GetPhysicalDescriptionExtentAndDimensions() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.PhysicalDescription == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.PhysicalDescription.Extent) == 0 {
-		return
+		return "", nil, false
 	}
 
 	result = []Element{}
@@ -705,13 +705,13 @@ func (m *MappingRDV) GetPhysicalDescriptionExtentAndDimensions() (key string, re
 
 func (m *MappingRDV) GetPhysicalDescriptionMedium() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.PhysicalDescription == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.PhysicalDescription.Medium) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "physicalDescriptionMedium"
@@ -726,13 +726,13 @@ func (m *MappingRDV) GetPhysicalDescriptionMedium() (key string, result []Elemen
 
 func (m *MappingRDV) GetTitleInfoMainTitle() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.TitleInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.TitleInfo.Main) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "titleInfoMainTitle"
@@ -751,13 +751,13 @@ func (m *MappingRDV) GetTitleInfoMainTitle() (key string, result []Element, ok b
 
 func (m *MappingRDV) GetTitleInfoMain() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.TitleInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.TitleInfo.Main) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "titleInfoMain"
@@ -781,13 +781,13 @@ func (m *MappingRDV) GetTitleInfoMain() (key string, result []Element, ok bool) 
 
 func (m *MappingRDV) GetTitleInfoAlternative() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.TitleInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.TitleInfo.Alternative) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "titleInfoAlternative"
@@ -811,13 +811,13 @@ func (m *MappingRDV) GetTitleInfoAlternative() (key string, result []Element, ok
 
 func (m *MappingRDV) GetTitleInfoUniform() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.TitleInfo == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.TitleInfo.Uniform) == 0 {
-		return
+		return "", nil, false
 	}
 	result = []Element{}
 	key = "titleInfoUniform"
@@ -841,13 +841,13 @@ func (m *MappingRDV) GetTitleInfoUniform() (key string, result []Element, ok boo
 
 func (m *MappingRDV) GetLocationDigital() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.Location == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.Location.Digital) == 0 {
-		return
+		return "", nil, false
 	}
 	key = "locationDigital"
 	ok = true
@@ -868,13 +868,13 @@ func (m *MappingRDV) GetLocationDigital() (key string, result []Element, ok bool
 
 func (m *MappingRDV) GetLocationHoldingCallNumber() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.Location == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.Location.Holding) == 0 {
-		return
+		return "", nil, false
 	}
 
 	result = []Element{}
@@ -897,13 +897,13 @@ func (m *MappingRDV) GetLocationHoldingCallNumber() (key string, result []Elemen
 
 func (m *MappingRDV) GetLocationHolding() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.Location == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.Location.Holding) == 0 {
-		return
+		return "", nil, false
 	}
 
 	libraryNames := map[string]string{
@@ -938,13 +938,13 @@ func (m *MappingRDV) GetLocationHolding() (key string, result []Element, ok bool
 // todo: fix URL, encoded & zu /u0026
 func (m *MappingRDV) GetLocationElectronic() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.Location == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.Location.Electronic) == 0 {
-		return
+		return "", nil, false
 	}
 	key = "locationElectronic"
 	ok = true
@@ -981,10 +981,10 @@ func (m *MappingRDV) GetLocationElectronic() (key string, result []Element, ok b
 
 func (m *MappingRDV) GetSwisscollectionsUrl() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.RecordIdentifier) == 0 {
-		return
+		return "", nil, false
 	}
 	key = "swisscollectionsUrl"
 	ok = true
@@ -1006,10 +1006,10 @@ func (m *MappingRDV) GetSwisscollectionsUrl() (key string, result []Element, ok 
 // todo: fix URL, encoded & zu /u0026
 func (m *MappingRDV) GetSwisscoveryUrl() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.RecordIdentifier) == 0 {
-		return
+		return "", nil, false
 	}
 	key = "swisscoveryUrl"
 	ok = true
@@ -1027,14 +1027,14 @@ func (m *MappingRDV) GetSwisscoveryUrl() (key string, result []Element, ok bool)
 
 func (m *MappingRDV) GetExtensionPortraetsContact() (key string, result []Element, ok bool) {
 	if m.Flags == nil {
-		return
+		return "", nil, false
 	}
 
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.RecordIdentifier) == 0 {
-		return
+		return "", nil, false
 	}
 
 	var id string
@@ -1073,7 +1073,7 @@ usually used for selecting icon and configuration in frontend
 */
 func (m *MappingRDV) GetResourceType() (key string, result []Element, ok bool) {
 	if m.Facets == nil {
-		return
+		return "", nil, false
 	}
 
 	key = "resourceType"
@@ -1099,7 +1099,7 @@ func (m *MappingRDV) GetResourceType() (key string, result []Element, ok bool) {
 // GetResourceTypeGeneric todo: change data in index, will make the translation obsolete
 func (m *MappingRDV) GetResourceTypeGeneric() (key string, result []Element, ok bool) {
 	if m.Facets == nil {
-		return
+		return "", nil, false
 	}
 
 	key = "resourceTypeGeneric"
@@ -1145,14 +1145,14 @@ func (m *MappingRDV) GetResourceTypeGeneric() (key string, result []Element, ok 
 /* add specific resource types based on flags, obsolete if there's a facet for these resource types, works only if the flags are exclusive */
 func (m *MappingRDV) GetResourceTypeView() (key string, result []Element, ok bool) {
 	if m.Flags == nil {
-		return
+		return "", nil, false
 	}
 
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.RecordIdentifier) == 0 {
-		return
+		return "", nil, false
 	}
 
 	result = []Element{}
@@ -1183,7 +1183,7 @@ func (m *MappingRDV) GetResourceTypeView() (key string, result []Element, ok boo
 
 func (m *MappingRDV) GetFacetGeneralAuthor() (key string, result []Element, ok bool) {
 	if m.Facets == nil {
-		return
+		return "", nil, false
 	}
 
 	key = "facetGeneralAuthor"
@@ -1218,7 +1218,7 @@ func (m *MappingRDV) GetFacetGeneralAuthor() (key string, result []Element, ok b
 
 func (m *MappingRDV) GetFacetAutographScribe() (key string, result []Element, ok bool) {
 	if m.Facets == nil {
-		return
+		return "", nil, false
 	}
 
 	key = "facetAutographScribe"
@@ -1248,7 +1248,7 @@ func (m *MappingRDV) GetFacetAutographScribe() (key string, result []Element, ok
 
 func (m *MappingRDV) GetFacetAutographRecipient() (key string, result []Element, ok bool) {
 	if m.Facets == nil {
-		return
+		return "", nil, false
 	}
 
 	key = "facetAutographRecipient"
@@ -1278,7 +1278,7 @@ func (m *MappingRDV) GetFacetAutographRecipient() (key string, result []Element,
 
 func (m *MappingRDV) GetFacetAutographFormerOwner() (key string, result []Element, ok bool) {
 	if m.Facets == nil {
-		return
+		return "", nil, false
 	}
 
 	key = "facetAutographFormerOwner"
@@ -1308,7 +1308,7 @@ func (m *MappingRDV) GetFacetAutographFormerOwner() (key string, result []Elemen
 
 func (m *MappingRDV) GetFacetAutographSeller() (key string, result []Element, ok bool) {
 	if m.Facets == nil {
-		return
+		return "", nil, false
 	}
 
 	key = "facetAutographSeller"
@@ -1338,7 +1338,7 @@ func (m *MappingRDV) GetFacetAutographSeller() (key string, result []Element, ok
 
 func (m *MappingRDV) GetFacetAutographGeigyNummer() (key string, result []Element, ok bool) {
 	if m.Facets == nil {
-		return
+		return "", nil, false
 	}
 
 	key = "facetAutographGeigyNummer"
@@ -1363,7 +1363,7 @@ func (m *MappingRDV) GetFacetAutographGeigyNummer() (key string, result []Elemen
 
 func (m *MappingRDV) GetFacetPortraetsPictured() (key string, result []Element, ok bool) {
 	if m.Facets == nil {
-		return
+		return "", nil, false
 	}
 
 	key = "facetPortraetsPictured"
@@ -1393,7 +1393,7 @@ func (m *MappingRDV) GetFacetPortraetsPictured() (key string, result []Element, 
 
 func (m *MappingRDV) GetFacetConceptPublicationPlace() (key string, result []Element, ok bool) {
 	if m.Facets == nil {
-		return
+		return "", nil, false
 	}
 
 	key = "facetConceptPublicationPlace"
@@ -1448,7 +1448,7 @@ func (m *MappingRDV) GetFacetGenre() (key string, result []Element, ok bool) {
 
 func (m *MappingRDV) GetThumbnail() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.Files == nil {
 		m.GetThumbnailFromData()
@@ -1490,13 +1490,13 @@ func (m *MappingRDV) GetThumbnail() (key string, result []Element, ok bool) {
 
 func (m *MappingRDV) GetThumbnailFromData() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.Location == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.Location.Digital) == 0 {
-		return
+		return "", nil, false
 	}
 
 	key = "thumbnail"
@@ -1534,10 +1534,10 @@ func (m *MappingRDV) GetThumbnailFromData() (key string, result []Element, ok bo
 
 func (m *MappingRDV) GetFileCount() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.Files == nil {
-		return
+		return "", nil, false
 	}
 
 	key = "fileCount"
@@ -1594,10 +1594,10 @@ func (m *MappingRDV) GetFileCount() (key string, result []Element, ok bool) {
 
 func (m *MappingRDV) GetMedia() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if m.Mapping.Files == nil {
-		return
+		return "", nil, false
 	}
 
 	key = "media"
@@ -1692,10 +1692,10 @@ func (m *MappingRDV) GetMedia() (key string, result []Element, ok bool) {
 // AddTestMedia todo: remove, creates test data
 func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.RecordIdentifier) == 0 {
-		return
+		return "", nil, false
 	}
 
 	key = "media"
@@ -2706,10 +2706,10 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 // AddTestThumbnail todo: remove, creates test data
 func (m *MappingRDV) AddTestThumbnail() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.RecordIdentifier) == 0 {
-		return
+		return "", nil, false
 	}
 
 	key = "thumbnail"
@@ -2798,10 +2798,10 @@ func (m *MappingRDV) AddTestThumbnail() (key string, result []Element, ok bool) 
 // AddTestFileCount todo: remove, creates test data
 func (m *MappingRDV) AddTestFileCount() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.RecordIdentifier) == 0 {
-		return
+		return "", nil, false
 	}
 
 	key = "fileCount"
@@ -2903,15 +2903,16 @@ func (m *MappingRDV) AddTestFileCount() (key string, result []Element, ok bool) 
 // GetTranscription todo: replace once there's data in the index, currently only for testing
 func (m *MappingRDV) GetTranscription() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 	if len(m.Mapping.RecordIdentifier) == 0 {
-		return
+		return "", nil, false
 	}
 
 	key = "transcription"
 	ok = true
 	result = []Element{}
+
 	for _, v := range m.Mapping.RecordIdentifier {
 		if v == "" {
 			continue
@@ -2932,7 +2933,7 @@ func (m *MappingRDV) GetTranscription() (key string, result []Element, ok bool) 
 
 func (m *MappingRDV) GetIIIFManifest() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
-		return
+		return "", nil, false
 	}
 
 	key = "iiifManifest"
@@ -2964,7 +2965,7 @@ func (m *MappingRDV) GetIIIFManifest() (key string, result []Element, ok bool) {
 	}
 
 	if m.Mapping.Location == nil {
-		return
+		return "", nil, false
 	}
 	/* for Porträts */
 	for _, v := range m.Mapping.Location.Digital {
@@ -2989,9 +2990,11 @@ func (m *MappingRDV) GetIIIFManifest() (key string, result []Element, ok bool) {
 			}
 		}
 	}
+
 	if len(result) == 0 {
 		return "", nil, false
 	}
+
 	return
 
 }
@@ -3067,7 +3070,7 @@ func (m *MappingRDV) GetTestAcl() (key string, result []Element, ok bool) {
 
 func (m *MappingRDV) GetAcl() (key string, result []Element, ok bool) {
 	if m.ACL == nil {
-		return
+		return "", nil, false
 	}
 
 	key = "acl"
@@ -3302,15 +3305,14 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
-	// todo: use GetAcl instead of test function
-	//key, value, ok = m.GetAcl()
-	//if ok {
-	//	result[key] = value
-	//}
-	key, value, ok = m.GetTestAcl()
+	key, value, ok = m.GetAcl()
 	if ok {
 		result[key] = value
 	}
+	// key, value, ok = m.GetTestAcl()
+	// if ok {
+	// 	result[key] = value
+	// }
 	key, value, ok = m.GetMedia()
 	if ok {
 		result[key] = value
