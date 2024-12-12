@@ -2684,6 +2684,191 @@ func (m *MappingRDV) AddTestMedia() (key string, result []Element, ok bool) {
 
 			contentArray = append(contentArray, contentDetailsFolder1, contentDetailsFolder2)
 		}
+		/* Test Beispiel mix, flat, viele */
+		if ok, _ := regexp.MatchString("^9935139840105504$", v); ok {
+
+			titleAudioBytes, _ := json.Marshal("Deep")
+			fileNameAudioBytes, _ := json.Marshal("Alex-Productions_-_Deep_(Dark_Ambient_Background_music).oga.mp3")
+			arkQualifierAudioBytes, _ := json.Marshal("Alex-Productions_-_Deep_(Dark_Ambient_Background_music).oga.mp3")
+			urlAudioBytes, _ := json.Marshal("mediaserver:test/deep")
+			thumbnailAudioBytes, _ := json.Marshal("mediaserver:test/deep$$wave")
+			thumbnailAudioWidthBytes, _ := json.Marshal(1280)
+			thumbnailAudioHeightBytes, _ := json.Marshal(256)
+			downloadUrlAudioBytes, _ := json.Marshal("mediaserver:test/deep")
+			aclAudioBytes, _ := json.Marshal("global/guest")
+			formatAudioBytes, _ := json.Marshal("Audio, 6.3 MB")
+			/*dateAudioBytes, _ := json.Marshal()*/
+			licenseAudioBytes, _ := json.Marshal("PDM 1.0 Deed")
+			licenseUrlAudioBytes, _ := json.Marshal("https://creativecommons.org/public-domain/pdm/")
+			presentationTypeAudioBytes, _ := json.Marshal("audio")
+			typeAudioBytes, _ := json.Marshal("audio")
+			mimetypeAudioBytes, _ := json.Marshal("audio/mp3")
+			pronomAudioBytes, _ := json.Marshal("fmt/134")
+			pronomUrlAudioBytes, _ := json.Marshal("https://www.nationalarchives.gov.uk/pronom/fmt/134")
+			durationAudioBytes, _ := json.Marshal(268)
+
+			contentDetailsAudio := map[string]json.RawMessage{
+				"title":            titleAudioBytes,
+				"fileName":         fileNameAudioBytes,
+				"arkQualifier":     arkQualifierAudioBytes,
+				"url":              urlAudioBytes,
+				"thumbnail":        thumbnailAudioBytes,
+				"thumbnailWidth":   thumbnailAudioWidthBytes,
+				"thumbnailHeight":  thumbnailAudioHeightBytes,
+				"downloadUrl":      downloadUrlAudioBytes,
+				"acl":              aclAudioBytes,
+				"license":          licenseAudioBytes,
+				"licenseUrl":       licenseUrlAudioBytes,
+				"presentationType": presentationTypeAudioBytes,
+				"type":             typeAudioBytes,
+				"mimetype":         mimetypeAudioBytes,
+				"pronom":           pronomAudioBytes,
+				"pronomUrl":        pronomUrlAudioBytes,
+				"format":           formatAudioBytes,
+				/*"date": "",*/
+				"duration": durationAudioBytes,
+				/*"orientation": "",*/
+			}
+
+			titleVideoBytes, _ := json.Marshal("Sprite Fright")
+			fileNameVideoBytes, _ := json.Marshal("Sprite_Fright_-_Blender_Open_Movie-full_movie.webm.1080p.vp9.webm")
+			arkQualifierVideoBytes, _ := json.Marshal("Sprite_Fright_-_Blender_Open_Movie-full_movie.webm.1080p.vp9.webm")
+			urlVideoBytes, _ := json.Marshal("mediaserver:test/spritefright")
+			thumbnailVideoBytes, _ := json.Marshal("mediaserver:test/spritefright$$shot$$13")
+			thumbnailVideoWidthBytes, _ := json.Marshal(1920)
+			thumbnailVideoHeightBytes, _ := json.Marshal(804)
+			downloadUrlVideoBytes, _ := json.Marshal("mediaserver:test/spritefright")
+			aclVideoBytes, _ := json.Marshal("global/guest")
+			formatVideoBytes, _ := json.Marshal("Video, 188.3 MB")
+			/*dateVideoBytes, _ := json.Marshal("")*/
+			licenseVideoBytes, _ := json.Marshal("PDM 1.0 Deed")
+			licenseUrlVideoBytes, _ := json.Marshal("https://creativecommons.org/public-domain/pdm/")
+			presentationTypeVideoBytes, _ := json.Marshal("video")
+			typeVideoBytes, _ := json.Marshal("video")
+			mimetypeVideoBytes, _ := json.Marshal("video/webm")
+			pronomVideoBytes, _ := json.Marshal("fmt/573")
+			pronomUrlVideoBytes, _ := json.Marshal("https://www.nationalarchives.gov.uk/pronom/fmt/573")
+			widthVideoBytes, _ := json.Marshal(1920)
+			heightVideoBytes, _ := json.Marshal(804)
+			durationVideoBytes, _ := json.Marshal(629)
+
+			contentDetailsVideo := map[string]json.RawMessage{
+				"title":            titleVideoBytes,
+				"fileName":         fileNameVideoBytes,
+				"arkQualifier":     arkQualifierVideoBytes,
+				"url":              urlVideoBytes,
+				"thumbnail":        thumbnailVideoBytes,
+				"thumbnailWidth":   thumbnailVideoWidthBytes,
+				"thumbnailHeight":  thumbnailVideoHeightBytes,
+				"downloadUrl":      downloadUrlVideoBytes,
+				"acl":              aclVideoBytes,
+				"license":          licenseVideoBytes,
+				"licenseUrl":       licenseUrlVideoBytes,
+				"presentationType": presentationTypeVideoBytes,
+				"type":             typeVideoBytes,
+				"mimetype":         mimetypeVideoBytes,
+				"pronom":           pronomVideoBytes,
+				"pronomUrl":        pronomUrlVideoBytes,
+				"format":           formatVideoBytes,
+				/*"date": "",*/
+				"width":    widthVideoBytes,
+				"height":   heightVideoBytes,
+				"duration": durationVideoBytes,
+				/*"orientation": "",*/
+			}
+
+			titleImageBytes, _ := json.Marshal("Sharpest ever view of the Andromeda Galaxy")
+			fileNameImageBytes, _ := json.Marshal("heic1502a_10000x3197.tif")
+			arkQualifierImageBytes, _ := json.Marshal("heic1502a_10000x3197.tif")
+			urlImageBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
+			thumbnailImageBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
+			thumbnailImageWidthBytes, _ := json.Marshal(10000)
+			thumbnailImageHeightBytes, _ := json.Marshal(3197)
+			downloadUrlImageBytes, _ := json.Marshal("mediaserver:test/andromeda10000")
+			aclImageBytes, _ := json.Marshal("global/guest")
+			formatImageBytes, _ := json.Marshal("Bild TIFF, 114")
+			dateImageBytes, _ := json.Marshal("05.01.2015")
+			licenseImageBytes, _ := json.Marshal("PDM 1.0 Deed")
+			licenseUrlImageBytes, _ := json.Marshal("https://creativecommons.org/public-domain/pdm/")
+			presentationTypeImageBytes, _ := json.Marshal("image")
+			typeImageBytes, _ := json.Marshal("image")
+			mimetypeImageBytes, _ := json.Marshal("image/tiff")
+			pronomImageBytes, _ := json.Marshal("fmt/353")
+			pronomUrlImageBytes, _ := json.Marshal("https://www.nationalarchives.gov.uk/pronom/fmt/353")
+			widthImageBytes, _ := json.Marshal(10000)
+			heightImageBytes, _ := json.Marshal(3197)
+
+			contentDetailsImage := map[string]json.RawMessage{
+				"title":            titleImageBytes,
+				"fileName":         fileNameImageBytes,
+				"arkQualifier":     arkQualifierImageBytes,
+				"url":              urlImageBytes,
+				"thumbnail":        thumbnailImageBytes,
+				"thumbnailWidth":   thumbnailImageWidthBytes,
+				"thumbnailHeight":  thumbnailImageHeightBytes,
+				"downloadUrl":      downloadUrlImageBytes,
+				"acl":              aclImageBytes,
+				"license":          licenseImageBytes,
+				"licenseUrl":       licenseUrlImageBytes,
+				"presentationType": presentationTypeImageBytes,
+				"type":             typeImageBytes,
+				"mimetype":         mimetypeImageBytes,
+				"pronom":           pronomImageBytes,
+				"pronomUrl":        pronomUrlImageBytes,
+				"format":           formatImageBytes,
+				"date":             dateImageBytes,
+				"width":            widthImageBytes,
+				"height":           heightImageBytes,
+				/*"orientation": "",*/
+			}
+
+			titlePdfBytes, _ := json.Marshal("Stellungnahme SLSP AG Öffentlichkeitsgesetz")
+			fileNamePdfBytes, _ := json.Marshal("stellungnahme_slsp_ag_oeffentlichkeitsgesetz (1).pdf")
+			arkQualifierPdfBytes, _ := json.Marshal("stellungnahme_slsp_ag_oeffentlichkeitsgesetz (1).pdf")
+			urlPdfBytes, _ := json.Marshal("mediaserver:test/slsp")
+			thumbnailPdfBytes, _ := json.Marshal("mediaserver:test/slsp$$cover")
+			thumbnailWidthBytes, _ := json.Marshal(1191)
+			thumbnailHeightBytes, _ := json.Marshal(1684)
+			downloadUrlPdfBytes, _ := json.Marshal("mediaserver:test/slsp")
+			aclPdfBytes, _ := json.Marshal("global/guest")
+			formatPdfBytes, _ := json.Marshal("PDF, 279 KB")
+			/*datePdfBytes, _ := json.Marshal("25.01.2021")*/
+			licensePdfBytes, _ := json.Marshal("PDM 1.0 Deed")
+			licenseUrlPdfBytes, _ := json.Marshal("https://creativecommons.org/public-domain/pdm/")
+			presentationTypePdfBytes, _ := json.Marshal("pdf")
+			typePdfBytes, _ := json.Marshal("text")
+			mimetypePdfBytes, _ := json.Marshal("application/pdf")
+			pronomPdfBytes, _ := json.Marshal("fmt/276")
+			pronomUrlPdfBytes, _ := json.Marshal("https://www.nationalarchives.gov.uk/pronom/fmt/276")
+			widthPdfBytes, _ := json.Marshal(595)
+			heightPdfBytes, _ := json.Marshal(842)
+
+			contentDetailsPdf := map[string]json.RawMessage{
+				"title":            titlePdfBytes,
+				"fileName":         fileNamePdfBytes,
+				"arkQualifier":     arkQualifierPdfBytes,
+				"url":              urlPdfBytes,
+				"thumbnail":        thumbnailPdfBytes,
+				"thumbnailWidth":   thumbnailWidthBytes,
+				"thumbnailHeight":  thumbnailHeightBytes,
+				"downloadUrl":      downloadUrlPdfBytes,
+				"acl":              aclPdfBytes,
+				"license":          licensePdfBytes,
+				"licenseUrl":       licenseUrlPdfBytes,
+				"presentationType": presentationTypePdfBytes,
+				"type":             typePdfBytes,
+				"mimetype":         mimetypePdfBytes,
+				"pronom":           pronomPdfBytes,
+				"pronomUrl":        pronomUrlPdfBytes,
+				"format":           formatPdfBytes,
+				/*"date": "",*/
+				"width":  widthPdfBytes,
+				"height": heightPdfBytes,
+				/*"orientation": "",*/
+			}
+
+			contentArray = append(contentArray, contentDetailsAudio, contentDetailsAudio, contentDetailsAudio, contentDetailsAudio, contentDetailsAudio, contentDetailsAudio, contentDetailsAudio, contentDetailsAudio, contentDetailsAudio, contentDetailsAudio, contentDetailsAudio, contentDetailsAudio, contentDetailsAudio, contentDetailsVideo, contentDetailsImage, contentDetailsVideo, contentDetailsVideo, contentDetailsAudio, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsImage, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf, contentDetailsPdf)
+		}
 
 	}
 
@@ -2888,6 +3073,12 @@ func (m *MappingRDV) AddTestFileCount() (key string, result []Element, ok bool) 
 		if ok, _ := regexp.MatchString("^9972608858805504$", v); ok {
 			e := Element{
 				Text: "4 Bilder, 3 Videos, 3 PDFs, 7 CSVs, 1 Audio",
+			}
+			result = append(result, e)
+		}
+		if ok, _ := regexp.MatchString("^9935139840105504$", v); ok {
+			e := Element{
+				Text: "14 Audios, 3 Videos, 47 Bilder, 35 PDFs",
 			}
 			result = append(result, e)
 		}
