@@ -3190,6 +3190,47 @@ func (m *MappingRDV) GetIIIFManifest() (key string, result []Element, ok bool) {
 
 }
 
+func (m *MappingRDV) GetPdf() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+
+	key = "pdf"
+	ok = true
+	result = []Element{}
+
+	/* for e-rara and e-manuscripta */
+	for _, f := range m.Mapping.Files {
+		if f == nil || f.Structure == nil || f.Structure.DigitalObject == nil {
+			continue
+		}
+		if f.Structure.DigitalObject.Id == "" {
+			continue
+		}
+		for _, flag := range m.Flags {
+			if flag == "e-rara" {
+				e := Element{
+					Link: "https://www.e-rara.ch/download/pdf/" + strings.Replace(f.Structure.DigitalObject.Id, "md", "", 1),
+				}
+				result = append(result, e)
+			}
+			if flag == "e-manuscripta" {
+				e := Element{
+					Link: "https://www.e-manuscripta.ch/download/pdf/" + strings.Replace(f.Structure.DigitalObject.Id, "md", "", 1),
+				}
+				result = append(result, e)
+			}
+		}
+	}
+
+	if len(result) == 0 {
+		return "", nil, false
+	}
+
+	return
+
+}
+
 func (m *MappingRDV) GetTestAcl() (key string, result []Element, ok bool) {
 	if m.ACL == nil {
 		return
@@ -3517,6 +3558,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.AddTestFileCount()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetPdf()
 	if ok {
 		result[key] = value
 	}
