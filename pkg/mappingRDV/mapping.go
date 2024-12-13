@@ -1358,6 +1358,9 @@ func (m *MappingRDV) GetFacetAutographGeigyNummer() (key string, result []Elemen
 		}
 	}
 
+	if len(result) == 0 {
+		return "", nil, false
+	}
 	return
 }
 
@@ -1443,6 +1446,9 @@ func (m *MappingRDV) GetFacetGenre() (key string, result []Element, ok bool) {
 		}
 	}
 
+	if len(result) == 0 {
+		return "", nil, false
+	}
 	return
 }
 
