@@ -78,6 +78,31 @@ func (m *MappingRDV) GetTableOfContents() (key string, result []Element, ok bool
 	return
 }
 
+func (m *MappingRDV) GetNoteStatementOfResponsibility() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.StatementOfResponsibility) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteStatementOfResponsibility"
+	ok = true
+	for _, v := range m.Mapping.Note.StatementOfResponsibility {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
 func (m *MappingRDV) GetNoteGeneral() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return "", nil, false
@@ -215,6 +240,32 @@ func (m *MappingRDV) GetNotePublications() (key string, result []Element, ok boo
 		}
 		result = append(result, e)
 	}
+	return
+}
+
+func (m *MappingRDV) GetOriginInfoEdition() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.OriginInfo == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.OriginInfo.Edition) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "originInfoEdition"
+	ok = true
+	for _, v := range m.Mapping.OriginInfo.Edition {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+
 	return
 }
 
@@ -979,6 +1030,7 @@ func (m *MappingRDV) GetLocationElectronic() (key string, result []Element, ok b
 	return
 }
 
+// GetSwisscollectionsUrl : link generated for all data, won't work for data which isn't in swisscollections
 func (m *MappingRDV) GetSwisscollectionsUrl() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return "", nil, false
@@ -1147,29 +1199,41 @@ func (m *MappingRDV) GetResourceTypeView() (key string, result []Element, ok boo
 	if m.Flags == nil {
 		return "", nil, false
 	}
-
-	if m.Mapping == nil {
+	if m.Facets == nil {
 		return "", nil, false
 	}
-	if len(m.Mapping.RecordIdentifier) == 0 {
-		return "", nil, false
+	if m.Mapping == nil {
+		return
 	}
 
 	result = []Element{}
 	key = "resourceTypeView"
 	ok = true
 
-	flagsToTypes := map[string]string{
-		"portraets":  "Porträt",
-		"autograph":  "Autograph",
-		"burckhardt": "Mappentitel",
-	}
-
 	for _, v := range m.Flags {
-
-		if flagsToTypes, exists := flagsToTypes[v]; exists {
+		if v == "portraets" {
+			for _, sf := range m.Facets.Strings {
+				if sf.Name != "digitized" {
+					continue
+				}
+				for _, s := range sf.String {
+					if s == "yes" {
+						e := Element{
+							Text: "portraetsDigitized",
+						}
+						result = append(result, e)
+					} else {
+						e := Element{
+							Text: "portraetsPhysical",
+						}
+						result = append(result, e)
+					}
+					break
+				}
+			}
+		} else if m.Mapping.Files != nil {
 			e := Element{
-				Text: flagsToTypes,
+				Text: "mediaFiles",
 			}
 			result = append(result, e)
 		}
@@ -3568,6 +3632,14 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetPdf()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteStatementOfResponsibility()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetOriginInfoEdition()
 	if ok {
 		result[key] = value
 	}
