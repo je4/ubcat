@@ -1151,7 +1151,9 @@ func (m *MappingRDV) GetNamePersonal() (key string, result []Element, ok bool) {
 					Text: personal.NamePart,
 					Link: "facet:" + personal.NamePart,
 				}
-				appendTextDate(&e, personal.Date.Original)
+				if personal.Date != nil {
+					appendTextDate(&e, personal.Date.Original)
+				}
 				if len(personal.Role) > 0 {
 					e.Extended = map[string]json.RawMessage{}
 					roleBytes, _ := json.Marshal(personal.Role)
@@ -1165,7 +1167,9 @@ func (m *MappingRDV) GetNamePersonal() (key string, result []Element, ok bool) {
 					Text: personal.NamePart,
 					Link: "facet:" + personal.NamePart,
 				}
-				appendTextDate(&e, personal.Date.Original)
+				if personal.Date != nil {
+					appendTextDate(&e, personal.Date.Original)
+				}
 				if len(personal.Role) > 0 {
 					e.Extended = map[string]json.RawMessage{}
 					roleBytes, _ := json.Marshal(personal.Role)
@@ -1179,7 +1183,9 @@ func (m *MappingRDV) GetNamePersonal() (key string, result []Element, ok bool) {
 					Text: personal.NamePart,
 					Link: "facet:" + personal.NamePart,
 				}
-				appendTextDate(&e, personal.Date.Original)
+				if personal.Date != nil {
+					appendTextDate(&e, personal.Date.Original)
+				}
 				if len(personal.Role) > 0 {
 					e.Extended = map[string]json.RawMessage{}
 					roleBytes, _ := json.Marshal(personal.Role)
@@ -1193,7 +1199,9 @@ func (m *MappingRDV) GetNamePersonal() (key string, result []Element, ok bool) {
 					Text: personal.NamePart,
 					Link: "facet:" + personal.NamePart,
 				}
-				appendTextDate(&e, personal.Date.Original)
+				if personal.Date != nil {
+					appendTextDate(&e, personal.Date.Original)
+				}
 				if len(personal.Role) > 0 {
 					e.Extended = map[string]json.RawMessage{}
 					roleBytes, _ := json.Marshal(personal.Role)
@@ -1207,7 +1215,9 @@ func (m *MappingRDV) GetNamePersonal() (key string, result []Element, ok bool) {
 					Text: personal.NamePart,
 					Link: "facet:" + personal.NamePart,
 				}
-				appendTextDate(&e, personal.Date.Original)
+				if personal.Date != nil {
+					appendTextDate(&e, personal.Date.Original)
+				}
 				if len(personal.Role) > 0 {
 					e.Extended = map[string]json.RawMessage{}
 					roleBytes, _ := json.Marshal(personal.Role)
