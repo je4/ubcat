@@ -34,6 +34,15 @@ func appendText(e *Element, text, separator string) {
 	}
 }
 
+func appendTextDate(e *Element, text string) {
+	if text != "" {
+		if e.Text != "" {
+			e.Text += " ("
+		}
+		e.Text += text + ")"
+	}
+}
+
 func (m *MappingRDV) GetAbstract() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return "", nil, false
@@ -1116,6 +1125,139 @@ func (m *MappingRDV) GetExtensionPortraetsContact() (key string, result []Elemen
 	if len(result) == 0 {
 		return "", nil, false
 	}
+	return
+}
+
+func (m *MappingRDV) GetNamePersonal() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Name == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Name.Personal == nil {
+		return "", nil, false
+	}
+
+	key = "namePersonal"
+	ok = true
+	result = []Element{}
+
+	authorities := make(map[string]string)
+	for _, personMap := range m.Mapping.Name.Personal {
+		if personal, ok := personMap["gnd"]; ok {
+			if personal.NamePart != "" {
+				e := Element{
+					Text: personal.NamePart,
+					Link: "facet:" + personal.NamePart,
+				}
+				appendTextDate(&e, personal.Date.Original)
+				if len(personal.Role) > 0 {
+					e.Extended = map[string]json.RawMessage{}
+					roleBytes, _ := json.Marshal(personal.Role)
+					e.Extended["roles"] = roleBytes
+				}
+				result = append(result, e)
+			}
+		} else if personal, ok := personMap["idref"]; ok {
+			if personal.NamePart != "" {
+				e := Element{
+					Text: personal.NamePart,
+					Link: "facet:" + personal.NamePart,
+				}
+				appendTextDate(&e, personal.Date.Original)
+				if len(personal.Role) > 0 {
+					e.Extended = map[string]json.RawMessage{}
+					roleBytes, _ := json.Marshal(personal.Role)
+					e.Extended["roles"] = roleBytes
+				}
+				result = append(result, e)
+			}
+		} else if personal, ok := personMap["sbt"]; ok {
+			if personal.NamePart != "" {
+				e := Element{
+					Text: personal.NamePart,
+					Link: "facet:" + personal.NamePart,
+				}
+				appendTextDate(&e, personal.Date.Original)
+				if len(personal.Role) > 0 {
+					e.Extended = map[string]json.RawMessage{}
+					roleBytes, _ := json.Marshal(personal.Role)
+					e.Extended["roles"] = roleBytes
+				}
+				result = append(result, e)
+			}
+		} else if personal, ok := personMap["rero"]; ok {
+			if personal.NamePart != "" {
+				e := Element{
+					Text: personal.NamePart,
+					Link: "facet:" + personal.NamePart,
+				}
+				appendTextDate(&e, personal.Date.Original)
+				if len(personal.Role) > 0 {
+					e.Extended = map[string]json.RawMessage{}
+					roleBytes, _ := json.Marshal(personal.Role)
+					e.Extended["roles"] = roleBytes
+				}
+				result = append(result, e)
+			}
+		} else if personal, ok := personMap["unknown"]; ok {
+			if personal.NamePart != "" {
+				e := Element{
+					Text: personal.NamePart,
+					Link: "facet:" + personal.NamePart,
+				}
+				appendTextDate(&e, personal.Date.Original)
+				if len(personal.Role) > 0 {
+					e.Extended = map[string]json.RawMessage{}
+					roleBytes, _ := json.Marshal(personal.Role)
+					e.Extended["roles"] = roleBytes
+				}
+				result = append(result, e)
+			}
+		}
+
+		for key, personal := range personMap {
+			if personal.Identifier != "" {
+				authorities[key] = personal.Identifier
+			}
+			for _, id := range personal.OtherIdentifier {
+				if id != "" {
+					splitStr := strings.Split(id, ")")
+					prefix := strings.Trim(splitStr[0], "(")
+					authorities[prefix] = id
+				}
+			}
+		}
+
+		authorityElements := []Element{}
+		for key, id := range authorities {
+			var link string
+			var text string
+			switch key {
+			case "gnd":
+				link = "https://lobid.org/gnd/" + strings.Replace(id, "(DE-588)", "", 1)
+				text = "GND"
+			case "idref":
+				link = "http://www.idref.fr/" + strings.Replace(id, "(IDREF)", "", 1) + "/id"
+				text = "IdRef"
+			case "orcid":
+				link = "https://orcid.org/" + strings.Replace(id, "(orcid)", "", 1)
+				text = "ORCID"
+			}
+
+			authorityElements = append(authorityElements, Element{
+				Text: text,
+				Link: link,
+			})
+		}
+
+		if len(authorityElements) > 0 && len(result) > 0 {
+			authBytes, _ := json.Marshal(authorityElements)
+			result[len(result)-1].Extended["authorities"] = authBytes
+		}
+	}
+
 	return
 }
 
@@ -3640,6 +3782,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetOriginInfoEdition()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNamePersonal()
 	if ok {
 		result[key] = value
 	}
