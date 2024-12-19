@@ -1264,7 +1264,14 @@ func (m *MappingRDV) GetNamePersonal() (key string, result []Element, ok bool) {
 
 		if len(authorityElements) > 0 && len(result) > 0 {
 			authBytes, _ := json.Marshal(authorityElements)
-			result[len(result)-1].Extended["authorities"] = authBytes
+			if result[len(result)-1].Extended != nil {
+				result[len(result)-1].Extended["authorities"] = authBytes
+			} else {
+				authBytesTmp := map[string]json.RawMessage{}
+				authBytesTmp["authorities"] = authBytes
+				result[len(result)-1].Extended = authBytesTmp
+			}
+
 		}
 	}
 
