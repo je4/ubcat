@@ -1295,6 +1295,148 @@ func appendAuthorityElements(authorities map[string]string) []Element {
 	return authorityElements
 }
 
+func (m *MappingRDV) GetNameFamily() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Name == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Name.Family == nil {
+		return "", nil, false
+	}
+
+	key = "nameFamily"
+	ok = true
+	result = []Element{}
+
+	authorities := make(map[string]string)
+	for _, familyMap := range m.Mapping.Name.Family {
+		if family, ok := familyMap["gnd"]; ok {
+			result = appendFamily(family, result)
+		} else if family, ok := familyMap["idref"]; ok {
+			result = appendFamily(family, result)
+		} else if family, ok := familyMap["sbt"]; ok {
+			result = appendFamily(family, result)
+		} else if family, ok := familyMap["rero"]; ok {
+			result = appendFamily(family, result)
+		} else if family, ok := familyMap["unknown"]; ok {
+			result = appendFamily(family, result)
+		}
+
+		for key, family := range familyMap {
+			if family.Identifier != "" {
+				authorities[key] = family.Identifier
+			}
+			for _, id := range family.OtherIdentifier {
+				if id != "" {
+					splitStr := strings.Split(id, ")")
+					prefix := strings.Trim(splitStr[0], "(")
+					authorities[prefix] = id
+				}
+			}
+		}
+
+		authorityElements := appendAuthorityElements(authorities)
+
+		if len(authorityElements) > 0 && len(result) > 0 {
+			authBytes, _ := json.Marshal(authorityElements)
+			if result[len(result)-1].Extended != nil {
+				result[len(result)-1].Extended["authorities"] = authBytes
+			} else {
+				authBytesTmp := map[string]json.RawMessage{}
+				authBytesTmp["authorities"] = authBytes
+				result[len(result)-1].Extended = authBytesTmp
+			}
+
+		}
+	}
+
+	return
+}
+
+func (m *MappingRDV) GetSubjectNameFamily() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.Name == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.Name.Family == nil {
+		return "", nil, false
+	}
+
+	key = "subjectNameFamily"
+	ok = true
+	result = []Element{}
+
+	authorities := make(map[string]string)
+	for _, familyMap := range m.Mapping.Subject.Name.Family {
+		if family, ok := familyMap["gnd"]; ok {
+			result = appendFamily(family, result)
+		} else if family, ok := familyMap["idref"]; ok {
+			result = appendFamily(family, result)
+		} else if family, ok := familyMap["sbt"]; ok {
+			result = appendFamily(family, result)
+		} else if family, ok := familyMap["rero"]; ok {
+			result = appendFamily(family, result)
+		} else if family, ok := familyMap["unknown"]; ok {
+			result = appendFamily(family, result)
+		}
+
+		for key, family := range familyMap {
+			if family.Identifier != "" {
+				authorities[key] = family.Identifier
+			}
+			for _, id := range family.OtherIdentifier {
+				if id != "" {
+					splitStr := strings.Split(id, ")")
+					prefix := strings.Trim(splitStr[0], "(")
+					authorities[prefix] = id
+				}
+			}
+		}
+
+		authorityElements := appendAuthorityElements(authorities)
+
+		if len(authorityElements) > 0 && len(result) > 0 {
+			authBytes, _ := json.Marshal(authorityElements)
+			if result[len(result)-1].Extended != nil {
+				result[len(result)-1].Extended["authorities"] = authBytes
+			} else {
+				authBytesTmp := map[string]json.RawMessage{}
+				authBytesTmp["authorities"] = authBytes
+				result[len(result)-1].Extended = authBytesTmp
+			}
+
+		}
+	}
+
+	return
+}
+
+func appendFamily(family schema.Family, result []Element) []Element {
+	if family.NamePart != "" {
+		e := Element{
+			Text: family.NamePart,
+			Link: "facet:" + family.NamePart,
+		}
+		if family.Date != "" {
+			appendTextDate(&e, family.Date)
+		}
+		if len(family.Role) > 0 {
+			e.Extended = map[string]json.RawMessage{}
+			roleBytes, _ := json.Marshal(family.Role)
+			e.Extended["roles"] = roleBytes
+		}
+		result = append(result, e)
+	}
+	return result
+}
+
 /*
 todo: change data in index: Index generic values in German, adapt this function to get the code and only one per document
 usually used for selecting icon and configuration in frontend
@@ -3824,6 +3966,14 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetSubjectNamePersonal()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNameFamily()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetSubjectNameFamily()
 	if ok {
 		result[key] = value
 	}

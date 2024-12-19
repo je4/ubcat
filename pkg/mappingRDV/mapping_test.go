@@ -397,7 +397,18 @@ func TestMappingRDV(t *testing.T) {
 				Name: &schema.Name{
 					Conference: nil,
 					Corporate:  nil,
-					Family:     nil,
+					Family: []map[string]schema.Family{
+						{
+							"gnd": schema.Family{
+								Date:            "",
+								Identifier:      "",
+								NamePart:        "Gebrüder Grimm",
+								OtherIdentifier: []string{"(orcid)0000-0001-8463-7145"},
+								Role:            []string{"aut"},
+								Variant:         nil,
+							},
+						},
+					},
 					Personal: []map[string]schema.Personal{
 						{
 							"gnd": schema.Personal{
