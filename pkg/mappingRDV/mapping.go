@@ -34,7 +34,7 @@ func appendText(e *Element, text, separator string) {
 	}
 }
 
-func appendTextDate(e *Element, text string) {
+func appendTextInBrackets(e *Element, text string) {
 	if text != "" {
 		if e.Text != "" {
 			e.Text += " ("
@@ -1258,7 +1258,7 @@ func appendPersonal(personal schema.Personal, result []Element) []Element {
 			Link: "facet:" + personal.NamePart,
 		}
 		if personal.Date != nil {
-			appendTextDate(&e, personal.Date.Original)
+			appendTextInBrackets(&e, personal.Date.Original)
 		}
 		if len(personal.Role) > 0 {
 			e.Extended = map[string]json.RawMessage{}
@@ -1425,11 +1425,292 @@ func appendFamily(family schema.Family, result []Element) []Element {
 			Link: "facet:" + family.NamePart,
 		}
 		if family.Date != "" {
-			appendTextDate(&e, family.Date)
+			appendTextInBrackets(&e, family.Date)
 		}
 		if len(family.Role) > 0 {
 			e.Extended = map[string]json.RawMessage{}
 			roleBytes, _ := json.Marshal(family.Role)
+			e.Extended["roles"] = roleBytes
+		}
+		result = append(result, e)
+	}
+	return result
+}
+
+func (m *MappingRDV) GetNameCorporate() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Name == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Name.Corporate == nil {
+		return "", nil, false
+	}
+
+	key = "nameCorporate"
+	ok = true
+	result = []Element{}
+
+	authorities := make(map[string]string)
+	for _, corporateMap := range m.Mapping.Name.Corporate {
+		if corporate, ok := corporateMap["gnd"]; ok {
+			result = appendCorporate(corporate, result)
+		} else if corporate, ok := corporateMap["idref"]; ok {
+			result = appendCorporate(corporate, result)
+		} else if corporate, ok := corporateMap["sbt"]; ok {
+			result = appendCorporate(corporate, result)
+		} else if corporate, ok := corporateMap["rero"]; ok {
+			result = appendCorporate(corporate, result)
+		} else if corporate, ok := corporateMap["unknown"]; ok {
+			result = appendCorporate(corporate, result)
+		}
+
+		for key, corporate := range corporateMap {
+			if corporate.Identifier != "" {
+				authorities[key] = corporate.Identifier
+			}
+			for _, id := range corporate.OtherIdentifier {
+				if id != "" {
+					splitStr := strings.Split(id, ")")
+					prefix := strings.Trim(splitStr[0], "(")
+					authorities[prefix] = id
+				}
+			}
+		}
+
+		authorityElements := appendAuthorityElements(authorities)
+
+		if len(authorityElements) > 0 && len(result) > 0 {
+			authBytes, _ := json.Marshal(authorityElements)
+			if result[len(result)-1].Extended != nil {
+				result[len(result)-1].Extended["authorities"] = authBytes
+			} else {
+				authBytesTmp := map[string]json.RawMessage{}
+				authBytesTmp["authorities"] = authBytes
+				result[len(result)-1].Extended = authBytesTmp
+			}
+
+		}
+	}
+
+	return
+}
+
+func (m *MappingRDV) GetSubjectNameCorporate() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.Name == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.Name.Corporate == nil {
+		return "", nil, false
+	}
+
+	key = "subjectNameCorporate"
+	ok = true
+	result = []Element{}
+
+	authorities := make(map[string]string)
+	for _, corporateMap := range m.Mapping.Subject.Name.Corporate {
+		if corporate, ok := corporateMap["gnd"]; ok {
+			result = appendCorporate(corporate, result)
+		} else if corporate, ok := corporateMap["idref"]; ok {
+			result = appendCorporate(corporate, result)
+		} else if corporate, ok := corporateMap["sbt"]; ok {
+			result = appendCorporate(corporate, result)
+		} else if corporate, ok := corporateMap["rero"]; ok {
+			result = appendCorporate(corporate, result)
+		} else if corporate, ok := corporateMap["unknown"]; ok {
+			result = appendCorporate(corporate, result)
+		}
+
+		for key, corporate := range corporateMap {
+			if corporate.Identifier != "" {
+				authorities[key] = corporate.Identifier
+			}
+			for _, id := range corporate.OtherIdentifier {
+				if id != "" {
+					splitStr := strings.Split(id, ")")
+					prefix := strings.Trim(splitStr[0], "(")
+					authorities[prefix] = id
+				}
+			}
+		}
+
+		authorityElements := appendAuthorityElements(authorities)
+
+		if len(authorityElements) > 0 && len(result) > 0 {
+			authBytes, _ := json.Marshal(authorityElements)
+			if result[len(result)-1].Extended != nil {
+				result[len(result)-1].Extended["authorities"] = authBytes
+			} else {
+				authBytesTmp := map[string]json.RawMessage{}
+				authBytesTmp["authorities"] = authBytes
+				result[len(result)-1].Extended = authBytesTmp
+			}
+
+		}
+	}
+
+	return
+}
+
+func appendCorporate(corporate schema.Corporate, result []Element) []Element {
+	if corporate.NamePart != "" {
+		e := Element{
+			Text: corporate.NamePart,
+			Link: "facet:" + corporate.NamePart,
+		}
+		if len(corporate.Role) > 0 {
+			e.Extended = map[string]json.RawMessage{}
+			roleBytes, _ := json.Marshal(corporate.Role)
+			e.Extended["roles"] = roleBytes
+		}
+		result = append(result, e)
+	}
+	return result
+}
+
+func (m *MappingRDV) GetNameConference() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Name == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Name.Conference == nil {
+		return "", nil, false
+	}
+
+	key = "nameConference"
+	ok = true
+	result = []Element{}
+
+	authorities := make(map[string]string)
+	for _, conferenceMap := range m.Mapping.Name.Conference {
+		if conference, ok := conferenceMap["gnd"]; ok {
+			result = appendConference(conference, result)
+		} else if conference, ok := conferenceMap["idref"]; ok {
+			result = appendConference(conference, result)
+		} else if conference, ok := conferenceMap["sbt"]; ok {
+			result = appendConference(conference, result)
+		} else if conference, ok := conferenceMap["rero"]; ok {
+			result = appendConference(conference, result)
+		} else if conference, ok := conferenceMap["unknown"]; ok {
+			result = appendConference(conference, result)
+		}
+
+		for key, conference := range conferenceMap {
+			if conference.Identifier != "" {
+				authorities[key] = conference.Identifier
+			}
+			for _, id := range conference.OtherIdentifier {
+				if id != "" {
+					splitStr := strings.Split(id, ")")
+					prefix := strings.Trim(splitStr[0], "(")
+					authorities[prefix] = id
+				}
+			}
+		}
+
+		authorityElements := appendAuthorityElements(authorities)
+
+		if len(authorityElements) > 0 && len(result) > 0 {
+			authBytes, _ := json.Marshal(authorityElements)
+			if result[len(result)-1].Extended != nil {
+				result[len(result)-1].Extended["authorities"] = authBytes
+			} else {
+				authBytesTmp := map[string]json.RawMessage{}
+				authBytesTmp["authorities"] = authBytes
+				result[len(result)-1].Extended = authBytesTmp
+			}
+
+		}
+	}
+
+	return
+}
+
+func (m *MappingRDV) GetSubjectNameConference() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.Name == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.Name.Conference == nil {
+		return "", nil, false
+	}
+
+	key = "subjectNameConference"
+	ok = true
+	result = []Element{}
+
+	authorities := make(map[string]string)
+	for _, conferenceMap := range m.Mapping.Name.Conference {
+		if conference, ok := conferenceMap["gnd"]; ok {
+			result = appendConference(conference, result)
+		} else if conference, ok := conferenceMap["idref"]; ok {
+			result = appendConference(conference, result)
+		} else if conference, ok := conferenceMap["sbt"]; ok {
+			result = appendConference(conference, result)
+		} else if conference, ok := conferenceMap["rero"]; ok {
+			result = appendConference(conference, result)
+		} else if conference, ok := conferenceMap["unknown"]; ok {
+			result = appendConference(conference, result)
+		}
+
+		for key, conference := range conferenceMap {
+			if conference.Identifier != "" {
+				authorities[key] = conference.Identifier
+			}
+			for _, id := range conference.OtherIdentifier {
+				if id != "" {
+					splitStr := strings.Split(id, ")")
+					prefix := strings.Trim(splitStr[0], "(")
+					authorities[prefix] = id
+				}
+			}
+		}
+
+		authorityElements := appendAuthorityElements(authorities)
+
+		if len(authorityElements) > 0 && len(result) > 0 {
+			authBytes, _ := json.Marshal(authorityElements)
+			if result[len(result)-1].Extended != nil {
+				result[len(result)-1].Extended["authorities"] = authBytes
+			} else {
+				authBytesTmp := map[string]json.RawMessage{}
+				authBytesTmp["authorities"] = authBytes
+				result[len(result)-1].Extended = authBytesTmp
+			}
+
+		}
+	}
+
+	return
+}
+
+func appendConference(conference schema.Conference, result []Element) []Element {
+	if conference.NamePart != "" {
+		e := Element{
+			Text: conference.NamePart,
+			Link: "facet:" + conference.NamePart,
+		}
+		if conference.Date != "" {
+			appendTextInBrackets(&e, conference.Date)
+		}
+		if len(conference.Role) > 0 {
+			e.Extended = map[string]json.RawMessage{}
+			roleBytes, _ := json.Marshal(conference.Role)
 			e.Extended["roles"] = roleBytes
 		}
 		result = append(result, e)
@@ -3974,6 +4255,22 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetSubjectNameFamily()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNameCorporate()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetSubjectNameCorporate()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNameConference()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetSubjectNameConference()
 	if ok {
 		result[key] = value
 	}
