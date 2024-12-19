@@ -1146,85 +1146,15 @@ func (m *MappingRDV) GetNamePersonal() (key string, result []Element, ok bool) {
 	authorities := make(map[string]string)
 	for _, personMap := range m.Mapping.Name.Personal {
 		if personal, ok := personMap["gnd"]; ok {
-			if personal.NamePart != "" {
-				e := Element{
-					Text: personal.NamePart,
-					Link: "facet:" + personal.NamePart,
-				}
-				if personal.Date != nil {
-					appendTextDate(&e, personal.Date.Original)
-				}
-				if len(personal.Role) > 0 {
-					e.Extended = map[string]json.RawMessage{}
-					roleBytes, _ := json.Marshal(personal.Role)
-					e.Extended["roles"] = roleBytes
-				}
-				result = append(result, e)
-			}
+			result = appendPersonal(personal, result)
 		} else if personal, ok := personMap["idref"]; ok {
-			if personal.NamePart != "" {
-				e := Element{
-					Text: personal.NamePart,
-					Link: "facet:" + personal.NamePart,
-				}
-				if personal.Date != nil {
-					appendTextDate(&e, personal.Date.Original)
-				}
-				if len(personal.Role) > 0 {
-					e.Extended = map[string]json.RawMessage{}
-					roleBytes, _ := json.Marshal(personal.Role)
-					e.Extended["roles"] = roleBytes
-				}
-				result = append(result, e)
-			}
+			result = appendPersonal(personal, result)
 		} else if personal, ok := personMap["sbt"]; ok {
-			if personal.NamePart != "" {
-				e := Element{
-					Text: personal.NamePart,
-					Link: "facet:" + personal.NamePart,
-				}
-				if personal.Date != nil {
-					appendTextDate(&e, personal.Date.Original)
-				}
-				if len(personal.Role) > 0 {
-					e.Extended = map[string]json.RawMessage{}
-					roleBytes, _ := json.Marshal(personal.Role)
-					e.Extended["roles"] = roleBytes
-				}
-				result = append(result, e)
-			}
+			result = appendPersonal(personal, result)
 		} else if personal, ok := personMap["rero"]; ok {
-			if personal.NamePart != "" {
-				e := Element{
-					Text: personal.NamePart,
-					Link: "facet:" + personal.NamePart,
-				}
-				if personal.Date != nil {
-					appendTextDate(&e, personal.Date.Original)
-				}
-				if len(personal.Role) > 0 {
-					e.Extended = map[string]json.RawMessage{}
-					roleBytes, _ := json.Marshal(personal.Role)
-					e.Extended["roles"] = roleBytes
-				}
-				result = append(result, e)
-			}
+			result = appendPersonal(personal, result)
 		} else if personal, ok := personMap["unknown"]; ok {
-			if personal.NamePart != "" {
-				e := Element{
-					Text: personal.NamePart,
-					Link: "facet:" + personal.NamePart,
-				}
-				if personal.Date != nil {
-					appendTextDate(&e, personal.Date.Original)
-				}
-				if len(personal.Role) > 0 {
-					e.Extended = map[string]json.RawMessage{}
-					roleBytes, _ := json.Marshal(personal.Role)
-					e.Extended["roles"] = roleBytes
-				}
-				result = append(result, e)
-			}
+			result = appendPersonal(personal, result)
 		}
 
 		for key, personal := range personMap {
@@ -1240,27 +1170,7 @@ func (m *MappingRDV) GetNamePersonal() (key string, result []Element, ok bool) {
 			}
 		}
 
-		authorityElements := []Element{}
-		for key, id := range authorities {
-			var link string
-			var text string
-			switch key {
-			case "gnd":
-				link = "https://lobid.org/gnd/" + strings.Replace(id, "(DE-588)", "", 1)
-				text = "GND"
-			case "idref":
-				link = "http://www.idref.fr/" + strings.Replace(id, "(IDREF)", "", 1) + "/id"
-				text = "IdRef"
-			case "orcid":
-				link = "https://orcid.org/" + strings.Replace(id, "(orcid)", "", 1)
-				text = "ORCID"
-			}
-
-			authorityElements = append(authorityElements, Element{
-				Text: text,
-				Link: link,
-			})
-		}
+		authorityElements := appendAuthorityElements(authorities)
 
 		if len(authorityElements) > 0 && len(result) > 0 {
 			authBytes, _ := json.Marshal(authorityElements)
@@ -1276,6 +1186,113 @@ func (m *MappingRDV) GetNamePersonal() (key string, result []Element, ok bool) {
 	}
 
 	return
+}
+
+func (m *MappingRDV) GetSubjectNamePersonal() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.Name == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.Name.Personal == nil {
+		return "", nil, false
+	}
+
+	key = "subjectNamePersonal"
+	ok = true
+	result = []Element{}
+
+	authorities := make(map[string]string)
+	for _, personMap := range m.Mapping.Subject.Name.Personal {
+		if personal, ok := personMap["gnd"]; ok {
+			result = appendPersonal(personal, result)
+		} else if personal, ok := personMap["idref"]; ok {
+			result = appendPersonal(personal, result)
+		} else if personal, ok := personMap["sbt"]; ok {
+			result = appendPersonal(personal, result)
+		} else if personal, ok := personMap["rero"]; ok {
+			result = appendPersonal(personal, result)
+		} else if personal, ok := personMap["unknown"]; ok {
+			result = appendPersonal(personal, result)
+		}
+
+		for key, personal := range personMap {
+			if personal.Identifier != "" {
+				authorities[key] = personal.Identifier
+			}
+			for _, id := range personal.OtherIdentifier {
+				if id != "" {
+					splitStr := strings.Split(id, ")")
+					prefix := strings.Trim(splitStr[0], "(")
+					authorities[prefix] = id
+				}
+			}
+		}
+
+		authorityElements := appendAuthorityElements(authorities)
+
+		if len(authorityElements) > 0 && len(result) > 0 {
+			authBytes, _ := json.Marshal(authorityElements)
+			if result[len(result)-1].Extended != nil {
+				result[len(result)-1].Extended["authorities"] = authBytes
+			} else {
+				authBytesTmp := map[string]json.RawMessage{}
+				authBytesTmp["authorities"] = authBytes
+				result[len(result)-1].Extended = authBytesTmp
+			}
+
+		}
+	}
+
+	return
+}
+
+func appendPersonal(personal schema.Personal, result []Element) []Element {
+	if personal.NamePart != "" {
+		e := Element{
+			Text: personal.NamePart,
+			Link: "facet:" + personal.NamePart,
+		}
+		if personal.Date != nil {
+			appendTextDate(&e, personal.Date.Original)
+		}
+		if len(personal.Role) > 0 {
+			e.Extended = map[string]json.RawMessage{}
+			roleBytes, _ := json.Marshal(personal.Role)
+			e.Extended["roles"] = roleBytes
+		}
+		result = append(result, e)
+	}
+	return result
+}
+
+func appendAuthorityElements(authorities map[string]string) []Element {
+	authorityElements := []Element{}
+	for key, id := range authorities {
+		var link string
+		var text string
+		switch key {
+		case "gnd":
+			link = "https://lobid.org/gnd/" + strings.Replace(id, "(DE-588)", "", 1)
+			text = "GND"
+		case "idref":
+			link = "http://www.idref.fr/" + strings.Replace(id, "(IDREF)", "", 1) + "/id"
+			text = "IdRef"
+		case "orcid":
+			link = "https://orcid.org/" + strings.Replace(id, "(orcid)", "", 1)
+			text = "ORCID"
+		}
+
+		authorityElements = append(authorityElements, Element{
+			Text: text,
+			Link: link,
+		})
+	}
+	return authorityElements
 }
 
 /*
@@ -3803,6 +3820,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetNamePersonal()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetSubjectNamePersonal()
 	if ok {
 		result[key] = value
 	}

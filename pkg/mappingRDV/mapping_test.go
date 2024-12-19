@@ -389,7 +389,42 @@ func TestMappingRDV(t *testing.T) {
 			"9919502480105504", "991170524020205501"},*/
 			RecordIdentifier: []string{"9920530890105504"},
 			RelatedItem:      nil,
-			Subject:          nil,
+			Subject: &schema.Subject{
+				Genre:      nil,
+				Geographic: nil,
+				Local:      nil,
+				Music:      nil,
+				Name: &schema.Name{
+					Conference: nil,
+					Corporate:  nil,
+					Family:     nil,
+					Personal: []map[string]schema.Personal{
+						{
+							"gnd": schema.Personal{
+								Date: &schema.PersonalDate{
+									Original: "1964-",
+									Birth:    "",
+									Death:    "",
+								},
+								Gender:          "male",
+								Identifier:      "(DE-588)138393389",
+								NamePart:        "Brown, Andrew",
+								OtherIdentifier: []string{"(orcid)0000-0001-8463-7145"},
+								PlaceOfActivity: nil,
+								PlaceOfBirth:    nil,
+								Profession:      nil,
+								Related:         nil,
+								Role:            []string{"aut"},
+								Variant:         nil,
+							},
+						},
+					},
+				},
+				Temporal:  nil,
+				TitleInfo: nil,
+				Topic:     nil,
+				Undefined: nil,
+			},
 			TableOfContents: []string{"Theil 1",
 				"Geschichte der deutschen Malerei bis 1450",
 				"Theil 2",
