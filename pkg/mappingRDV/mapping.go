@@ -1285,6 +1285,9 @@ func appendAuthorityElements(authorities map[string]string) []Element {
 		case "orcid":
 			link = "https://orcid.org/" + strings.Replace(id, "(orcid)", "", 1)
 			text = "ORCID"
+		case "geonames":
+			link = "https://sws.geonames.org/" + strings.Replace(id, "(geonames)", "", 1)
+			text = "GeoNames"
 		}
 
 		authorityElements = append(authorityElements, Element{
@@ -1655,7 +1658,7 @@ func (m *MappingRDV) GetSubjectNameConference() (key string, result []Element, o
 	result = []Element{}
 
 	authorities := make(map[string]string)
-	for _, conferenceMap := range m.Mapping.Name.Conference {
+	for _, conferenceMap := range m.Mapping.Subject.Name.Conference {
 		if conference, ok := conferenceMap["gnd"]; ok {
 			result = appendConference(conference, result)
 		} else if conference, ok := conferenceMap["idref"]; ok {
@@ -1712,6 +1715,349 @@ func appendConference(conference schema.Conference, result []Element) []Element 
 			e.Extended = map[string]json.RawMessage{}
 			roleBytes, _ := json.Marshal(conference.Role)
 			e.Extended["roles"] = roleBytes
+		}
+		result = append(result, e)
+	}
+	return result
+}
+
+func (m *MappingRDV) GetSubjectTopic() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.Topic == nil {
+		return "", nil, false
+	}
+
+	key = "subjectTopic"
+	ok = true
+	result = []Element{}
+
+	authorities := make(map[string]string)
+	for _, topicMap := range m.Mapping.Subject.Topic {
+		if topic, ok := topicMap["gnd"]; ok {
+			result = appendTopic(topic, result)
+		} else if topic, ok := topicMap["idref"]; ok {
+			result = appendTopic(topic, result)
+		} else if topic, ok := topicMap["sbt"]; ok {
+			result = appendTopic(topic, result)
+		} else if topic, ok := topicMap["rero"]; ok {
+			result = appendTopic(topic, result)
+		} else if topic, ok := topicMap["unknown"]; ok {
+			result = appendTopic(topic, result)
+		}
+
+		for key, topic := range topicMap {
+			if topic.Identifier != "" {
+				authorities[key] = topic.Identifier
+			}
+			for _, id := range topic.OtherIdentifier {
+				if id != "" {
+					splitStr := strings.Split(id, ")")
+					prefix := strings.Trim(splitStr[0], "(")
+					authorities[prefix] = id
+				}
+			}
+		}
+
+		authorityElements := appendAuthorityElements(authorities)
+
+		if len(authorityElements) > 0 && len(result) > 0 {
+			authBytes, _ := json.Marshal(authorityElements)
+			if result[len(result)-1].Extended != nil {
+				result[len(result)-1].Extended["authorities"] = authBytes
+			} else {
+				authBytesTmp := map[string]json.RawMessage{}
+				authBytesTmp["authorities"] = authBytes
+				result[len(result)-1].Extended = authBytesTmp
+			}
+
+		}
+	}
+
+	return
+}
+
+func appendTopic(topic schema.Topic, result []Element) []Element {
+	if topic.Label != "" {
+		e := Element{
+			Text: topic.Label,
+			Link: "facet:" + topic.Label,
+		}
+		result = append(result, e)
+	}
+	return result
+}
+
+func (m *MappingRDV) GetNameGeographic() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.OriginInfo == nil {
+		return "", nil, false
+	}
+	if m.Mapping.OriginInfo.Geographic == nil {
+		return "", nil, false
+	}
+
+	key = "nameGeographic"
+	ok = true
+	result = []Element{}
+
+	authorities := make(map[string]string)
+	for _, geographicMap := range m.Mapping.OriginInfo.Geographic {
+		if geographic, ok := geographicMap["gnd"]; ok {
+			result = appendGeographic(geographic, result)
+		} else if geographic, ok := geographicMap["idref"]; ok {
+			result = appendGeographic(geographic, result)
+		} else if geographic, ok := geographicMap["sbt"]; ok {
+			result = appendGeographic(geographic, result)
+		} else if geographic, ok := geographicMap["rero"]; ok {
+			result = appendGeographic(geographic, result)
+		} else if geographic, ok := geographicMap["unknown"]; ok {
+			result = appendGeographic(geographic, result)
+		}
+
+		for key, geographic := range geographicMap {
+			if geographic.Identifier != "" {
+				authorities[key] = geographic.Identifier
+			}
+			for _, id := range geographic.OtherIdentifier {
+				if id != "" {
+					splitStr := strings.Split(id, ")")
+					prefix := strings.Trim(splitStr[0], "(")
+					authorities[prefix] = id
+				}
+			}
+		}
+
+		authorityElements := appendAuthorityElements(authorities)
+
+		if len(authorityElements) > 0 && len(result) > 0 {
+			authBytes, _ := json.Marshal(authorityElements)
+			if result[len(result)-1].Extended != nil {
+				result[len(result)-1].Extended["authorities"] = authBytes
+			} else {
+				authBytesTmp := map[string]json.RawMessage{}
+				authBytesTmp["authorities"] = authBytes
+				result[len(result)-1].Extended = authBytesTmp
+			}
+
+		}
+	}
+
+	return
+}
+
+func (m *MappingRDV) GetSubjectGeographic() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.Geographic == nil {
+		return "", nil, false
+	}
+
+	key = "subjectGeographic"
+	ok = true
+	result = []Element{}
+
+	authorities := make(map[string]string)
+	for _, geographicMap := range m.Mapping.Subject.Geographic {
+		if geographic, ok := geographicMap["gnd"]; ok {
+			result = appendGeographic(geographic, result)
+		} else if geographic, ok := geographicMap["idref"]; ok {
+			result = appendGeographic(geographic, result)
+		} else if geographic, ok := geographicMap["sbt"]; ok {
+			result = appendGeographic(geographic, result)
+		} else if geographic, ok := geographicMap["rero"]; ok {
+			result = appendGeographic(geographic, result)
+		} else if geographic, ok := geographicMap["unknown"]; ok {
+			result = appendGeographic(geographic, result)
+		}
+
+		for key, geographic := range geographicMap {
+			if geographic.Identifier != "" {
+				authorities[key] = geographic.Identifier
+			}
+			for _, id := range geographic.OtherIdentifier {
+				if id != "" {
+					splitStr := strings.Split(id, ")")
+					prefix := strings.Trim(splitStr[0], "(")
+					authorities[prefix] = id
+				}
+			}
+		}
+
+		authorityElements := appendAuthorityElements(authorities)
+
+		if len(authorityElements) > 0 && len(result) > 0 {
+			authBytes, _ := json.Marshal(authorityElements)
+			if result[len(result)-1].Extended != nil {
+				result[len(result)-1].Extended["authorities"] = authBytes
+			} else {
+				authBytesTmp := map[string]json.RawMessage{}
+				authBytesTmp["authorities"] = authBytes
+				result[len(result)-1].Extended = authBytesTmp
+			}
+
+		}
+	}
+
+	return
+}
+
+func appendGeographic(geographic schema.Geographic, result []Element) []Element {
+	if geographic.NamePart != "" {
+		e := Element{
+			Text: geographic.NamePart,
+			Link: "facet:" + geographic.NamePart,
+		}
+		if len(geographic.Role) > 0 {
+			e.Extended = map[string]json.RawMessage{}
+			roleBytes, _ := json.Marshal(geographic.Role)
+			e.Extended["roles"] = roleBytes
+		}
+		result = append(result, e)
+	}
+	return result
+}
+
+func (m *MappingRDV) GetNameRelatedWork() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.RelatedItem == nil {
+		return "", nil, false
+	}
+	if m.Mapping.RelatedItem.Work == nil {
+		return "", nil, false
+	}
+
+	key = "nameRelatedWork"
+	ok = true
+	result = []Element{}
+
+	authorities := make(map[string]string)
+	for _, titleMap := range m.Mapping.RelatedItem.Work {
+		if title, ok := titleMap["gnd"]; ok {
+			result = appendTitle(title, result)
+		} else if title, ok := titleMap["idref"]; ok {
+			result = appendTitle(title, result)
+		} else if title, ok := titleMap["sbt"]; ok {
+			result = appendTitle(title, result)
+		} else if title, ok := titleMap["rero"]; ok {
+			result = appendTitle(title, result)
+		} else if title, ok := titleMap["unknown"]; ok {
+			result = appendTitle(title, result)
+		}
+
+		for key, geographic := range titleMap {
+			if geographic.Identifier != "" {
+				authorities[key] = geographic.Identifier
+			}
+			for _, id := range geographic.OtherIdentifier {
+				if id != "" {
+					splitStr := strings.Split(id, ")")
+					prefix := strings.Trim(splitStr[0], "(")
+					authorities[prefix] = id
+				}
+			}
+		}
+
+		authorityElements := appendAuthorityElements(authorities)
+
+		if len(authorityElements) > 0 && len(result) > 0 {
+			authBytes, _ := json.Marshal(authorityElements)
+			if result[len(result)-1].Extended != nil {
+				result[len(result)-1].Extended["authorities"] = authBytes
+			} else {
+				authBytesTmp := map[string]json.RawMessage{}
+				authBytesTmp["authorities"] = authBytes
+				result[len(result)-1].Extended = authBytesTmp
+			}
+
+		}
+	}
+
+	return
+
+}
+
+func (m *MappingRDV) GetSubjectTitleInfo() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.TitleInfo == nil {
+		return "", nil, false
+	}
+
+	key = "subjectTitleInfo"
+	ok = true
+	result = []Element{}
+
+	authorities := make(map[string]string)
+	for _, titleMap := range m.Mapping.Subject.TitleInfo {
+		if title, ok := titleMap["gnd"]; ok {
+			result = appendTitle(title, result)
+		} else if title, ok := titleMap["idref"]; ok {
+			result = appendTitle(title, result)
+		} else if title, ok := titleMap["sbt"]; ok {
+			result = appendTitle(title, result)
+		} else if title, ok := titleMap["rero"]; ok {
+			result = appendTitle(title, result)
+		} else if title, ok := titleMap["unknown"]; ok {
+			result = appendTitle(title, result)
+		}
+
+		for key, geographic := range titleMap {
+			if geographic.Identifier != "" {
+				authorities[key] = geographic.Identifier
+			}
+			for _, id := range geographic.OtherIdentifier {
+				if id != "" {
+					splitStr := strings.Split(id, ")")
+					prefix := strings.Trim(splitStr[0], "(")
+					authorities[prefix] = id
+				}
+			}
+		}
+
+		authorityElements := appendAuthorityElements(authorities)
+
+		if len(authorityElements) > 0 && len(result) > 0 {
+			authBytes, _ := json.Marshal(authorityElements)
+			if result[len(result)-1].Extended != nil {
+				result[len(result)-1].Extended["authorities"] = authBytes
+			} else {
+				authBytesTmp := map[string]json.RawMessage{}
+				authBytesTmp["authorities"] = authBytes
+				result[len(result)-1].Extended = authBytesTmp
+			}
+
+		}
+	}
+
+	return
+
+}
+
+func appendTitle(work schema.Work, result []Element) []Element {
+	if work.Title != "" {
+		e := Element{
+			Text: work.Title,
+			Link: "facet:" + work.Title,
+		}
+		if work.Name != "" {
+			appendText(&e, work.Name, " / ")
 		}
 		result = append(result, e)
 	}
@@ -4271,6 +4617,26 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetSubjectNameConference()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetSubjectTopic()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNameGeographic()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetSubjectGeographic()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNameRelatedWork()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetSubjectTitleInfo()
 	if ok {
 		result[key] = value
 	}

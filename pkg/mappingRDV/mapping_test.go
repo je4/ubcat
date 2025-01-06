@@ -431,9 +431,29 @@ func TestMappingRDV(t *testing.T) {
 						},
 					},
 				},
-				Temporal:  nil,
-				TitleInfo: nil,
-				Topic:     nil,
+				Temporal: nil,
+				TitleInfo: []map[string]schema.Work{
+					{
+						"gnd": schema.Work{
+							Identifier:      "(DE-588)1067523391",
+							Name:            "Schoeck, Othmar (1886-1957)",
+							Title:           "Gaselen ; arrangiert",
+							OtherIdentifier: nil,
+							Variant:         nil,
+						},
+					},
+				},
+				Topic: []map[string]schema.Topic{
+					{
+						"gnd": schema.Topic{
+							Identifier:      "(DE-588)123456",
+							Label:           "Brot",
+							Mapped:          nil,
+							OtherIdentifier: nil,
+							Variant:         nil,
+						},
+					},
+				},
 				Undefined: nil,
 			},
 			TableOfContents: []string{"Theil 1",
