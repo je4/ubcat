@@ -363,6 +363,37 @@ func (m *MappingRDV) GetNoteRestriction() (key string, result []Element, ok bool
 	return
 }
 
+func (m *MappingRDV) GetAccessCondition() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.AccessCondition) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "accessCondition"
+	ok = true
+	for _, v := range m.Mapping.AccessCondition {
+		if v == nil {
+			continue
+		}
+		e := Element{
+			Text: v.Main,
+		}
+
+		appendText(&e, v.Add, " ")
+
+		if len(v.Url) != 0 {
+			e.Link = v.Url[0]
+		}
+		result = append(result, e)
+	}
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
 func (m *MappingRDV) GetNotePublications() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return "", nil, false
@@ -1153,6 +1184,31 @@ func (m *MappingRDV) GetOriginInfoPublicationDate() (key string, result []Elemen
 	return
 }
 
+func (m *MappingRDV) GetOriginInfoCopyrightDate() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.OriginInfo == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.OriginInfo.CopyrightDate) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	for _, v := range m.Mapping.OriginInfo.CopyrightDate {
+		if v == "" {
+			continue
+		}
+		key = "originInfoPublicationDate"
+		ok = true
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
 func (m *MappingRDV) GetPhysicalDescriptionExtent() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return "", nil, false
@@ -1400,6 +1456,331 @@ func (m *MappingRDV) GetPhysicalDescriptionNotatedMusic() (key string, result []
 	}
 	result = append(result, e)
 
+	return
+}
+
+func (m *MappingRDV) GetIdentifierDoi() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Identifier == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Identifier.Doi) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "identifierDoi"
+	ok = true
+	for _, v := range m.Mapping.Identifier.Doi {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetIdentifierIssn() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Identifier == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Identifier.Issn) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "identifierIssn"
+	ok = true
+	for _, v := range m.Mapping.Identifier.Issn {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetIdentifierIssnl() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Identifier == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Identifier.Issnl) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "identifierIssnl"
+	ok = true
+	for _, v := range m.Mapping.Identifier.Issnl {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetIdentifierIssueNumber() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Identifier == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Identifier.IssueNumber) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "identifierIssueNumber"
+	ok = true
+	for _, v := range m.Mapping.Identifier.IssueNumber {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetIdentifierMatrixNumber() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Identifier == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Identifier.MatrixNumber) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "identifierMatrixNumber"
+	ok = true
+	for _, v := range m.Mapping.Identifier.MatrixNumber {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetIdentifierMusicPlate() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Identifier == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Identifier.MusicPlate) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "identifierMusicPlate"
+	ok = true
+	for _, v := range m.Mapping.Identifier.MusicPlate {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetIdentifierMusicPublisher() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Identifier == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Identifier.MusicPublisher) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "identifierMusicPublisher"
+	ok = true
+	for _, v := range m.Mapping.Identifier.MusicPublisher {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetIdentifierUrn() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Identifier == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Identifier.Urn) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "identifierUrn"
+	ok = true
+	for _, v := range m.Mapping.Identifier.Urn {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetIdentifierVideoRecordingIdentifier() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Identifier == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Identifier.VideoRecordingIdentifier) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "identifierVideoRecordingIdentifier"
+	ok = true
+	for _, v := range m.Mapping.Identifier.VideoRecordingIdentifier {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetIdentifierIsbn() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Identifier == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Identifier.Isbn) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "identifierIsbn"
+	ok = true
+	for _, v := range m.Mapping.Identifier.Isbn {
+		if v.Id == "" {
+			continue
+		}
+		e := Element{
+			Text: v.Id,
+		}
+		appendTextInBrackets(&e, strings.Join(v.Qualifier, ", "))
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetIdentifierIsmn() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Identifier == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Identifier.Ismn) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "identifierIsmn"
+	ok = true
+	for _, v := range m.Mapping.Identifier.Ismn {
+		if v.Id == "" {
+			continue
+		}
+		e := Element{
+			Text: v.Id,
+		}
+		appendTextInBrackets(&e, strings.Join(v.Qualifier, ", "))
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetRecordIdentifier() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.RecordIdentifier) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "recordIdentifier"
+	ok = true
+	for _, v := range m.Mapping.RecordIdentifier {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetCartographicsDisplay() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Cartographics == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Cartographics.Display) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "cartographicsDisplay"
+	ok = true
+	for _, v := range m.Mapping.Cartographics.Display {
+		if v.Scale == "" && v.Coordinates == "" {
+			continue
+		}
+		e := Element{
+			Text: v.Scale,
+		}
+		appendTextInBrackets(&e, v.Coordinates)
+		result = append(result, e)
+	}
 	return
 }
 
@@ -5649,6 +6030,10 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
+	key, value, ok = m.GetOriginInfoCopyrightDate()
+	if ok {
+		result[key] = value
+	}
 	key, value, ok = m.GetAbstract()
 	if ok {
 		result[key] = value
@@ -6002,6 +6387,62 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetNoteVersionIdentification()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetIdentifierDoi()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetIdentifierIsbn()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetIdentifierIsmn()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetIdentifierIssn()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetIdentifierIssnl()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetIdentifierIssueNumber()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetIdentifierMatrixNumber()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetIdentifierMusicPlate()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetIdentifierMusicPublisher()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetIdentifierUrn()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetIdentifierVideoRecordingIdentifier()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetRecordIdentifier()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetAccessCondition()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetCartographicsDisplay()
 	if ok {
 		result[key] = value
 	}
