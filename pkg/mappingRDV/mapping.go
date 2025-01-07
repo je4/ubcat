@@ -2244,6 +2244,362 @@ func (m *MappingRDV) GetSubjectMusic() (key string, result []Element, ok bool) {
 	return
 }
 
+// GetRelatedItemSeriesStatement gets only fields without IDs (field 490)
+func (m *MappingRDV) GetRelatedItemSeriesStatement() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.RelatedItem == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.RelatedItem.Series) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "relatedItemSeriesStatement"
+	ok = true
+	for _, v := range m.Mapping.RelatedItem.Series {
+		if v.Title == "" {
+			continue
+		}
+		if v.InternalIdentifier != "" {
+			continue
+		}
+		e := Element{
+			Text: v.Title,
+		}
+		appendText(&e, v.VolumeDesignation, " ; ")
+		result = append(result, e)
+	}
+	return
+}
+
+// GetRelatedItemSeriesStatement gets only fields with IDs (field 8xx)
+func (m *MappingRDV) GetRelatedItemSeriesEntries() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.RelatedItem == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.RelatedItem.Series) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "relatedItemSeriesEntries"
+	ok = true
+
+	titleMap := make(map[string]*Element)
+	for _, v := range m.Mapping.RelatedItem.Series {
+		if v.Title == "" {
+			continue
+		}
+		if v.InternalIdentifier == "" {
+			continue
+		}
+
+		if element, exists := titleMap[v.Title]; exists {
+			element.Link += "|" + v.InternalIdentifier
+		} else {
+			e := Element{
+				Text: v.Title,
+				Link: "internalId:" + v.InternalIdentifier,
+			}
+			result = append(result, e)
+			titleMap[v.Title] = &result[len(result)-1]
+		}
+	}
+	return
+}
+
+func (m *MappingRDV) GetRelatedItemHost() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.RelatedItem == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.RelatedItem.Host) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "relatedItemHost"
+	ok = true
+	for _, v := range m.Mapping.RelatedItem.Host {
+		if v.Title == "" {
+			continue
+		}
+		e := Element{
+			Text: v.Title,
+		}
+		appendText(&e, v.Part, ", ")
+		if v.InternalIdentifier != "" {
+			e.Link = "internalId:" + v.InternalIdentifier
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetRelatedItemConstituent() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.RelatedItem == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.RelatedItem.Constituent) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "relatedItemConstituent"
+	ok = true
+
+	titleMap := make(map[string]*Element)
+	for _, v := range m.Mapping.RelatedItem.Constituent {
+		if v.Title == "" {
+			continue
+		}
+
+		if element, exists := titleMap[v.Title]; exists {
+			element.Link += "|" + v.InternalIdentifier
+		} else {
+			e := Element{
+				Text: v.DisplayConstant,
+			}
+			appendText(&e, v.Title, ": ")
+			if v.InternalIdentifier != "" {
+				e.Link = "internalId:" + v.InternalIdentifier
+			}
+			result = append(result, e)
+			titleMap[v.Title] = &result[len(result)-1]
+		}
+	}
+	return
+}
+
+func (m *MappingRDV) GetRelatedItemIssuedWith() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.RelatedItem == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.RelatedItem.IssuedWith) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "relatedItemIssuedWith"
+	ok = true
+
+	titleMap := make(map[string]*Element)
+	for _, v := range m.Mapping.RelatedItem.IssuedWith {
+		if v.Title == "" {
+			continue
+		}
+
+		if element, exists := titleMap[v.Title]; exists {
+			element.Link += "|" + v.InternalIdentifier
+		} else {
+			e := Element{
+				Text: v.DisplayConstant,
+			}
+			appendText(&e, v.Title, ": ")
+			if v.InternalIdentifier != "" {
+				e.Link = "internalId:" + v.InternalIdentifier
+			}
+			result = append(result, e)
+			titleMap[v.Title] = &result[len(result)-1]
+		}
+	}
+	return
+}
+
+func (m *MappingRDV) GetRelatedItemOther() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.RelatedItem == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.RelatedItem.Other) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "relatedItemOther"
+	ok = true
+
+	titleMap := make(map[string]*Element)
+	for _, v := range m.Mapping.RelatedItem.Other {
+		if v.Title == "" {
+			continue
+		}
+
+		if element, exists := titleMap[v.Title]; exists {
+			element.Link += "|" + v.InternalIdentifier
+		} else {
+			e := Element{
+				Text: v.DisplayConstant,
+			}
+			appendText(&e, v.Title, ": ")
+			if v.InternalIdentifier != "" {
+				e.Link = "internalId:" + v.InternalIdentifier
+			}
+			result = append(result, e)
+			titleMap[v.Title] = &result[len(result)-1]
+		}
+	}
+	return
+}
+
+func (m *MappingRDV) GetRelatedItemOtherFormat() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.RelatedItem == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.RelatedItem.OtherFormat) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "relatedItemOtherFormat"
+	ok = true
+
+	titleMap := make(map[string]*Element)
+	for _, v := range m.Mapping.RelatedItem.OtherFormat {
+		if v.Title == "" {
+			continue
+		}
+
+		if element, exists := titleMap[v.Title]; exists {
+			element.Link += "|" + v.InternalIdentifier
+		} else {
+			e := Element{
+				Text: v.DisplayConstant,
+			}
+			appendText(&e, v.Title, ": ")
+			if v.InternalIdentifier != "" {
+				e.Link = "internalId:" + v.InternalIdentifier
+			}
+			result = append(result, e)
+			titleMap[v.Title] = &result[len(result)-1]
+		}
+	}
+	return
+}
+
+func (m *MappingRDV) GetRelatedItemOtherVersion() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.RelatedItem == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.RelatedItem.OtherVersion) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "relatedItemOtherVersion"
+	ok = true
+
+	titleMap := make(map[string]*Element)
+	for _, v := range m.Mapping.RelatedItem.OtherVersion {
+		if v.Title == "" {
+			continue
+		}
+
+		if element, exists := titleMap[v.Title]; exists {
+			element.Link += "|" + v.InternalIdentifier
+		} else {
+			e := Element{
+				Text: v.DisplayConstant,
+			}
+			appendText(&e, v.Title, ": ")
+			if v.InternalIdentifier != "" {
+				e.Link = "internalId:" + v.InternalIdentifier
+			}
+			result = append(result, e)
+			titleMap[v.Title] = &result[len(result)-1]
+		}
+	}
+	return
+}
+
+func (m *MappingRDV) GetRelatedItemPreceding() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.RelatedItem == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.RelatedItem.Preceding) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "relatedItemPreceding"
+	ok = true
+
+	titleMap := make(map[string]*Element)
+	for _, v := range m.Mapping.RelatedItem.Preceding {
+		if v.Title == "" {
+			continue
+		}
+
+		if element, exists := titleMap[v.Title]; exists {
+			element.Link += "|" + v.InternalIdentifier
+		} else {
+			e := Element{
+				Text: v.DisplayConstant,
+			}
+			appendText(&e, v.Title, ": ")
+			if v.InternalIdentifier != "" {
+				e.Link = "internalId:" + v.InternalIdentifier
+			}
+			result = append(result, e)
+			titleMap[v.Title] = &result[len(result)-1]
+		}
+	}
+	return
+}
+
+func (m *MappingRDV) GetRelatedItemSucceeding() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.RelatedItem == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.RelatedItem.Succeeding) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "relatedItemSucceeding"
+	ok = true
+
+	titleMap := make(map[string]*Element)
+	for _, v := range m.Mapping.RelatedItem.Succeeding {
+		if v.Title == "" {
+			continue
+		}
+
+		if element, exists := titleMap[v.Title]; exists {
+			element.Link += "|" + v.InternalIdentifier
+		} else {
+			e := Element{
+				Text: v.DisplayConstant,
+			}
+			appendText(&e, v.Title, ": ")
+			if v.InternalIdentifier != "" {
+				e.Link = "internalId:" + v.InternalIdentifier
+			}
+			result = append(result, e)
+			titleMap[v.Title] = &result[len(result)-1]
+		}
+	}
+	return
+}
+
 /*
 todo: change data in index: Index generic values in German, adapt this function to get the code and only one per document
 usually used for selecting icon and configuration in frontend
@@ -4844,5 +5200,46 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
+	key, value, ok = m.GetRelatedItemSeriesStatement()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetRelatedItemHost()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetRelatedItemSeriesEntries()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetRelatedItemConstituent()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetRelatedItemIssuedWith()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetRelatedItemOther()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetRelatedItemOtherFormat()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetRelatedItemOtherVersion()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetRelatedItemPreceding()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetRelatedItemSucceeding()
+	if ok {
+		result[key] = value
+	}
+
 	return
 }
