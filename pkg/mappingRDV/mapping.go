@@ -2064,6 +2064,186 @@ func appendTitle(work schema.Work, result []Element) []Element {
 	return result
 }
 
+func (m *MappingRDV) GetSubjectGenre() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.Genre == nil {
+		return "", nil, false
+	}
+
+	key = "subjectGenre"
+	ok = true
+	result = []Element{}
+
+	for _, genreMap := range m.Mapping.Subject.Genre {
+		for _, v := range genreMap {
+			if v == "" {
+				continue
+			}
+			e := Element{
+				Text: v,
+			}
+			result = append(result, e)
+		}
+
+	}
+
+	return
+}
+
+func (m *MappingRDV) GetSubjectGenreGnd() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.Genre == nil {
+		return "", nil, false
+	}
+
+	key = "subjectGenreGnd"
+	ok = true
+	result = []Element{}
+
+	genreMap, ok := m.Mapping.Subject.Genre["gnd"]
+	if ok {
+		for _, v := range genreMap {
+			if v == "" {
+				continue
+			}
+			e := Element{
+				Text: v,
+			}
+			result = append(result, e)
+		}
+	}
+
+	return
+}
+
+func (m *MappingRDV) GetSubjectTemporal() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.Temporal == nil {
+		return "", nil, false
+	}
+
+	key = "subjectTemporal"
+	ok = true
+	result = []Element{}
+
+	for _, temporalMap := range m.Mapping.Subject.Temporal {
+		for _, v := range temporalMap {
+			if v == "" {
+				continue
+			}
+			e := Element{
+				Text: v,
+			}
+			result = append(result, e)
+		}
+
+	}
+
+	return
+}
+
+func (m *MappingRDV) GetSubjectTemporalGnd() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.Temporal == nil {
+		return "", nil, false
+	}
+
+	key = "subjectTemporalGnd"
+	ok = true
+	result = []Element{}
+
+	temporalMap, ok := m.Mapping.Subject.Temporal["gnd"]
+	if ok {
+		for _, v := range temporalMap {
+			if v == "" {
+				continue
+			}
+			e := Element{
+				Text: v,
+			}
+			result = append(result, e)
+		}
+	}
+
+	return
+}
+
+func (m *MappingRDV) GetSubjectLocal() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject.Local == nil {
+		return "", nil, false
+	}
+
+	key = "subjectLocal"
+	ok = true
+	result = []Element{}
+
+	for _, localMap := range m.Mapping.Subject.Local {
+		for _, v := range localMap {
+			if v == "" {
+				continue
+			}
+			e := Element{
+				Text: v,
+			}
+			result = append(result, e)
+		}
+
+	}
+
+	return
+}
+
+func (m *MappingRDV) GetSubjectMusic() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Subject == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Subject.Music) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "subjectMusic"
+	ok = true
+	for _, v := range m.Mapping.Subject.Music {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
 /*
 todo: change data in index: Index generic values in German, adapt this function to get the code and only one per document
 usually used for selecting icon and configuration in frontend
@@ -4637,6 +4817,30 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetSubjectTitleInfo()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetSubjectGenre()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetSubjectGenreGnd()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetSubjectTemporal()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetSubjectTemporalGnd()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetSubjectLocal()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetSubjectMusic()
 	if ok {
 		result[key] = value
 	}

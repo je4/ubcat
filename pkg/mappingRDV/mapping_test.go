@@ -390,10 +390,13 @@ func TestMappingRDV(t *testing.T) {
 			RecordIdentifier: []string{"9920530890105504"},
 			RelatedItem:      nil,
 			Subject: &schema.Subject{
-				Genre:      nil,
+				Genre: map[string][]string{
+					"idsbb": {"Test"},
+					"other": {"TestR", "TestR2"},
+				},
 				Geographic: nil,
 				Local:      nil,
-				Music:      nil,
+				Music:      []string{"Ouvertüre", "19.-20. Jh."},
 				Name: &schema.Name{
 					Conference: nil,
 					Corporate:  nil,
