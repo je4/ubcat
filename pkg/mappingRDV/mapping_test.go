@@ -140,7 +140,7 @@ func TestMappingRDV(t *testing.T) {
 			Files:      nil,
 			Fulltext:   nil,
 			Identifier: nil,
-			Language:   nil,
+			Language:   []string{"ger", "eng", "ger"},
 			Location: &schema.Location{
 				Digital: []*schema.Url{
 					{
@@ -326,7 +326,7 @@ func TestMappingRDV(t *testing.T) {
 				Funding:             nil,
 				General:             []string{"note 1", "note 2"},
 				Han:                 nil,
-				Language:            nil,
+				Language:            []string{"Epos in ursprünglicher italienischer Volkssprache, Einleitung und Kommentar auf Englisch"},
 				MediumOfPerformance: nil,
 				Other:               nil,
 				Ownership: []*schema.NoteWithURL{

@@ -227,6 +227,142 @@ func (m *MappingRDV) GetNoteCitation() (key string, result []Element, ok bool) {
 	return
 }
 
+func (m *MappingRDV) GetNoteAdditionalPhysicalForm() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.AdditionalPhysicalForm) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteAdditionalPhysicalForm"
+	ok = true
+	for _, v := range m.Mapping.Note.AdditionalPhysicalForm {
+		if v == nil {
+			continue
+		}
+		e := Element{
+			Text: v.Main,
+		}
+
+		appendText(&e, v.Add, " ")
+
+		if len(v.Url) != 0 {
+			e.Link = v.Url[0]
+		}
+		result = append(result, e)
+	}
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteBinding() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.Binding) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteBinding"
+	ok = true
+	for _, v := range m.Mapping.Note.Binding {
+		if v == nil {
+			continue
+		}
+		e := Element{
+			Text: v.Main,
+		}
+
+		appendText(&e, v.Add, " ")
+
+		if len(v.Url) != 0 {
+			e.Link = v.Url[0]
+		}
+		result = append(result, e)
+	}
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteBibliographical() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.Bibliographical) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteBibliographical"
+	ok = true
+	for _, v := range m.Mapping.Note.Bibliographical {
+		if v == nil {
+			continue
+		}
+		e := Element{
+			Text: v.Main,
+		}
+
+		appendText(&e, v.Add, " ")
+
+		if len(v.Url) != 0 {
+			e.Link = v.Url[0]
+		}
+		result = append(result, e)
+	}
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteRestriction() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.Restriction) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteRestriction"
+	ok = true
+	for _, v := range m.Mapping.Note.Restriction {
+		if v == nil {
+			continue
+		}
+		e := Element{
+			Text: v.Main,
+		}
+
+		appendText(&e, v.Add, " ")
+
+		if len(v.Url) != 0 {
+			e.Link = v.Url[0]
+		}
+		result = append(result, e)
+	}
+	if len(result) == 0 {
+		return "", nil, false
+	}
+	return
+}
+
 func (m *MappingRDV) GetNotePublications() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return "", nil, false
@@ -238,7 +374,7 @@ func (m *MappingRDV) GetNotePublications() (key string, result []Element, ok boo
 		return "", nil, false
 	}
 	result = []Element{}
-	key = "noteLanguage"
+	key = "notePublications"
 	ok = true
 	for _, v := range m.Mapping.Note.Publications {
 		if v == "" {
@@ -252,6 +388,405 @@ func (m *MappingRDV) GetNotePublications() (key string, result []Element, ok boo
 	return
 }
 
+func (m *MappingRDV) GetNoteAcquisition() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.Acquisition) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteAcquisition"
+	ok = true
+	for _, v := range m.Mapping.Note.Acquisition {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteAction() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.Action) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteAction"
+	ok = true
+	for _, v := range m.Mapping.Note.Action {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteBibliography() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.Bibliography) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteBibliography"
+	ok = true
+	for _, v := range m.Mapping.Note.Bibliography {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteCredits() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.Credits) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteCredits"
+	ok = true
+	for _, v := range m.Mapping.Note.Credits {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteExhibitions() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.Exhibitions) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteExhibitions"
+	ok = true
+	for _, v := range m.Mapping.Note.Exhibitions {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteFunding() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.Funding) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteFunding"
+	ok = true
+	for _, v := range m.Mapping.Note.Funding {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteHan() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.Han) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteHan"
+	ok = true
+	for _, v := range m.Mapping.Note.Han {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteMediumOfPerformance() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.MediumOfPerformance) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteMediumOfPerformance"
+	ok = true
+	for _, v := range m.Mapping.Note.MediumOfPerformance {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteOther() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.Other) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteOther"
+	ok = true
+	for _, v := range m.Mapping.Note.Other {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNotePerformers() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.Performers) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "notePerformers"
+	ok = true
+	for _, v := range m.Mapping.Note.Performers {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNotePreferredCitation() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.PreferredCitation) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "notePreferredCitation"
+	ok = true
+	for _, v := range m.Mapping.Note.PreferredCitation {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteReproduction() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.Reproduction) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteReproduction"
+	ok = true
+	for _, v := range m.Mapping.Note.Reproduction {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteSystemDetails() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.SystemDetails) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteSystemDetails"
+	ok = true
+	for _, v := range m.Mapping.Note.SystemDetails {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteThesis() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.Thesis) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteThesis"
+	ok = true
+	for _, v := range m.Mapping.Note.Thesis {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteVenue() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.Venue) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteVenue"
+	ok = true
+	for _, v := range m.Mapping.Note.Venue {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetNoteVersionIdentification() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.Note == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Note.VersionIdentification) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "noteVersionIdentification"
+	ok = true
+	for _, v := range m.Mapping.Note.VersionIdentification {
+		if v == "" {
+			continue
+		}
+		e := Element{
+			Text: v,
+		}
+		result = append(result, e)
+	}
+	return
+}
 func (m *MappingRDV) GetOriginInfoEdition() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return "", nil, false
@@ -784,6 +1319,109 @@ func (m *MappingRDV) GetPhysicalDescriptionMedium() (key string, result []Elemen
 	return
 }
 
+func (m *MappingRDV) GetPhysicalDescriptionArrangement() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.PhysicalDescription == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.PhysicalDescription.Arrangement) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "physicalDescriptionArrangement"
+	ok = true
+	e := Element{
+		Text: strings.Join(m.Mapping.PhysicalDescription.Arrangement, ", "),
+	}
+	result = append(result, e)
+
+	return
+}
+
+func (m *MappingRDV) GetPhysicalDescriptionDateSequentialDesignation() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.PhysicalDescription == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.PhysicalDescription.DateSequentialDesignation) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "physicalDescriptionDateSequentialDesignation"
+	ok = true
+	e := Element{
+		Text: strings.Join(m.Mapping.PhysicalDescription.DateSequentialDesignation, ", "),
+	}
+	result = append(result, e)
+
+	return
+}
+
+func (m *MappingRDV) GetPhysicalDescriptionFrequency() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.PhysicalDescription == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.PhysicalDescription.Frequency) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "physicalDescriptionFrequency"
+	ok = true
+	e := Element{
+		Text: strings.Join(m.Mapping.PhysicalDescription.Frequency, ", "),
+	}
+	result = append(result, e)
+
+	return
+}
+
+func (m *MappingRDV) GetPhysicalDescriptionNotatedMusic() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.PhysicalDescription == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.PhysicalDescription.NotatedMusic) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "physicalDescriptionNotatedMusic"
+	ok = true
+	e := Element{
+		Text: strings.Join(m.Mapping.PhysicalDescription.NotatedMusic, ", "),
+	}
+	result = append(result, e)
+
+	return
+}
+
+func (m *MappingRDV) GetLanguage() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.Language) == 0 {
+		return "", nil, false
+	}
+	result = []Element{}
+	key = "language"
+	ok = true
+
+	e := Element{
+		Text: strings.Join(m.Mapping.Language, ", "),
+	}
+	result = append(result, e)
+
+	return
+}
+
 func (m *MappingRDV) GetTitleInfoMainTitle() (key string, result []Element, ok bool) {
 	if m.Mapping == nil {
 		return "", nil, false
@@ -913,6 +1551,33 @@ func (m *MappingRDV) GetLocationDigital() (key string, result []Element, ok bool
 	ok = true
 	result = []Element{}
 	for _, v := range m.Mapping.Location.Digital {
+		if v == nil {
+			continue
+		}
+		e := Element{
+			Link: v.Url,
+		}
+		appendText(&e, v.Content, "")
+		appendText(&e, v.Note, " ; ")
+		result = append(result, e)
+	}
+	return
+}
+
+func (m *MappingRDV) GetRelatedItemLocation() (key string, result []Element, ok bool) {
+	if m.Mapping == nil {
+		return "", nil, false
+	}
+	if m.Mapping.RelatedItem == nil {
+		return "", nil, false
+	}
+	if len(m.Mapping.RelatedItem.Location) == 0 {
+		return "", nil, false
+	}
+	key = "relatedItemLocation"
+	ok = true
+	result = []Element{}
+	for _, v := range m.Mapping.RelatedItem.Location {
 		if v == nil {
 			continue
 		}
@@ -4920,6 +5585,22 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
+	key, value, ok = m.GetPhysicalDescriptionArrangement()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetPhysicalDescriptionDateSequentialDesignation()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetPhysicalDescriptionFrequency()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetPhysicalDescriptionNotatedMusic()
+	if ok {
+		result[key] = value
+	}
 	key, value, ok = m.GetOriginInfoDistribution()
 	if ok {
 		result[key] = value
@@ -4965,30 +5646,6 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 		result[key] = value
 	}
 	key, value, ok = m.GetOriginInfoPublicationDate()
-	if ok {
-		result[key] = value
-	}
-	key, value, ok = m.GetNoteGeneral()
-	if ok {
-		result[key] = value
-	}
-	key, value, ok = m.GetNoteOwnership()
-	if ok {
-		result[key] = value
-	}
-	key, value, ok = m.GetNoteLanguage()
-	if ok {
-		result[key] = value
-	}
-	key, value, ok = m.GetNoteOwnership()
-	if ok {
-		result[key] = value
-	}
-	key, value, ok = m.GetNoteCitation()
-	if ok {
-		result[key] = value
-	}
-	key, value, ok = m.GetNotePublications()
 	if ok {
 		result[key] = value
 	}
@@ -5116,10 +5773,6 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
-	key, value, ok = m.GetNoteStatementOfResponsibility()
-	if ok {
-		result[key] = value
-	}
 	key, value, ok = m.GetOriginInfoEdition()
 	if ok {
 		result[key] = value
@@ -5240,6 +5893,117 @@ func (m *MappingRDV) Map() (result map[string][]Element) {
 	if ok {
 		result[key] = value
 	}
-
+	key, value, ok = m.GetLanguage()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetRelatedItemLocation()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteAcquisition()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteAction()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteAdditionalPhysicalForm()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteBibliography()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteBinding()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteBibliographical()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteCitation()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteCredits()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteExhibitions()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteFunding()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteGeneral()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteHan()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteLanguage()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteMediumOfPerformance()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteOther()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteOwnership()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNotePerformers()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNotePreferredCitation()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNotePublications()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteReproduction()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteRestriction()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteStatementOfResponsibility()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteSystemDetails()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteThesis()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteVenue()
+	if ok {
+		result[key] = value
+	}
+	key, value, ok = m.GetNoteVersionIdentification()
+	if ok {
+		result[key] = value
+	}
 	return
 }
