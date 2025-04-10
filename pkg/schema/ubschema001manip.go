@@ -11,10 +11,10 @@ func (u *UBSchema001) DoFacets() error {
 			Daterange: []*DateRangeFacets{},
 			Strings:   []*StringFacets{},
 		}
-		u.Facets.Strings = append(u.Facets.Strings, &StringFacets{
-			Name:   "test",
-			String: []string{"Testing123", "Testing456"},
-		})
 	}
+	u.Facets.Strings = append(u.Facets.Strings, &StringFacets{
+		Name:   "test",
+		String: []string{"Testing123", "Testing456"},
+	})
 	return nil
 }
