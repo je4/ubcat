@@ -13,8 +13,8 @@ func (u *UBSchema001) DoFacets() error {
 		}
 	}
 	u.Facets.Strings = append(u.Facets.Strings, &StringFacets{
-		Name:   "test",
-		String: []string{"Testing123", "Testing456"},
+		Name:   "language",
+		String: u.Mapping.Language,
 	})
 	return nil
 }
